@@ -87,7 +87,7 @@ const Community = () => {
             {forumStats.map((stat, index) => (
               <Card key={index} className="text-center border-border/50">
                 <CardContent className="p-6">
-                  <stat.icon className="h-8 w-8 text-primary mx-auto mb-2" />
+                  <stat.icon className={`h-8 w-8 text-primary mx-auto mb-2`} />
                   <div className="text-2xl font-bold mb-1">{stat.value}</div>
                   <div className="text-sm text-muted-foreground">{stat.label}</div>
                 </CardContent>
@@ -246,9 +246,11 @@ const Community = () => {
                     <div className="w-2 h-2 bg-success rounded-full"></div>
                     <span className="text-sm font-medium">12 helpers online now</span>
                   </div>
-                  <Button variant="outline" size="sm" className="w-full">
-                    Become a Peer Helper
-                  </Button>
+                  <Link to="/peer-helper-application" className="w-full">
+                    <Button variant="outline" size="sm" className="w-full">
+                      Become a Peer Helper
+                    </Button>
+                  </Link>
                 </CardContent>
               </Card>
 
