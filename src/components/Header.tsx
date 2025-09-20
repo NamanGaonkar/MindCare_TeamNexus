@@ -7,12 +7,12 @@ const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const navItems = [
-    { name: "Home", href: "#home" },
-    { name: "AI Support", href: "#ai-chat" },
-    { name: "Book Session", href: "#booking" },
-    { name: "Resources", href: "#resources" },
-    { name: "Community", href: "#community" },
-    { name: "About", href: "#about" },
+    { name: "Home", href: "/" },
+    { name: "AI Support", href: "/ai-chat" },
+    { name: "Book Session", href: "/booking" },
+    { name: "Resources", href: "/resources" },
+    { name: "Community", href: "/community" },
+    { name: "Admin", href: "/admin" },
   ];
 
   return (
@@ -33,13 +33,13 @@ const Header = () => {
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
             {navItems.map((item) => (
-              <a
+              <Link
                 key={item.name}
-                href={item.href}
+                to={item.href}
                 className="text-foreground/80 hover:text-primary transition-colors duration-200 font-medium"
               >
                 {item.name}
-              </a>
+              </Link>
             ))}
           </nav>
 
@@ -69,14 +69,14 @@ const Header = () => {
           <nav className="md:hidden mt-4 pb-4 border-t border-border">
             <div className="flex flex-col space-y-4 pt-4">
               {navItems.map((item) => (
-                <a
+                <Link
                   key={item.name}
-                  href={item.href}
+                  to={item.href}
                   className="text-foreground/80 hover:text-primary transition-colors duration-200 font-medium py-2"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   {item.name}
-                </a>
+                </Link>
               ))}
               <div className="flex flex-col space-y-2 pt-4">
                 <Button variant="outline" size="sm">

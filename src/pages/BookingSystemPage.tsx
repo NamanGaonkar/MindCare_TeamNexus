@@ -1,15 +1,15 @@
+import BookingSystem from "@/components/BookingSystem";
 import Header from "@/components/Header";
-import Hero from "@/components/Hero";
 
-const Index = () => {
+const BookingSystemPage = () => {
   return (
     <div className="min-h-screen bg-background">
       <Header />
       <main>
-        <Hero />
+        <BookingSystem />
       </main>
     </div>
   );
 };
 
-export default Index;
+export default BookingSystemPage;

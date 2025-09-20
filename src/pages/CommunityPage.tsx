@@ -1,15 +1,15 @@
+import Community from "@/components/Community";
 import Header from "@/components/Header";
-import Hero from "@/components/Hero";
 
-const Index = () => {
+const CommunityPage = () => {
   return (
     <div className="min-h-screen bg-background">
       <Header />
       <main>
-        <Hero />
+        <Community />
       </main>
     </div>
   );
 };
 
-export default Index;
+export default CommunityPage;

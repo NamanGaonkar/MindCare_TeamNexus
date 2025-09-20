@@ -1,15 +1,15 @@
+import ResourceHub from "@/components/ResourceHub";
 import Header from "@/components/Header";
-import Hero from "@/components/Hero";
 
-const Index = () => {
+const ResourceHubPage = () => {
   return (
     <div className="min-h-screen bg-background">
       <Header />
       <main>
-        <Hero />
+        <ResourceHub />
       </main>
     </div>
   );
 };
 
-export default Index;
+export default ResourceHubPage;

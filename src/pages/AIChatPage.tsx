@@ -1,15 +1,15 @@
+import AIChat from "@/components/AIChat";
 import Header from "@/components/Header";
-import Hero from "@/components/Hero";
 
-const Index = () => {
+const AIChatPage = () => {
   return (
     <div className="min-h-screen bg-background">
       <Header />
       <main>
-        <Hero />
+        <AIChat />
       </main>
     </div>
   );
 };
 
-export default Index;
+export default AIChatPage;

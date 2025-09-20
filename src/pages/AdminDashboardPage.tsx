@@ -1,15 +1,15 @@
+import AdminDashboard from "@/components/AdminDashboard";
 import Header from "@/components/Header";
-import Hero from "@/components/Hero";
 
-const Index = () => {
+const AdminDashboardPage = () => {
   return (
     <div className="min-h-screen bg-background">
       <Header />
       <main>
-        <Hero />
+        <AdminDashboard />
       </main>
     </div>
   );
 };
 
-export default Index;
+export default AdminDashboardPage;
