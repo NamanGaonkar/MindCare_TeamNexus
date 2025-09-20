@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Brain, Menu, X } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const Header = () => {
@@ -20,12 +19,8 @@ const Header = () => {
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2 group">
-            <div className="relative">
-              <Brain className="h-8 w-8 text-primary group-hover:scale-110 transition-transform duration-300" />
-              <div className="absolute inset-0 bg-primary/20 rounded-full blur-lg group-hover:blur-xl transition-all duration-300"></div>
-            </div>
-            <span className="text-xl font-bold bg-gradient-primary bg-clip-text text-transparent">
+          <Link to="/" className="flex items-center space-x-2">
+            <span className="text-xl font-bold">
               MindCare
             </span>
           </Link>
@@ -49,18 +44,17 @@ const Header = () => {
               <Button variant="outline" className="w-24">Login</Button>
             </Link>
             <Link to="/signup">
-              <Button className="w-24 bg-gradient-primary hover:opacity-90 transition-opacity">Sign Up</Button>
+              <Button className="w-24">Sign Up</Button>
             </Link>
           </div>
 
           {/* Mobile Menu Button */}
           <Button
             variant="ghost"
-            size="icon"
             className="md:hidden"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
-            {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            {isMenuOpen ? "Close" : "Menu"}
           </Button>
         </div>
 
@@ -83,7 +77,7 @@ const Header = () => {
                     <Button variant="outline" className="w-full">Login</Button>
                 </Link>
                 <Link to="/signup">
-                    <Button className="w-full bg-gradient-primary hover:opacity-90 transition-opacity">Sign Up</Button>
+                    <Button className="w-full">Sign Up</Button>
                 </Link>
               </div>
             </div>

@@ -2,7 +2,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Brain } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const Login = () => {
@@ -10,10 +9,7 @@ const Login = () => {
     <div className="min-h-screen flex items-center justify-center bg-background px-4">
         <Card className="w-full max-w-md shadow-soft border-border/50">
             <CardHeader className="text-center">
-                <div className="flex justify-center items-center mb-4">
-                    <Brain className="h-10 w-10 text-primary" />
-                </div>
-                <CardTitle className="text-2xl font-bold">Welcome Back</CardTitle>
+                <CardTitle className="text-2xl font-bold pt-6">Welcome Back</CardTitle>
                 <CardDescription>Sign in to access your MindCare account</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
