@@ -1,10 +1,10 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Bell, Video, Phone } from "lucide-react";
+import { Textarea } from "@/components/ui/textarea";
+import { Bell, Video, Phone, User, Users, Briefcase } from "lucide-react";
 
 const IndianHelplines = () => (
   <div className="mt-8">
@@ -20,6 +20,8 @@ const IndianHelplines = () => (
 const BookingSystem = () => {
   const [date, setDate] = useState<Date | undefined>(new Date());
   const [time, setTime] = useState<string>("");
+  const [counselingType, setCounselingType] = useState<string>("");
+  const [notes, setNotes] = useState<string>("");
 
   const timeSlots = [
     "09:00 AM - 10:00 AM",
@@ -29,6 +31,14 @@ const BookingSystem = () => {
     "03:00 PM - 04:00 PM",
     "04:00 PM - 05:00 PM",
   ];
+
+  const counselingTypes = [
+    { value: "individual", label: "Individual Counseling", icon: User },
+    { value: "group", label: "Group Session", icon: Users },
+    { value: "career", label: "Career & Academic Advice", icon: Briefcase },
+  ];
+
+  const isBookingDisabled = !date || !time || !counselingType;
 
   return (
     <div id="booking" className="py-20 bg-background/80">
@@ -47,10 +57,29 @@ const BookingSystem = () => {
             <CardHeader>
               <CardTitle>Schedule Your Appointment</CardTitle>
             </CardHeader>
-            <CardContent>
-              <div className="space-y-6">
-                <div>
-                  <h3 className="font-semibold mb-2">1. Select a Date</h3>
+            <CardContent className="space-y-6">
+              <div>
+                <h3 className="font-semibold mb-2">1. Select Counseling Type</h3>
+                <Select onValueChange={setCounselingType} value={counselingType}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select a counseling type" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {counselingTypes.map((type) => (
+                      <SelectItem key={type.value} value={type.value}>
+                        <div className="flex items-center">
+                          <type.icon className="h-4 w-4 mr-2" />
+                          {type.label}
+                        </div>
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              
+              <div>
+                <h3 className="font-semibold mb-2">2. Select a Date & Time</h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <Calendar
                     mode="single"
                     selected={date}
@@ -58,27 +87,37 @@ const BookingSystem = () => {
                     className="rounded-md border"
                     disabled={(day) => day < new Date(new Date().setDate(new Date().getDate() - 1))}
                   />
+                  <div className="flex flex-col space-y-2">
+                    {timeSlots.map((slot) => (
+                        <Button 
+                            key={slot} 
+                            variant={time === slot ? "default" : "outline"} 
+                            onClick={() => setTime(slot)} 
+                            className="w-full justify-center"
+                        >
+                            {slot}
+                        </Button>
+                    ))}
+                  </div>
                 </div>
-                <div>
-                  <h3 className="font-semibold mb-2">2. Select a Time Slot</h3>
-                  <Select onValueChange={setTime} value={time}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select a time" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {timeSlots.map((slot) => (
-                        <SelectItem key={slot} value={slot}>{slot}</SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-                <Button className="w-full bg-gradient-primary hover:opacity-90" size="lg" disabled={!date || !time}>
-                  Confirm Your Booking
-                </Button>
-                <p className="text-xs text-center text-muted-foreground">
-                  You will receive a confirmation email with session details.
-                </p>
               </div>
+
+              <div>
+                <h3 className="font-semibold mb-2">3. Additional Notes (Optional)</h3>
+                <Textarea 
+                  placeholder="Share any specific concerns or questions you have for the counsellor."
+                  value={notes}
+                  onChange={(e) => setNotes(e.target.value)}
+                  rows={3}
+                />
+              </div>
+
+              <Button className="w-full bg-gradient-primary hover:opacity-90" size="lg" disabled={isBookingDisabled}>
+                Confirm Your Booking
+              </Button>
+              <p className="text-xs text-center text-muted-foreground">
+                You will receive a confirmation email with session details.
+              </p>
             </CardContent>
           </Card>
           
