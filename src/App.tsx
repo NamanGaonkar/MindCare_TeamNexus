@@ -10,6 +10,7 @@ import BookingSystemPage from "./pages/BookingSystemPage";
 import ResourceHubPage from "./pages/ResourceHubPage";
 import CommunityPage from "./pages/CommunityPage";
 import AdminDashboardPage from "./pages/AdminDashboardPage";
+import PeerHelperApplicationPage from "./pages/PeerHelperApplicationPage";
 
 const queryClient = new QueryClient();
 
@@ -26,6 +27,7 @@ const App = () => (
           <Route path="/resources" element={<ResourceHubPage />} />
           <Route path="/community" element={<CommunityPage />} />
           <Route path="/admin" element={<AdminDashboardPage />} />
+          <Route path="/peer-helper-application" element={<PeerHelperApplicationPage />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
