@@ -8,6 +8,9 @@ const Index = () => {
       <main>
         <Hero />
       </main>
+      <footer className="text-center p-4 text-muted-foreground">
+        Project by Team Nexus
+      </footer>
     </div>
   );
 };
