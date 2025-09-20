@@ -1,10 +1,16 @@
+import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { MessageSquare, Heart, Users, Clock, Pin, ThumbsUp, Reply, MoreHorizontal } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Community = () => {
+  const [showNewPost, setShowNewPost] = useState(false);
+
   const forumStats = [
     { label: "Active Members", value: "2,847", icon: Users },
     { label: "Support Posts", value: "1,234", icon: MessageSquare },
@@ -48,18 +54,6 @@ const Community = () => {
       isPinned: false,
       preview: "I've been staying up until 3-4 AM studying and my sleep is all over the place. How do you maintain a healthy sleep routine?",
       tags: ["sleep", "schedule", "health"],
-    },
-    {
-      id: 4,
-      title: "Celebrating small wins - my therapy journey",
-      author: "HopefulSenior",
-      category: "Success Stories",
-      timeAgo: "1d ago",
-      replies: 67,
-      likes: 189,
-      isPinned: false,
-      preview: "I wanted to share my progress over the past semester. Starting therapy was scary but it's been life-changing...",
-      tags: ["therapy", "progress", "hope"],
     },
   ];
 
@@ -106,10 +100,30 @@ const Community = () => {
             <div className="lg:col-span-3">
               <div className="flex items-center justify-between mb-6">
                 <h3 className="text-xl font-semibold">Recent Discussions</h3>
-                <Button className="bg-gradient-wellness hover:opacity-90">
-                  Start New Discussion
+                <Button 
+                  onClick={() => setShowNewPost(!showNewPost)}
+                  className="bg-gradient-wellness hover:opacity-90"
+                >
+                  {showNewPost ? 'Cancel' : 'Start New Discussion'}
                 </Button>
               </div>
+
+              {/* New Post Form */}
+              {showNewPost && (
+                <Card className="mb-6 shadow-soft border-border/50">
+                  <CardHeader>
+                    <CardTitle>Create a New Post</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <Input placeholder="Post Title" />
+                    <Textarea placeholder="Share your thoughts... (Remember to be respectful and avoid sharing personal information)" rows={4} />
+                    <div className="flex justify-end space-x-2">
+                        <Button variant="outline" onClick={() => setShowNewPost(false)}>Cancel</Button>
+                        <Button>Post</Button>
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
 
               <div className="space-y-4">
                 {forumPosts.map((post) => (
@@ -137,9 +151,11 @@ const Community = () => {
                         </Button>
                       </div>
 
-                      <h4 className="font-semibold text-lg mb-2 hover:text-primary cursor-pointer transition-colors">
-                        {post.title}
-                      </h4>
+                      <Link to={`/community/post/${post.id}`}>
+                        <h4 className="font-semibold text-lg mb-2 hover:text-primary cursor-pointer transition-colors">
+                          {post.title}
+                        </h4>
+                      </Link>
 
                       <p className="text-muted-foreground text-sm mb-4 line-clamp-2">
                         {post.preview}
@@ -246,12 +262,16 @@ const Community = () => {
                     If you're in crisis, don't wait for community responses.
                   </p>
                   <div className="space-y-2">
-                    <Button variant="destructive" size="sm" className="w-full">
-                      Crisis Hotline: 988
-                    </Button>
-                    <Button variant="outline" size="sm" className="w-full">
-                      Campus Counseling
-                    </Button>
+                    <a href="tel:1800-599-0019" className="w-full">
+                      <Button variant="destructive" size="sm" className="w-full">
+                        Crisis Hotline: 1800-599-0019
+                      </Button>
+                    </a>
+                    <Link to="/booking" className="w-full">
+                        <Button variant="outline" size="sm" className="w-full">
+                            Campus Counseling
+                        </Button>
+                    </Link>
                   </div>
                 </CardContent>
               </Card>

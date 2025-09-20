@@ -12,8 +12,20 @@ import {
   Clock,
   BarChart3,
   Download,
-  Filter
+  Filter,
+  Phone
 } from "lucide-react";
+
+const IndianHelplines = () => (
+  <div className="mt-4">
+    <h4 className="text-sm font-semibold mb-2">Mental Health Helplines (India)</h4>
+    <ul className="space-y-2 text-xs text-muted-foreground">
+      <li><strong>Vandrevala Foundation:</strong> 9999666555</li>
+      <li><strong>KIRAN Helpline:</strong> 1800-599-0019</li>
+      <li><strong>iCALL Helpline:</strong> 022-25521111</li>
+    </ul>
+  </div>
+);
 
 const AdminDashboard = () => {
   const keyMetrics = [
@@ -277,17 +289,15 @@ const AdminDashboard = () => {
                   </Button>
                 </CardContent>
               </Card>
-
-              {/* Privacy Notice */}
-              <Card className="bg-primary/5 border-primary/20 shadow-soft">
+               <Card className="shadow-soft border-border/50">
                 <CardHeader>
-                  <CardTitle className="text-primary text-sm">Data Privacy</CardTitle>
+                  <CardTitle className="flex items-center">
+                   <Phone className="h-4 w-4 mr-2" />
+                    Helpline Quick Reference
+                    </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-xs text-muted-foreground">
-                    All data shown is anonymized and aggregated. Individual student information 
-                    is never displayed to maintain complete confidentiality.
-                  </p>
+                 <IndianHelplines />
                 </CardContent>
               </Card>
             </div>

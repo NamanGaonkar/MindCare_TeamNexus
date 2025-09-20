@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Heart, Menu, X } from "lucide-react";
+import { Brain, Menu, X } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const Header = () => {
@@ -22,7 +22,7 @@ const Header = () => {
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2 group">
             <div className="relative">
-              <Heart className="h-8 w-8 text-primary group-hover:scale-110 transition-transform duration-300" />
+              <Brain className="h-8 w-8 text-primary group-hover:scale-110 transition-transform duration-300" />
               <div className="absolute inset-0 bg-primary/20 rounded-full blur-lg group-hover:blur-xl transition-all duration-300"></div>
             </div>
             <span className="text-xl font-bold bg-gradient-primary bg-clip-text text-transparent">
