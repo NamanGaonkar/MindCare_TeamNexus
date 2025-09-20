@@ -84,12 +84,6 @@ const Hero = () => {
             </Button>
           </div>
 
-          {/* Tech Note */}
-          <div className="mt-8 pt-6 border-t border-border/50">
-            <p className="text-sm text-muted-foreground">
-              Frontend ready for backend integration • Uses Gemini AI for chat support • Built for hackathon development
-            </p>
-          </div>
         </div>
       </div>
     </section>
