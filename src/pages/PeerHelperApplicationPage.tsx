@@ -1,11 +1,14 @@
-import Layout from "@/components/Layout";
+import Header from "@/components/Header";
 import PeerHelperApplication from "@/components/PeerHelperApplication";
 
 const PeerHelperApplicationPage = () => {
   return (
-    <Layout>
-      <PeerHelperApplication />
-    </Layout>
+    <div className="min-h-screen bg-background">
+      <Header />
+      <main>
+        <PeerHelperApplication />
+      </main>
+    </div>
   );
 };
 
