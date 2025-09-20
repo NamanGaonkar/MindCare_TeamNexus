@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { MessageSquare, Heart, Users, Clock, Pin, ThumbsUp, Reply, MoreHorizontal } from "lucide-react";
+import { MessageSquare, Users, Clock, Pin, ThumbsUp, Reply, MoreHorizontal, HelpingHand } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const Community = () => {
@@ -14,7 +14,7 @@ const Community = () => {
   const forumStats = [
     { label: "Active Members", value: "2,847", icon: Users },
     { label: "Support Posts", value: "1,234", icon: MessageSquare },
-    { label: "Peer Helpers", value: "89", icon: Heart },
+    { label: "Peer Helpers", value: "89", icon: HelpingHand },
     { label: "Response Time", value: "< 2hr", icon: Clock },
   ];
 
