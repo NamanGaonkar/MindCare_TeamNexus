@@ -5,7 +5,6 @@ import BookingSystem from "@/components/BookingSystem";
 import ResourceHub from "@/components/ResourceHub";
 import Community from "@/components/Community";
 import AdminDashboard from "@/components/AdminDashboard";
-import Footer from "@/components/Footer";
 
 const Index = () => {
   return (
@@ -19,7 +18,6 @@ const Index = () => {
         <Community />
         <AdminDashboard />
       </main>
-      <Footer />
     </div>
   );
 };
