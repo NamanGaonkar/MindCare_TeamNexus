@@ -1,47 +1,47 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowRight, Youtube } from "lucide-react";
+import { Youtube } from "lucide-react";
 
 const ResourceHub = () => {
   const resourceTopics = [
     {
       title: "Managing Anxiety",
-      description: "Find guided exercises and expert advice on coping with anxiety.",
-      searchQuery: "managing+anxiety+for+students",
+      description: "A 10-minute guided meditation for anxiety relief.",
+      videoUrl: "https://www.youtube.com/watch?v=O-6f5wQXSu8",
     },
     {
       title: "Improving Sleep",
-      description: "Listen to guided meditations and find tips for a restful night's sleep.",
-      searchQuery: "guided+meditation+for+sleep+for+students",
+      description: "Fall asleep quickly with this guided sleep meditation.",
+      videoUrl: "https://www.youtube.com/watch?v=F28MGLlpP90",
     },
     {
       title: "Handling Academic Stress",
-      description: "Learn effective techniques to manage exam pressure and deadlines.",
-      searchQuery: "handling+academic+stress+for+college+students",
+      description: "Practical tips for managing stress during exam season.",
+      videoUrl: "https://www.youtube.com/watch?v=R-4i26s_7sY",
     },
     {
       title: "Mindfulness & Meditation",
-      description: "Practice mindfulness exercises to improve focus and reduce stress.",
-      searchQuery: "mindfulness+meditation+for+beginners",
+      description: "A beginner's guide to mindfulness meditation.",
+      videoUrl: "https://www.youtube.com/watch?v=ZToicYcHIOU",
     },
     {
       title: "Coping with Depression",
-      description: "Access resources on understanding and managing symptoms of depression.",
-      searchQuery: "coping+strategies+for+depression+for+young+adults",
+      description: "Understanding and coping with feelings of depression.",
+      videoUrl: "https://www.youtube.com/watch?v=P6A2A-1-p-c",
     },
     {
       title: "Building Resilience",
-      description: "Discover how to build mental and emotional strength to navigate challenges.",
-      searchQuery: "how+to+build+resilience+in+young+adults",
+      description: "Develop mental strength and bounce back from adversity.",
+      videoUrl: "https://www.youtube.com/watch?v=gS_yO1x_y-Y",
     },
     {
       title: "Quick Relaxation Techniques",
-      description: "Find short, effective exercises for immediate stress relief.",
-      searchQuery: "5+minute+relaxation+exercise",
+      description: "A 5-minute breathing exercise to calm your mind.",
+      videoUrl: "https://www.youtube.com/watch?v=inhb04-Yc_g",
     },
      {
       title: "Study & Focus Tips",
-      description: "Improve your study habits and concentration with these proven methods.",
-      searchQuery: "effective+study+techniques+for+college+students",
+      description: "The Pomodoro Technique for effective studying.",
+      videoUrl: "https://www.youtube.com/watch?v=H0i11Yj-e1g",
     },
   ];
 
@@ -55,7 +55,7 @@ const ResourceHub = () => {
               Resource Gateway
             </h2>
             <p className="text-muted-foreground max-w-2xl mx-auto">
-              Explore a wide range of mental wellness topics. Clicking a topic will take you to a curated YouTube search for videos on that subject.
+              Explore a curated collection of videos to support your mental wellness journey. Each video has been selected to provide practical guidance and support.
             </p>
           </div>
 
@@ -64,7 +64,7 @@ const ResourceHub = () => {
             {resourceTopics.map((topic) => (
               <a
                 key={topic.title}
-                href={`https://www.youtube.com/results?search_query=${topic.searchQuery}`}
+                href={topic.videoUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="block group"
