@@ -12,7 +12,7 @@ const Header = () => {
     { name: "Book Session", href: "/booking" },
     { name: "Resources", href: "/resources" },
     { name: "Community", href: "/community" },
-    { name: "Admin", href: "/admin" },
+    // { name: "Admin", href: "/admin" }, // Removed for now, will be shown conditionally
   ];
 
   return (
@@ -44,13 +44,13 @@ const Header = () => {
           </nav>
 
           {/* Desktop CTA */}
-          <div className="hidden md:flex items-center space-x-4">
-            <Button variant="outline" size="sm">
-              Login
-            </Button>
-            <Button size="sm" className="bg-gradient-primary hover:opacity-90 transition-opacity">
-              Get Help Now
-            </Button>
+          <div className="hidden md:flex items-center space-x-2">
+            <Link to="/login">
+              <Button variant="outline" className="w-24">Login</Button>
+            </Link>
+            <Link to="/signup">
+              <Button className="w-24 bg-gradient-primary hover:opacity-90 transition-opacity">Sign Up</Button>
+            </Link>
           </div>
 
           {/* Mobile Menu Button */}
@@ -79,12 +79,12 @@ const Header = () => {
                 </Link>
               ))}
               <div className="flex flex-col space-y-2 pt-4">
-                <Button variant="outline" size="sm">
-                  Login
-                </Button>
-                <Button size="sm" className="bg-gradient-primary hover:opacity-90 transition-opacity">
-                  Get Help Now
-                </Button>
+                <Link to="/login">
+                    <Button variant="outline" className="w-full">Login</Button>
+                </Link>
+                <Link to="/signup">
+                    <Button className="w-full bg-gradient-primary hover:opacity-90 transition-opacity">Sign Up</Button>
+                </Link>
               </div>
             </div>
           </nav>
