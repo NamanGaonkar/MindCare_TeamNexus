@@ -2,99 +2,82 @@
 @tailwind components;
 @tailwind utilities;
 
-/* MindCare Design System - Final Corrected Palette
-All colors MUST be HSL for proper theming.
+/* 
+  MindCare Design System - Professional & Clean Theme
+  Primary Color: Air Superiority Blue (#80A1C1)
+  Base: Soft Off-White
+  Accent: Clean charcoal for text and white for surfaces.
 */
 
 @layer base {
   :root {
     /* Core Background & Text */
-    --background: 50 60% 80%; /* Vanilla */
-    --foreground: 209 34% 63%; /* Air Superiority Blue */
+    --background: 210 40% 98%; /* Soft, clean off-white */
+    --foreground: 215 25% 27%; /* Dark, readable charcoal */
 
-    /* Cards & Surfaces - Lapis Lazuli */
-    --card: 213 35% 42%; /* Lapis Lazuli */
-    --card-foreground: 0 0% 100%; /* White text on dark Lapis card */
+    /* Cards & Surfaces */
+    --card: 0 0% 100%; /* Pure white for cards */
+    --card-foreground: 215 25% 27%;
 
-    /* Popover & Overlays - Lapis Lazuli */
-    --popover: 213 35% 42%;
-    --popover-foreground: 0 0% 100%;
+    /* Popover & Overlays */
+    --popover: 0 0% 100%;
+    --popover-foreground: 215 25% 27%;
 
-    /* Primary UI (Buttons) - Light Coral */
-    --primary: 358 82% 73%; /* Light Coral */
-    --primary-foreground: 0 0% 100%; /* White text for contrast */
+    /* Primary UI - Air Superiority Blue */
+    --primary: 209 34% 63%; /* #80A1C1 */
+    --primary-foreground: 0 0% 100%; /* White text on the blue button */
 
-    /* Secondary UI (e.g. outline buttons) - can use blue */
-    --secondary: 209 34% 63%; /* Air Superiority Blue */
-    --secondary-foreground: 0 0% 100%; /* White text */
+    /* Secondary UI - for outline buttons or less important actions */
+    --secondary: 210 40% 90%; /* Light gray */
+    --secondary-foreground: 215 25% 27%; /* Dark charcoal text */
 
-    /* Muted - A softer version of the foreground text */
-    --muted: 209 34% 73%;
-    --muted-foreground: 209 34% 53%;
+    /* Muted - for descriptions or less important text */
+    --muted: 210 40% 94%;
+    --muted-foreground: 215 15% 50%;
 
-    /* Accent (Links, special highlights) - can also be Coral */
-    --accent: 358 82% 73%;
+    /* Accent (Links, focus rings) - Also the primary blue */
+    --accent: 209 34% 63%;
     --accent-foreground: 0 0% 100%;
 
     /* Status Colors */
-    --destructive: 0 70% 60%;
+    --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
     --success: 145 60% 50%;
     --warning: 35 90% 60%;
 
     /* Borders & Inputs */
-    --border: 213 35% 52%; /* Lighter Lapis for borders */
-    --input: 50 60% 85%; /* Lighter Vanilla for inputs */
-    --ring: 358 82% 73%; /* Ring color to match primary button */
+    --border: 210 40% 88%; /* Subtle gray border */
+    --input: 0 0% 100%; /* White input background */
+    --ring: 209 34% 73%; /* Lighter blue for focus rings */
 
     /* Design System Extras */
-    --radius: 12px;
-    --shadow-soft: 0 4px 20px -2px hsl(213 35% 42% / 0.15);
-    --shadow-medium: 0 8px 30px -4px hsl(213 35% 42% / 0.2);
-    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(358 82% 63%));
-    --gradient-wellness: linear-gradient(135deg, hsl(var(--secondary)), hsl(209 34% 73%));
-    --gradient-calm: linear-gradient(180deg, hsl(var(--background)), hsl(50 60% 85%));
+    --radius: 0.75rem; /* A modern, slightly larger radius */
+    --shadow-soft: 0 4px 20px -2px hsl(209 34% 63% / 0.15);
+    --shadow-medium: 0 8px 30px -4px hsl(209 34% 63% / 0.2);
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-
-    --sidebar-background: 213 35% 42%;
-    --sidebar-foreground: 0 0% 100%;
-    --sidebar-primary: 358 82% 73%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 50 60% 80%;
-    --sidebar-accent-foreground: 213 35% 42%;
-    --sidebar-border: 213 35% 52%;
-    --sidebar-ring: 358 82% 73%;
   }
 
   .dark {
-    /* Defining a dark theme based on the current palette */
-    --background: 213 35% 22%; /* Dark Lapis */
-    --foreground: 0 0% 95%;
-
-    --card: 213 35% 28%;
-    --card-foreground: 0 0% 98%;
-
-    --popover: 213 35% 22%;
-    --popover-foreground: 0 0% 98%;
-
-    --primary: 358 82% 73%;
-    --primary-foreground: 0 0% 100%;
-
-    --secondary: 209 34% 63%;
-    --secondary-foreground: 213 35% 15%;
-
-    --muted: 213 35% 35%;
-    --muted-foreground: 213 35% 75%;
-
-    --accent: 358 82% 73%;
-    --accent-foreground: 0 0% 100%;
-
-    --destructive: 0 70% 60%;
+    /* A professional dark theme variant */
+    --background: 215 28% 17%;
+    --foreground: 210 40% 98%;
+    --card: 215 28% 20%;
+    --card-foreground: 210 40% 98%;
+    --popover: 215 28% 17%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 209 34% 63%;
+    --primary-foreground: 215 28% 17%;
+    --secondary: 215 28% 25%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 215 28% 25%;
+    --muted-foreground: 215 15% 65%;
+    --accent: 209 34% 63%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62% 30%;
     --destructive-foreground: 0 0% 100%;
-
-    --border: 213 35% 32%;
-    --input: 213 35% 32%;
-    --ring: 358 82% 73%;
+    --border: 215 28% 25%;
+    --input: 215 28% 25%;
+    --ring: 209 34% 73%;
   }
 }
 
@@ -102,7 +85,6 @@ All colors MUST be HSL for proper theming.
   * {
     @apply border-border;
   }
-
   body {
     @apply bg-background text-foreground;
   }
