@@ -11,20 +11,14 @@ import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { Bell, Bot, BookOpen, LogOut } from "lucide-react";
+import { Bot, BookOpen } from "lucide-react";
 
 const AdminSystemSettings = () => {
   return (
     <div className="space-y-8">
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-        <div>
-            <h2 className="text-2xl font-bold">System Settings</h2>
-            <p className="text-muted-foreground">Manage global system configurations.</p>
-        </div>
-        <Button variant="destructive" size="sm">
-            <LogOut className="h-4 w-4 mr-2" />
-            Logout
-        </Button>
+      <div>
+          <h2 className="text-2xl font-bold">System Settings</h2>
+          <p className="text-muted-foreground">Manage global system configurations.</p>
       </div>
       <div className="grid gap-8 md:grid-cols-1 lg:grid-cols-2">
           {/* AI Companion Settings */}
