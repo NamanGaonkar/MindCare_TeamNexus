@@ -56,55 +56,77 @@ const getStatusBadgeVariant = (status:string) => {
 const AdminUserManagement = () => {
   return (
     <Card>
-      <CardHeader className="flex flex-row items-center justify-between">
+      <CardHeader className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <div>
             <CardTitle>User Directory</CardTitle>
-            <p className="text-sm text-muted-foreground">Manage all users, roles, and permissions.</p>
+            <p className="text-sm text-muted-foreground mt-1">Manage all users, roles, and permissions.</p>
         </div>
-        <div className="flex gap-4">
-             <Button variant="outline">
-                <UserPlus className="h-4 w-4 mr-2"/>
-                Add New User
-            </Button>
-        </div>
+        <Button className="w-full md:w-auto">
+            <UserPlus className="h-4 w-4 mr-2"/>
+            Add New User
+        </Button>
       </CardHeader>
       <CardContent>
-        <div className="mb-4 flex items-center">
-            <div className="relative w-full max-w-sm">
+        <div className="mb-4">
+            <div className="relative w-full max-w-md">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground"/>
                 <Input placeholder="Search by name, email, or role..." className="pl-10"/>
             </div>
         </div>
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>User ID</TableHead>
-              <TableHead>Name</TableHead>
-              <TableHead>Email</TableHead>
-              <TableHead>Role</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead className="text-right">Actions</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
+
+        {/* Mobile View: Cards */}
+        <div className="md:hidden space-y-4">
             {users.map((user) => (
-              <TableRow key={user.id}>
-                <TableCell className="font-mono text-xs">{user.id}</TableCell>
-                <TableCell className="font-medium">{user.name}</TableCell>
-                <TableCell className="text-muted-foreground">{user.email}</TableCell>
-                <TableCell>
-                    <Badge variant={getRoleBadgeVariant(user.role) as any}>{user.role}</Badge>
-                </TableCell>
-                <TableCell>
-                    <Badge variant={getStatusBadgeVariant(user.status) as any}>{user.status}</Badge>
-                </TableCell>
-                <TableCell className="text-right">
-                  <Button variant="outline" size="sm">Edit</Button>
-                </TableCell>
-              </TableRow>
+                <Card key={user.id} className="p-4">
+                    <div className="flex justify-between items-start">
+                        <div>
+                            <p className="font-semibold">{user.name}</p>
+                            <p className="text-sm text-muted-foreground">{user.email}</p>
+                            <p className="text-xs font-mono text-muted-foreground mt-1">{user.id}</p>
+                        </div>
+                        <Button variant="outline" size="sm">Edit</Button>
+                    </div>
+                    <div className="mt-4 flex items-center gap-2">
+                        <Badge variant={getRoleBadgeVariant(user.role) as any}>{user.role}</Badge>
+                        <Badge variant={getStatusBadgeVariant(user.status) as any}>{user.status}</Badge>
+                    </div>
+                </Card>
             ))}
-          </TableBody>
-        </Table>
+        </div>
+
+        {/* Desktop View: Table */}
+        <div className="hidden md:block border rounded-lg">
+            <Table>
+            <TableHeader>
+                <TableRow>
+                <TableHead>User ID</TableHead>
+                <TableHead>Name</TableHead>
+                <TableHead>Email</TableHead>
+                <TableHead>Role</TableHead>
+                <TableHead>Status</TableHead>
+                <TableHead className="text-right">Actions</TableHead>
+                </TableRow>
+            </TableHeader>
+            <TableBody>
+                {users.map((user) => (
+                <TableRow key={user.id}>
+                    <TableCell className="font-mono text-xs">{user.id}</TableCell>
+                    <TableCell className="font-medium">{user.name}</TableCell>
+                    <TableCell className="text-muted-foreground">{user.email}</TableCell>
+                    <TableCell>
+                        <Badge variant={getRoleBadgeVariant(user.role) as any}>{user.role}</Badge>
+                    </TableCell>
+                    <TableCell>
+                        <Badge variant={getStatusBadgeVariant(user.status) as any}>{user.status}</Badge>
+                    </TableCell>
+                    <TableCell className="text-right">
+                    <Button variant="outline" size="sm">Edit</Button>
+                    </TableCell>
+                </TableRow>
+                ))}
+            </TableBody>
+            </Table>
+        </div>
       </CardContent>
     </Card>
   );

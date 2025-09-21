@@ -80,17 +80,17 @@ const wellnessInsights = [
 const AdminAnalyticsDashboard = () => {
   return (
     <div className="space-y-8">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div>
                 <h2 className="text-2xl font-bold">Analytics Overview</h2>
                 <p className="text-muted-foreground">Anonymous data insights for strategic mental health interventions.</p>
             </div>
-            <div className="flex space-x-3">
-              <Button variant="outline" size="sm">
+            <div className="flex w-full sm:w-auto space-x-3">
+              <Button variant="outline" size="sm" className="w-full sm:w-auto">
                 <Filter className="h-4 w-4 mr-2" />
                 Filter Data
               </Button>
-              <Button variant="outline" size="sm">
+              <Button variant="outline" size="sm" className="w-full sm:w-auto">
                 <Download className="h-4 w-4 mr-2" />
                 Export Report
               </Button>
@@ -161,7 +161,7 @@ const AdminAnalyticsDashboard = () => {
                             <p className="font-semibold">Peak Hours: 10 PM - 2 AM</p>
                             <p className="text-sm mt-1">68% of AI interactions occur during these hours.</p>
                         </div>
-                    </CardContent>
+                    </CradContent>
                 </Card>
             </div>
         </div>
