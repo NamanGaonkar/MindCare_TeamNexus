@@ -3,78 +3,83 @@
 @tailwind utilities;
 
 /* 
-  Professional Theme based on coolors.co/80a1c1-eee3ab-d9cfc1-a77e58-ba3f1d
-  FIX: Increased text contrast for visibility.
+  MindCare: A Calm & Trustworthy Theme for Therapy
+  - Base: Soft, warm off-white for a peaceful feeling.
+  - Primary: Calming blue for trustworthy actions.
+  - Secondary: Muted green for wellness and growth.
+  - Text: High-contrast, gentle charcoal blue for readability.
 */
 
 @layer base {
   :root {
     /* Core Background & Text */
-    --background: 30 18% 86%; /* #D9CFC1 - Desert Sand */
-    --foreground: 29 31% 50%; /* #A77E58 - Acorn Brown */
+    --background: 33 18% 95%; /* #F4F1ED - Soft Off-White */
+    --foreground: 216 10% 27%; /* #3E434D - Charcoal Blue */
 
     /* Cards & Surfaces */
-    --card: 49 63% 80%; /* #EEE3AB - Vanilla */
-    --card-foreground: 29 31% 20%; /* CORRECTED: High-contrast dark brown text */
+    --card: 0 0% 100%; /* #FFFFFF - Pure White */
+    --card-foreground: 216 10% 27%;
 
     /* Popover & Overlays */
-    --popover: 49 63% 75%;
-    --popover-foreground: 29 31% 20%; /* CORRECTED: High-contrast dark brown text */
+    --popover: 0 0% 100%;
+    --popover-foreground: 216 10% 27%;
 
-    /* Primary UI (Buttons, Links) */
-    --primary: 209 34% 63%; /* #80A1C1 - Air Superiority Blue */
-    --primary-foreground: 29 31% 15%; /* CORRECTED: High-contrast dark brown text */
+    /* Primary UI (Trustworthy Actions) */
+    --primary: 209 34% 63%; /* #80A1C1 - Calming Blue */
+    --primary-foreground: 216 10% 15%; /* Darkest charcoal for max contrast */
 
-    /* Secondary UI (e.g. outline buttons) */
-    --secondary: 30 18% 80%;
-    --secondary-foreground: 29 31% 20%; /* CORRECTED: High-contrast dark brown text */
+    /* Secondary UI (Wellness & Growth) */
+    --secondary: 148 29% 75%; /* #A8D5BA - Muted Green */
+    --secondary-foreground: 216 10% 15%; /* Darkest charcoal for max contrast */
 
-    /* Muted - for less important text */
-    --muted: 30 18% 92%;
-    --muted-foreground: 29 31% 60%;
+    /* Muted - For hints and less important text */
+    --muted: 33 18% 90%;
+    --muted-foreground: 216 10% 45%;
 
-    /* Accent & Destructive Actions */
-    --accent: 16 74% 42%; /* #BA3F1D - Sienna */
-    --accent-foreground: 0 0% 100%;
-    --destructive: 16 74% 42%;
+    /* Accent - Can be the primary blue for focus rings/links */
+    --accent: 209 34% 63%;
+    --accent-foreground: 216 10% 15%;
+
+    /* Destructive Actions */
+    --destructive: 0 70% 65%; /* Softer, less alarming red */
     --destructive-foreground: 0 0% 100%;
     
-    /* Status Colors */
-    --success: 145 60% 40%;
-    --warning: 35 90% 60%;
+    /* Other Status Colors */
+    --success: 148 40% 55%; /* A slightly stronger version of the secondary green */
+    --warning: 35 85% 65%;
 
     /* Borders & Inputs */
-    --border: 30 18% 80%;
-    --input: 30 18% 95%;
-    --ring: 209 34% 73%;
+    --border: 33 18% 88%;
+    --input: 33 18% 98%;
+    --ring: 209 34% 73%; /* Lighter blue for focus rings */
 
     /* Design System Extras */
     --radius: 0.75rem;
-    --shadow-soft: 0 4px 15px -2px hsl(29 31% 50% / 0.1);
-    --shadow-medium: 0 8px 25px -4px hsl(29 31% 50% / 0.15);
+    --shadow-soft: 0 4px 15px -2px hsl(209 34% 63% / 0.1);
+    --shadow-medium: 0 8px 25px -4px hsl(209 34% 63% / 0.15);
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .dark {
-    /* Dark theme variant of the same palette */
-    --background: 29 31% 20%; /* Dark Brown */
-    --foreground: 30 18% 86%; /* Light Desert Sand text */
-    --card: 29 31% 25%;
-    --card-foreground: 30 18% 86%;
-    --popover: 29 31% 20%;
-    --popover-foreground: 30 18% 86%;
-    --primary: 209 34% 63%; /* Blue remains the primary action */
-    --primary-foreground: 29 31% 15%;
-    --secondary: 29 31% 30%;
-    --secondary-foreground: 30 18% 86%;
-    --muted: 29 31% 30%;
-    --muted-foreground: 30 18% 70%;
-    --accent: 49 63% 80%; /* Vanilla as accent */
-    --accent-foreground: 29 31% 25%;
-    --destructive: 16 74% 52%; /* Brighter Sienna for dark mode */
+    /* A calming dark mode variant */
+    --background: 216 10% 15%; /* Dark Charcoal Blue */
+    --foreground: 33 18% 90%; /* Light, warm text */
+    --card: 216 10% 20%;
+    --card-foreground: 33 18% 90%;
+    --popover: 216 10% 15%;
+    --popover-foreground: 33 18% 90%;
+    --primary: 209 34% 63%;
+    --primary-foreground: 216 10% 10%;
+    --secondary: 148 29% 75%;
+    --secondary-foreground: 216 10% 10%;
+    --muted: 216 10% 25%;
+    --muted-foreground: 33 18% 70%;
+    --accent: 209 34% 63%;
+    --accent-foreground: 216 10% 10%;
+    --destructive: 0 70% 65%;
     --destructive-foreground: 0 0% 100%;
-    --border: 29 31% 30%;
-    --input: 29 31% 30%;
+    --border: 216 10% 25%;
+    --input: 216 10% 25%;
     --ring: 209 34% 73%;
   }
 }
@@ -85,5 +90,7 @@
   }
   body {
     @apply bg-background text-foreground;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 }
