@@ -2,39 +2,39 @@
 @tailwind components;
 @tailwind utilities;
 
-/* MindCare Design System - New color palette (Corrected)
+/* MindCare Design System - Corrected Color Palette
 All colors MUST be HSL for proper theming.
 */
 
 @layer base {
   :root {
-    /* Core Background & Text (from second image) */
+    /* Core Background & Text */
     --background: 213 35% 42%; /* Lapis Lazuli */
-    --foreground: 0 0% 100%; /* White text for high contrast on dark blue */
+    --foreground: 0 0% 100%; /* White text for contrast on dark blue bg */
 
-    /* Cards & Surfaces (from second image) */
-    --card: 358 82% 73%; /* Light coral */
-    --card-foreground: 213 35% 22%; /* Darker Lapis for text on coral cards */
+    /* Cards & Surfaces - Same as background, but with Coral border to stand out */
+    --card: 213 35% 45%; /* Slightly lighter Lapis Lazuli */
+    --card-foreground: 0 0% 100%;
 
     /* Popover & Overlays */
-    --popover: 358 82% 73%; /* Light coral */
-    --popover-foreground: 213 35% 22%;
+    --popover: 213 35% 35%; /* Darker Lapis */
+    --popover-foreground: 0 0% 100%;
 
-    /* Primary - Air superiority blue (from first image) */
-    --primary: 209 34% 63%; /* Air superiority blue */
-    --primary-foreground: 213 35% 15%; /* Darkest Lapis for text on buttons */
+    /* Primary UI (Buttons, Headers) - Air Superiority Blue */
+    --primary: 209 34% 63%; /* Air Superiority Blue */
+    --primary-foreground: 213 35% 15%; /* Dark Lapis text for contrast */
 
-    /* Secondary - Vanilla (from first image) */
+    /* Secondary UI (Buttons, Headers) - Vanilla */
     --secondary: 50 60% 80%; /* Vanilla */
-    --secondary-foreground: 213 35% 22%; /* Darker Lapis for text on buttons */
+    --secondary-foreground: 213 35% 22%; /* Dark Lapis text for contrast */
 
-    /* Muted - A softer version of the background */
-    --muted: 213 35% 52%;
-    --muted-foreground: 0 0% 90%; /* Light gray text */
+    /* Muted - A softer version of the foreground text */
+    --muted: 213 35% 90%;
+    --muted-foreground: 213 35% 70%; /* Lighter grey-blue */
 
-    /* Accent - Air superiority blue, same as primary */
-    --accent: 209 34% 63%;
-    --accent-foreground: 213 35% 15%;
+    /* Accent (Borders, Links, Texts) - Light Coral */
+    --accent: 358 82% 73%; /* Light Coral */
+    --accent-foreground: 213 35% 15%; /* Use dark text if Accent is a background */
 
     /* Status Colors */
     --destructive: 0 70% 60%;
@@ -43,66 +43,51 @@ All colors MUST be HSL for proper theming.
     --warning: 35 90% 60%;
 
     /* Borders & Inputs */
-    --border: 213 35% 52%; /* Slightly lighter Lapis for borders */
-    --input: 213 35% 52%; 
-    --ring: 209 34% 63%; /* Ring color to match primary */
+    --border: 358 82% 73%; /* Light Coral for borders */
+    --input: 213 35% 52%; /* Lighter Lapis for input backgrounds */
+    --ring: 209 34% 73%; /* Lighter blue for focus rings */
 
     /* Design System Extras */
     --radius: 12px;
-    --shadow-soft: 0 4px 20px -2px hsl(0 0% 0% / 0.15); 
+    --shadow-soft: 0 4px 20px -2px hsl(0 0% 0% / 0.15);
     --shadow-medium: 0 8px 30px -4px hsl(0 0% 0% / 0.2);
     --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(209 34% 73%));
     --gradient-wellness: linear-gradient(135deg, hsl(var(--secondary)), hsl(50 60% 90%));
     --gradient-calm: linear-gradient(180deg, hsl(var(--background)), hsl(213 35% 52%));
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
-    --sidebar-background: 358 82% 78%; /* Lighter Coral */
-    --sidebar-foreground: 213 35% 22%; /* Dark Lapis text */
-    --sidebar-primary: 209 34% 63%; /* Air superiority blue */
+    --sidebar-background: 213 35% 38%;
+    --sidebar-foreground: 0 0% 100%;
+    --sidebar-primary: 209 34% 63%;
     --sidebar-primary-foreground: 213 35% 15%;
-    --sidebar-accent: 213 35% 52%;
+    --sidebar-accent: 358 82% 73%;
     --sidebar-accent-foreground: 0 0% 100%;
-    --sidebar-border: 213 35% 32%;
-    --sidebar-ring: 209 34% 63%;
+    --sidebar-border: 358 82% 63%;
+    --sidebar-ring: 209 34% 73%;
   }
 
   .dark {
-    /* The dark theme is based on the previous palette, it should be updated if needed */
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    /* The light theme is already dark, so dark theme can be an inversion or a different palette if needed */
+    /* For now, it remains the same as the default theme */
+    --background: 213 35% 42%;
+    --foreground: 0 0% 100%;
+    --card: 213 35% 45%;
+    --card-foreground: 0 0% 100%;
+    --popover: 213 35% 35%;
+    --popover-foreground: 0 0% 100%;
+    --primary: 209 34% 63%;
+    --primary-foreground: 213 35% 15%;
+    --secondary: 50 60% 80%;
+    --secondary-foreground: 213 35% 22%;
+    --muted: 213 35% 90%;
+    --muted-foreground: 213 35% 70%;
+    --accent: 358 82% 73%;
+    --accent-foreground: 213 35% 15%;
+    --destructive: 0 70% 60%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 358 82% 73%;
+    --input: 213 35% 52%;
+    --ring: 209 34% 73%;
   }
 }
 
