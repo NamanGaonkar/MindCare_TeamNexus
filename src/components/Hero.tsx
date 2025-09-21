@@ -60,10 +60,10 @@ const Hero = () => {
             <Button 
               variant="outline" 
               size="lg"
-              onClick={() => scrollTo('features')}
+              onClick={() => scrollTo('how-it-works')}
               className="border-2 hover:bg-primary/5 px-8 py-4 text-lg font-medium"
             >
-              Explore Features
+              How It Works
             </Button>
           </div>
 
