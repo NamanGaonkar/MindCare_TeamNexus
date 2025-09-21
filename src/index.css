@@ -4,6 +4,7 @@
 
 /* 
   Professional Theme based on coolors.co/80a1c1-eee3ab-d9cfc1-a77e58-ba3f1d
+  FIX: Increased text contrast for visibility.
 */
 
 @layer base {
@@ -14,19 +15,19 @@
 
     /* Cards & Surfaces */
     --card: 49 63% 80%; /* #EEE3AB - Vanilla */
-    --card-foreground: 29 31% 40%; /* Darker brown for text on cards */
+    --card-foreground: 29 31% 20%; /* CORRECTED: High-contrast dark brown text */
 
     /* Popover & Overlays */
-    --popover: 49 63% 75%; /* Slightly darker vanilla */
-    --popover-foreground: 29 31% 40%;
+    --popover: 49 63% 75%;
+    --popover-foreground: 29 31% 20%; /* CORRECTED: High-contrast dark brown text */
 
     /* Primary UI (Buttons, Links) */
     --primary: 209 34% 63%; /* #80A1C1 - Air Superiority Blue */
-    --primary-foreground: 0 0% 100%; /* White text on blue buttons */
+    --primary-foreground: 29 31% 15%; /* CORRECTED: High-contrast dark brown text */
 
     /* Secondary UI (e.g. outline buttons) */
-    --secondary: 30 18% 80%; /* Slightly darker background color */
-    --secondary-foreground: 29 31% 40%;
+    --secondary: 30 18% 80%;
+    --secondary-foreground: 29 31% 20%; /* CORRECTED: High-contrast dark brown text */
 
     /* Muted - for less important text */
     --muted: 30 18% 92%;
@@ -43,9 +44,9 @@
     --warning: 35 90% 60%;
 
     /* Borders & Inputs */
-    --border: 30 18% 80%; /* Subtle border color */
-    --input: 30 18% 95%; /* Lighter background for inputs */
-    --ring: 209 34% 73%; /* Lighter blue for focus rings */
+    --border: 30 18% 80%;
+    --input: 30 18% 95%;
+    --ring: 209 34% 73%;
 
     /* Design System Extras */
     --radius: 0.75rem;
