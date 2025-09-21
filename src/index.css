@@ -10,75 +10,89 @@
 
 @layer base {
   :root {
-    /* Core Background & Text - HIGH CONTRAST */
-    --background: 210 17% 98%; /* #F8F9FA - Calm Off-White */
-    --foreground: 210 10% 15%; /* #212529 - Dark Charcoal for Readability */
+    /* Therapy-focused calming palette */
+    --background: 210 20% 98%; /* Soft, clean white with slight blue tint */
+    --foreground: 215 25% 15%; /* Deep, trustworthy navy */
 
-    /* Cards & Surfaces */
-    --card: 0 0% 100%; /* #FFFFFF - Pure White */
-    --card-foreground: 210 10% 15%; /* Dark Charcoal Text */
+    /* Cards & Surfaces - Warm, welcoming tones */
+    --card: 0 0% 100%; /* Pure white for clean cards */
+    --card-foreground: 215 25% 15%;
 
     /* Popover & Overlays */
     --popover: 0 0% 100%;
-    --popover-foreground: 210 10% 15%;
+    --popover-foreground: 215 25% 15%;
 
-    /* Primary UI (Trustworthy Actions) */
-    --primary: 228 90% 63%; /* #4C6EF5 - Professional Blue */
-    --primary-foreground: 0 0% 100%; /* #FFFFFF - White Text for Contrast */
+    /* Primary UI - Therapeutic blue-green */
+    --primary: 195 65% 55%; /* Calming teal-blue #3B9FBF */
+    --primary-foreground: 0 0% 100%;
+    --primary-glow: 195 65% 75%; /* Lighter therapeutic blue */
 
-    /* Secondary UI (Less important actions) */
-    --secondary: 210 17% 93%; /* Light Gray */
-    --secondary-foreground: 210 10% 15%; /* Dark Charcoal Text */
+    /* Secondary UI - Soft sage green */
+    --secondary: 140 25% 85%; /* Light sage green #DAE6D9 */
+    --secondary-foreground: 215 25% 15%;
 
-    /* Muted - For hints and less important text */
-    --muted: 210 17% 95%;
-    --muted-foreground: 210 10% 40%;
+    /* Muted - Gentle warm gray */
+    --muted: 210 15% 95%;
+    --muted-foreground: 215 15% 45%;
 
-    /* Accent - For focus rings/links */
-    --accent: 228 90% 63%;
-    --accent-foreground: 0 0% 100%;
+    /* Accent - Warm therapeutic accent */
+    --accent: 25 85% 75%; /* Soft peach #F4C2A1 */
+    --accent-foreground: 215 25% 15%;
 
-    /* Destructive Actions */
-    --destructive: 0 84% 60%;
+    /* Destructive - Gentle warning tone */
+    --destructive: 355 70% 65%;
     --destructive-foreground: 0 0% 100%;
     
-    /* Other Status Colors */
-    --success: 145 63% 42%;
-    --warning: 45 93% 47%;
+    /* Status Colors - Therapy appropriate */
+    --success: 140 50% 60%; /* Therapeutic green */
+    --warning: 45 85% 70%; /* Gentle amber */
 
     /* Borders & Inputs */
-    --border: 210 17% 90%;
+    --border: 210 20% 88%;
     --input: 0 0% 100%;
-    --ring: 228 90% 73%; /* Lighter blue for focus rings */
+    --ring: 195 65% 65%;
 
-    /* Design System Extras */
-    --radius: 0.5rem;
-    --shadow-soft: 0 4px 15px -2px hsl(228 90% 63% / 0.1);
-    --shadow-medium: 0 8px 25px -4px hsl(228 90% 63% / 0.15);
-    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    /* Advanced Design Elements */
+    --radius: 0.75rem;
+    --shadow-soft: 0 4px 20px -4px hsl(195 65% 55% / 0.08);
+    --shadow-medium: 0 8px 30px -6px hsl(195 65% 55% / 0.12);
+    --shadow-glow: 0 0 40px hsl(195 65% 75% / 0.15);
+    
+    /* Therapeutic Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(195 65% 55%) 0%, hsl(140 50% 60%) 100%);
+    --gradient-wellness: linear-gradient(135deg, hsl(25 85% 75%) 0%, hsl(195 65% 75%) 100%);
+    --gradient-calm: linear-gradient(180deg, hsl(210 20% 98%) 0%, hsl(195 65% 96%) 100%);
+    --gradient-hero: radial-gradient(ellipse at top, hsl(195 65% 96%) 0%, hsl(210 20% 98%) 100%);
+    
+    /* Background Patterns */
+    --pattern-dots: radial-gradient(circle, hsl(195 65% 85% / 0.1) 1px, transparent 1px);
+    --pattern-grid: linear-gradient(hsl(195 65% 90% / 0.05) 1px, transparent 1px),
+                    linear-gradient(90deg, hsl(195 65% 90% / 0.05) 1px, transparent 1px);
+    
+    --transition-smooth: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   }
 
   .dark {
-    /* A high-contrast, professional dark mode */
-    --background: 210 10% 15%;
-    --foreground: 210 17% 93%;
-    --card: 210 10% 20%;
-    --card-foreground: 210 17% 93%;
-    --popover: 210 10% 15%;
-    --popover-foreground: 210 17% 93%;
-    --primary: 228 90% 63%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 210 10% 25%;
-    --secondary-foreground: 210 17% 93%;
-    --muted: 210 10% 25%;
-    --muted-foreground: 210 17% 70%;
-    --accent: 228 90% 63%;
-    --accent-foreground: 0 0% 100%;
-    --destructive: 0 72% 51%;
+    /* Therapeutic dark mode */
+    --background: 215 25% 12%; /* Deep, calming navy */
+    --foreground: 210 15% 90%; /* Soft white text */
+    --card: 215 25% 18%;
+    --card-foreground: 210 15% 90%;
+    --popover: 215 25% 12%;
+    --popover-foreground: 210 15% 90%;
+    --primary: 195 65% 65%; /* Brighter therapeutic blue for dark mode */
+    --primary-foreground: 215 25% 12%;
+    --secondary: 140 25% 25%; /* Darker sage */
+    --secondary-foreground: 210 15% 90%;
+    --muted: 215 25% 20%;
+    --muted-foreground: 210 15% 65%;
+    --accent: 25 85% 65%; /* Warmer peach for dark */
+    --accent-foreground: 215 25% 12%;
+    --destructive: 355 70% 65%;
     --destructive-foreground: 0 0% 100%;
-    --border: 210 10% 25%;
-    --input: 210 10% 25%;
-    --ring: 228 90% 73%;
+    --border: 215 25% 25%;
+    --input: 215 25% 20%;
+    --ring: 195 65% 65%;
   }
 }
 
@@ -88,7 +102,34 @@
   }
   body {
     @apply bg-background text-foreground;
+    background-image: var(--gradient-hero), var(--pattern-dots);
+    background-size: 100% 100%, 30px 30px;
+    background-position: 0 0, 0 0;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+@layer components {
+  /* Enhanced therapeutic components */
+  .therapy-card {
+    @apply bg-card border border-border/50 rounded-lg shadow-soft hover:shadow-medium transition-all duration-300 hover:border-primary/30;
+    backdrop-filter: blur(10px);
+  }
+  
+  .therapy-gradient {
+    @apply bg-gradient-primary;
+  }
+  
+  .wellness-section {
+    @apply relative;
+    background: var(--gradient-calm);
+  }
+  
+  .wellness-section::before {
+    content: '';
+    @apply absolute inset-0 opacity-30;
+    background-image: var(--pattern-grid);
+    background-size: 50px 50px;
   }
 }

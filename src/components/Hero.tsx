@@ -1,7 +1,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ArrowRight, ShieldCheck, Heart, Users } from "lucide-react";
+import { ArrowRight, Shield, Heart, Brain, Users } from "lucide-react";
 import { Link } from "react-router-dom";
 
 // Helper function to scroll to a section
@@ -14,98 +14,113 @@ const scrollTo = (id: string) => {
 
 const Hero = () => {
   return (
-    <section id="home" className="min-h-screen flex items-center justify-center bg-background">
-      <div className="container mx-auto px-4 pt-20 pb-12">
-        <div className="max-w-4xl mx-auto text-center">
-          <Badge className="mb-6 bg-primary/10 text-primary border-primary/20">
-            🎓 Digital Mental Health Support for Students
+    <section id="home" className="min-h-screen flex items-center justify-center relative overflow-hidden">
+      {/* Background Elements */}
+      <div className="absolute inset-0 wellness-section"></div>
+      
+      <div className="container mx-auto px-4 pt-20 pb-12 relative z-10">
+        <div className="max-w-5xl mx-auto text-center">
+          {/* Badge */}
+          <Badge className="mb-8 bg-primary/15 text-primary border-primary/30 hover:bg-primary/20 transition-colors px-6 py-2 text-sm font-medium">
+            🧠 AI-Powered Mental Health Support for Students
           </Badge>
 
-          <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
+          {/* Main Heading */}
+          <h1 className="text-5xl md:text-7xl font-bold mb-8 leading-tight">
             MindCare
-            <span className="block bg-gradient-primary bg-clip-text text-transparent">
-              Mental Health Platform
+            <span className="block therapy-gradient bg-clip-text text-transparent mt-2">
+              Your Therapeutic Companion
             </span>
           </h1>
-          
-          <div className="max-w-3xl mx-auto mb-8">
-            <h2 className="text-xl font-semibold mb-4">Addressing the Mental Health Crisis in Higher Education</h2>
-            <p className="text-muted-foreground leading-relaxed">
-              Mental health issues among college students have significantly increased, including anxiety, depression, 
-              burnout, and academic stress. MindCare provides a comprehensive digital intervention system with 
-              AI-guided support, confidential counseling, and peer community.
+
+          {/* Problem Statement */}
+          <div className="max-w-4xl mx-auto mb-12 therapy-card p-8">
+            <div className="flex items-center justify-center mb-6">
+              <Brain className="h-8 w-8 text-primary mr-3" />
+              <h2 className="text-2xl font-semibold">Addressing the Mental Health Crisis</h2>
+            </div>
+            <p className="text-muted-foreground leading-relaxed text-lg">
+              Mental health challenges among students have reached unprecedented levels. MindCare provides 
+              immediate, confidential, and comprehensive digital intervention with AI-guided support, 
+              professional counseling connections, and peer community healing.
             </p>
           </div>
           
-          {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
-            <Link to="/signup" className="w-full sm:w-auto">
-              <Button 
-                size="lg" 
-                className="w-full bg-gradient-to-r from-blue-500 to-green-400 text-white hover:opacity-90 transition-opacity"
-              >
-                Start Your Healing Journey
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
+          {/* CTA Buttons - FUNCTIONALITY ADDED */}
+          <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-12">
+            <Link to="/signup">
+                <Button 
+                  size="lg" 
+                  className="therapy-gradient hover:shadow-glow transition-all duration-300 px-8 py-4 text-lg font-medium"
+                >
+                  Start Your Healing Journey
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Button>
             </Link>
             <Button 
               variant="outline" 
               size="lg"
               onClick={() => scrollTo('features')}
-              className="w-full sm:w-auto"
+              className="border-2 hover:bg-primary/5 px-8 py-4 text-lg font-medium"
             >
               Explore Features
             </Button>
           </div>
 
-          {/* Feature Badges - "HIPAA Compliant" has been removed as requested */}
-          <div className="flex justify-center items-center space-x-6 text-muted-foreground">
-            <div className="flex items-center space-x-2">
-              <Heart className="h-5 w-5 text-green-500" />
-              <span>24/7 Crisis Support</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <Users className="h-5 w-5 text-blue-500" />
-              <span>Peer Verified</span>
-            </div>
-          </div>
-
           {/* Key Features Section with ID for scrolling */}
-          <div id="features" className="grid md:grid-cols-2 gap-6 my-12 max-w-4xl mx-auto text-left">
-             <div className="p-6 rounded-lg border border-border bg-card">
-              <h3 className="font-semibold mb-2">🤖 AI-Guided First-Aid Support</h3>
-              <p className="text-sm text-muted-foreground">
-                Interactive chatbot offering coping strategies and professional referrals (powered by Gemini AI)
+          <div id="features" className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12 max-w-6xl mx-auto">
+            <div className="therapy-card p-6 text-center group hover:scale-105 transition-transform">
+              <div className="h-16 w-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-primary/20 transition-colors">
+                <Brain className="h-8 w-8 text-primary" />
+              </div>
+              <h3 className="font-semibold mb-3 text-lg">AI First-Aid Support</h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                Immediate coping strategies and crisis intervention powered by advanced AI
               </p>
             </div>
-            <div className="p-6 rounded-lg border border-border bg-card">
-              <h3 className="font-semibold mb-2">📅 Confidential Booking System</h3>
-              <p className="text-sm text-muted-foreground">
-                Secure appointment scheduling with on-campus counselors and mental health helplines
+            
+            <div className="therapy-card p-6 text-center group hover:scale-105 transition-transform">
+              <div className="h-16 w-16 bg-accent/20 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-accent/30 transition-colors">
+                <Shield className="h-8 w-8 text-accent-foreground" />
+              </div>
+              <h3 className="font-semibold mb-3 text-lg">Secure Booking</h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                Anonymous, confidential appointment scheduling with verified counselors
               </p>
             </div>
-            <div className="p-6 rounded-lg border border-border bg-card">
-              <h3 className="font-semibold mb-2">📚 Psychoeducational Resources</h3>
-              <p className="text-sm text-muted-foreground">
-                Videos, relaxation audio, and wellness guides available in regional languages
+            
+            <div className="therapy-card p-6 text-center group hover:scale-105 transition-transform">
+              <div className="h-16 w-16 bg-success/20 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-success/30 transition-colors">
+                <Heart className="h-8 w-8 text-success" />
+              </div>
+              <h3 className="font-semibold mb-3 text-lg">Wellness Resources</h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                Guided meditation, breathing exercises, and therapeutic content
               </p>
             </div>
-            <div className="p-6 rounded-lg border border-border bg-card">
-              <h3 className="font-semibold mb-2">🤝 Peer Support Platform</h3>
-              <p className="text-sm text-muted-foreground">
-                Moderated forums with trained student volunteers for peer-to-peer support
+            
+            <div className="therapy-card p-6 text-center group hover:scale-105 transition-transform">
+              <div className="h-16 w-16 bg-secondary/40 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-secondary/60 transition-colors">
+                <Users className="h-8 w-8 text-secondary-foreground" />
+              </div>
+              <h3 className="font-semibold mb-3 text-lg">Peer Support</h3>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                Safe, moderated community with trained peer counselors
               </p>
             </div>
           </div>
 
-          <div className="max-w-2xl mx-auto p-6 rounded-lg bg-muted/30 border border-border">
-            <h3 className="font-semibold mb-2">📊 Admin Dashboard</h3>
-            <p className="text-sm text-muted-foreground">
-              Anonymous data analytics for authorities to recognize trends and plan targeted interventions. 
-              Helps institutions make data-driven decisions for student mental health support.
-            </p>
+          {/* Trust Indicators - HIPAA REMOVED */}
+          <div className="mt-16 flex flex-col sm:flex-row items-center justify-center gap-8 text-sm text-muted-foreground">
+            <div className="flex items-center">
+              <Heart className="h-4 w-4 mr-2 text-success" />
+              24/7 Crisis Support
+            </div>
+            <div className="flex items-center">
+              <Users className="h-4 w-4 mr-2 text-accent-foreground" />
+              Peer Verified
+            </div>
           </div>
-
         </div>
       </div>
     </section>

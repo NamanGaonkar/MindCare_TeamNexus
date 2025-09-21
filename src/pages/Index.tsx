@@ -3,13 +3,15 @@ import Hero from "@/components/Hero";
 
 const Index = () => {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen">
       <Header />
       <main>
         <Hero />
       </main>
-      <footer className="text-center p-4 text-muted-foreground">
-        Project by Team Nexus
+      <footer className="text-center p-8 text-muted-foreground bg-card/50 backdrop-blur-sm border-t border-border/50">
+        <p className="text-sm">
+          <span className="font-medium text-primary">MindCare</span> - A project by TEAM NEXUS
+        </p>
       </footer>
     </div>
   );
