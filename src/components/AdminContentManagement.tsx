@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { MoreHorizontal, LogOut } from "lucide-react";
+import { MoreHorizontal } from "lucide-react";
 
 const communityPosts = [
   {
@@ -41,15 +41,9 @@ const getStatusBadgeVariant = (status:string) => {
 const AdminContentManagement = () => {
   return (
     <Card>
-        <CardHeader className="flex flex-row items-center justify-between">
-            <div>
-                <CardTitle>Content & Community</CardTitle>
-                <p className="text-sm text-muted-foreground">Monitor community posts and manage educational resources.</p>
-            </div>
-            <Button variant="destructive" size="sm" className="ml-auto">
-                <LogOut className="h-4 w-4 mr-2" />
-                Logout
-            </Button>
+        <CardHeader>
+            <CardTitle>Content & Community</CardTitle>
+            <p className="text-sm text-muted-foreground">Monitor community posts and manage educational resources.</p>
         </CardHeader>
         <CardContent>
             {/* Mobile View: Cards */}

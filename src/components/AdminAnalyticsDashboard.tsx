@@ -11,8 +11,7 @@ import {
   AlertTriangle, 
   BarChart3,
   Download,
-  Filter,
-  LogOut
+  Filter
 } from "lucide-react";
 
 const keyMetrics = [
@@ -94,10 +93,6 @@ const AdminAnalyticsDashboard = () => {
               <Button variant="outline" size="sm" className="w-full sm:w-auto">
                 <Download className="h-4 w-4 mr-2" />
                 Export Report
-              </Button>
-              <Button variant="destructive" size="sm" className="w-full sm:w-auto">
-                <LogOut className="h-4 w-4 mr-2" />
-                Logout
               </Button>
             </div>
         </div>
