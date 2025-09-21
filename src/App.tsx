@@ -3,18 +3,22 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import AIChatPage from "./pages/AIChatPage";
 import BookingSystemPage from "./pages/BookingSystemPage";
 import ResourceHubPage from "./pages/ResourceHubPage";
 import CommunityPage from "./pages/CommunityPage";
-import AdminDashboardPage from "./pages/AdminDashboardPage";
+import AdminLayout from "./components/AdminLayout"; // Corrected import
+import AdminAnalyticsPage from "./pages/AdminAnalyticsPage";
+import AdminUserManagementPage from "./pages/AdminUserManagementPage";
+import AdminContentManagementPage from "./pages/AdminContentManagementPage";
+import AdminSystemSettingsPage from "./pages/AdminSystemSettingsPage";
 import PeerHelperApplicationPage from "./pages/PeerHelperApplicationPage";
 import LoginPage from "./pages/LoginPage";
 import SignUpPage from "./pages/SignUpPage";
-import PostDetailPage from "./pages/PostDetailPage"; // Import the new page
+import PostDetailPage from "./pages/PostDetailPage";
 import { AuthProvider } from "./contexts/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 
@@ -39,10 +43,17 @@ const App = () => (
               <Route path="/booking" element={<BookingSystemPage />} />
               <Route path="/resources" element={<ResourceHubPage />} />
               <Route path="/community" element={<CommunityPage />} />
-              <Route path="/community/post/:postId" element={<PostDetailPage />} /> {/* Add the new route */}
+              <Route path="/community/post/:postId" element={<PostDetailPage />} />
               <Route path="/peer-helper-application" element={<PeerHelperApplicationPage />} />
-              {/* Note: Admin route protection might need an extra layer based on user role */}
-              <Route path="/admin" element={<AdminDashboardPage />} />
+
+              {/* Admin Routes */}
+              <Route path="/admin" element={<AdminLayout />}>
+                <Route index element={<Navigate to="analytics" replace />} />
+                <Route path="analytics" element={<AdminAnalyticsPage />} />
+                <Route path="users" element={<AdminUserManagementPage />} />
+                <Route path="content" element={<AdminContentManagementPage />} />
+                <Route path="settings" element={<AdminSystemSettingsPage />} />
+              </Route>
             </Route>
 
             {/* Catch-all route */}

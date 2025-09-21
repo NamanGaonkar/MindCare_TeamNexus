@@ -3,33 +3,32 @@ import { NavLink } from "react-router-dom";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-const adminNavLinks = [
-    { to: "/admin/analytics", label: "Analytics Dashboard" },
-    { to: "/admin/users", label: "User Management" },
-    { to: "/admin/content", label: "Content & Community" },
-    { to: "/admin/settings", label: "System Settings" },
+const adminNavItems = [
+  { name: "Analytics", href: "/admin/analytics" },
+  { name: "User Management", href: "/admin/users" },
+  { name: "Content & Community", href: "/admin/content" },
+  { name: "System Settings", href: "/admin/settings" },
 ];
 
 const AdminDashboardTabs = () => {
   return (
-    <nav className="grid grid-cols-4 rounded-lg bg-muted p-1">
-      {adminNavLinks.map((link) => (
+    <div className="grid w-full grid-cols-4 items-center justify-center rounded-lg bg-muted p-1 text-muted-foreground">
+      {adminNavItems.map((item) => (
         <NavLink
-          key={link.to}
-          to={link.to}
-          className={({ isActive }) => cn(
-            buttonVariants({ variant: "ghost", size: "sm" }),
-            "transition-all duration-200",
-            isActive 
-              ? "bg-background text-primary shadow-sm"
-              : "hover:bg-background/50",
-            "font-medium"
-          )}
+          key={item.name}
+          to={item.href}
+          className={({ isActive }) =>
+            cn(
+              buttonVariants({ variant: "ghost", size: "sm" }),
+              "w-full",
+              isActive ? "bg-background text-foreground shadow-sm" : "hover:bg-background/50"
+            )
+          }
         >
-          {link.label}
+          {item.name}
         </NavLink>
       ))}
-    </nav>
+    </div>
   );
 };
 
