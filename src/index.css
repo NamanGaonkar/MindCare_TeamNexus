@@ -3,80 +3,77 @@
 @tailwind utilities;
 
 /* 
-  MindCare Design System - Professional & Clean Theme
-  Primary Color: Air Superiority Blue (#80A1C1)
-  Base: Soft Off-White
-  Accent: Clean charcoal for text and white for surfaces.
+  Professional Theme based on coolors.co/80a1c1-eee3ab-d9cfc1-a77e58-ba3f1d
 */
 
 @layer base {
   :root {
     /* Core Background & Text */
-    --background: 210 40% 98%; /* Soft, clean off-white */
-    --foreground: 215 25% 27%; /* Dark, readable charcoal */
+    --background: 30 18% 86%; /* #D9CFC1 - Desert Sand */
+    --foreground: 29 31% 50%; /* #A77E58 - Acorn Brown */
 
     /* Cards & Surfaces */
-    --card: 0 0% 100%; /* Pure white for cards */
-    --card-foreground: 215 25% 27%;
+    --card: 49 63% 80%; /* #EEE3AB - Vanilla */
+    --card-foreground: 29 31% 40%; /* Darker brown for text on cards */
 
     /* Popover & Overlays */
-    --popover: 0 0% 100%;
-    --popover-foreground: 215 25% 27%;
+    --popover: 49 63% 75%; /* Slightly darker vanilla */
+    --popover-foreground: 29 31% 40%;
 
-    /* Primary UI - Air Superiority Blue */
-    --primary: 209 34% 63%; /* #80A1C1 */
-    --primary-foreground: 0 0% 100%; /* White text on the blue button */
+    /* Primary UI (Buttons, Links) */
+    --primary: 209 34% 63%; /* #80A1C1 - Air Superiority Blue */
+    --primary-foreground: 0 0% 100%; /* White text on blue buttons */
 
-    /* Secondary UI - for outline buttons or less important actions */
-    --secondary: 210 40% 90%; /* Light gray */
-    --secondary-foreground: 215 25% 27%; /* Dark charcoal text */
+    /* Secondary UI (e.g. outline buttons) */
+    --secondary: 30 18% 80%; /* Slightly darker background color */
+    --secondary-foreground: 29 31% 40%;
 
-    /* Muted - for descriptions or less important text */
-    --muted: 210 40% 94%;
-    --muted-foreground: 215 15% 50%;
+    /* Muted - for less important text */
+    --muted: 30 18% 92%;
+    --muted-foreground: 29 31% 60%;
 
-    /* Accent (Links, focus rings) - Also the primary blue */
-    --accent: 209 34% 63%;
+    /* Accent & Destructive Actions */
+    --accent: 16 74% 42%; /* #BA3F1D - Sienna */
     --accent-foreground: 0 0% 100%;
-
-    /* Status Colors */
-    --destructive: 0 84% 60%;
+    --destructive: 16 74% 42%;
     --destructive-foreground: 0 0% 100%;
-    --success: 145 60% 50%;
+    
+    /* Status Colors */
+    --success: 145 60% 40%;
     --warning: 35 90% 60%;
 
     /* Borders & Inputs */
-    --border: 210 40% 88%; /* Subtle gray border */
-    --input: 0 0% 100%; /* White input background */
+    --border: 30 18% 80%; /* Subtle border color */
+    --input: 30 18% 95%; /* Lighter background for inputs */
     --ring: 209 34% 73%; /* Lighter blue for focus rings */
 
     /* Design System Extras */
-    --radius: 0.75rem; /* A modern, slightly larger radius */
-    --shadow-soft: 0 4px 20px -2px hsl(209 34% 63% / 0.15);
-    --shadow-medium: 0 8px 30px -4px hsl(209 34% 63% / 0.2);
+    --radius: 0.75rem;
+    --shadow-soft: 0 4px 15px -2px hsl(29 31% 50% / 0.1);
+    --shadow-medium: 0 8px 25px -4px hsl(29 31% 50% / 0.15);
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .dark {
-    /* A professional dark theme variant */
-    --background: 215 28% 17%;
-    --foreground: 210 40% 98%;
-    --card: 215 28% 20%;
-    --card-foreground: 210 40% 98%;
-    --popover: 215 28% 17%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 209 34% 63%;
-    --primary-foreground: 215 28% 17%;
-    --secondary: 215 28% 25%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 215 28% 25%;
-    --muted-foreground: 215 15% 65%;
-    --accent: 209 34% 63%;
-    --accent-foreground: 210 40% 98%;
-    --destructive: 0 62% 30%;
+    /* Dark theme variant of the same palette */
+    --background: 29 31% 20%; /* Dark Brown */
+    --foreground: 30 18% 86%; /* Light Desert Sand text */
+    --card: 29 31% 25%;
+    --card-foreground: 30 18% 86%;
+    --popover: 29 31% 20%;
+    --popover-foreground: 30 18% 86%;
+    --primary: 209 34% 63%; /* Blue remains the primary action */
+    --primary-foreground: 29 31% 15%;
+    --secondary: 29 31% 30%;
+    --secondary-foreground: 30 18% 86%;
+    --muted: 29 31% 30%;
+    --muted-foreground: 30 18% 70%;
+    --accent: 49 63% 80%; /* Vanilla as accent */
+    --accent-foreground: 29 31% 25%;
+    --destructive: 16 74% 52%; /* Brighter Sienna for dark mode */
     --destructive-foreground: 0 0% 100%;
-    --border: 215 28% 25%;
-    --input: 215 28% 25%;
+    --border: 29 31% 30%;
+    --input: 29 31% 30%;
     --ring: 209 34% 73%;
   }
 }
