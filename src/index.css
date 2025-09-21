@@ -2,39 +2,39 @@
 @tailwind components;
 @tailwind utilities;
 
-/* MindCare Design System - Calming mental health focused colors and gradients
+/* MindCare Design System - New color palette
 All colors MUST be HSL for proper theming.
 */
 
 @layer base {
   :root {
     /* Core Background & Text */
-    --background: 210 20% 98%;
-    --foreground: 215 25% 27%;
+    --background: 209 34% 63%; /* Air superiority blue */
+    --foreground: 213 35% 22%; /* Darker Lapis for text */
 
     /* Cards & Surfaces */
-    --card: 0 0% 100%;
-    --card-foreground: 215 25% 27%;
+    --card: 50 60% 80%; /* Vanilla */
+    --card-foreground: 213 35% 22%; /* Darker Lapis for text */
 
     /* Popover & Overlays */
-    --popover: 0 0% 100%;
-    --popover-foreground: 215 25% 27%;
+    --popover: 50 60% 80%; /* Vanilla */
+    --popover-foreground: 213 35% 22%; /* Darker Lapis for text */
 
-    /* Primary - Calming Healthcare Blue */
-    --primary: 200 85% 60%;
-    --primary-foreground: 0 0% 100%;
-    --primary-glow: 200 85% 70%;
+    /* Primary - Light Coral */
+    --primary: 358 82% 73%; /* Light coral */
+    --primary-foreground: 0 0% 100%; /* White text on coral */
+    --primary-glow: 358 82% 83%; /* Lighter coral for glow */
 
-    /* Secondary - Soft Wellness Green */
-    --secondary: 145 60% 55%;
-    --secondary-foreground: 0 0% 100%;
+    /* Secondary - Lapis Lazuli */
+    --secondary: 213 35% 42%; /* Lapis Lazuli */
+    --secondary-foreground: 0 0% 100%; /* White text on lapis */
 
-    /* Muted - Warm Neutral */
-    --muted: 210 20% 96%;
-    --muted-foreground: 215 15% 50%;
+    /* Muted - A softer version of the background */
+    --muted: 209 34% 73%;
+    --muted-foreground: 213 35% 32%;
 
-    /* Accent - Therapeutic Purple */
-    --accent: 260 60% 70%;
+    /* Accent - Also Lapis Lazuli as it's a strong accent */
+    --accent: 213 35% 42%; /* Lapis Lazuli */
     --accent-foreground: 0 0% 100%;
 
     /* Status Colors */
@@ -44,37 +44,31 @@ All colors MUST be HSL for proper theming.
     --warning: 35 90% 60%;
 
     /* Borders & Inputs */
-    --border: 210 20% 90%;
-    --input: 210 20% 94%;
-    --ring: 200 85% 60%;
+    --border: 209 34% 53%; /* Slightly darker background color for borders */
+    --input: 209 34% 70%; /* Lighter background for inputs */
+    --ring: 358 82% 73%; /* Ring color to match primary */
 
     /* Design System Extras */
     --radius: 12px;
-    --shadow-soft: 0 4px 20px -2px hsl(200 85% 60% / 0.15);
-    --shadow-medium: 0 8px 30px -4px hsl(200 85% 60% / 0.2);
-    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--primary-glow)));
-    --gradient-wellness: linear-gradient(135deg, hsl(var(--secondary)), hsl(145 60% 65%));
-    --gradient-calm: linear-gradient(180deg, hsl(var(--background)), hsl(210 25% 96%));
+    --shadow-soft: 0 4px 20px -2px hsl(213 35% 42% / 0.15); /* Shadow from Lapis Lazuli */
+    --shadow-medium: 0 8px 30px -4px hsl(213 35% 42% / 0.2);
+    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(358 82% 63%)); /* Coral gradient */
+    --gradient-wellness: linear-gradient(135deg, hsl(var(--secondary)), hsl(213 35% 52%)); /* Lapis gradient */
+    --gradient-calm: linear-gradient(180deg, hsl(var(--background)), hsl(209 34% 73%));
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
-    --sidebar-background: 0 0% 98%;
-
-    --sidebar-foreground: 240 5.3% 26.1%;
-
-    --sidebar-primary: 240 5.9% 10%;
-
-    --sidebar-primary-foreground: 0 0% 98%;
-
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-background: 50 60% 85%; /* Lighter Vanilla */
+    --sidebar-foreground: 213 35% 42%; /* Lapis text */
+    --sidebar-primary: 358 82% 73%; /* Coral */
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 209 34% 70%;
+    --sidebar-accent-foreground: 213 35% 42%;
+    --sidebar-border: 209 34% 53%;
+    --sidebar-ring: 358 82% 73%;
   }
 
   .dark {
+    /* TODO: Define a dark theme based on the new palette */
     --background: 222.2 84% 4.9%;
     --foreground: 210 40% 98%;
 
