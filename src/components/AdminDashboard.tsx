@@ -1,4 +1,5 @@
 
+import { Outlet } from "react-router-dom";
 import AdminDashboardTabs from "./AdminDashboardTabs";
 
 const AdminDashboard = () => {
@@ -11,6 +12,9 @@ const AdminDashboard = () => {
                     <p className="text-lg text-muted-foreground">Central hub for managing users, content, and system analytics.</p>
                 </div>
                 <AdminDashboardTabs />
+                <main className="py-6">
+                    <Outlet />
+                </main>
             </div>
         </div>
     </section>

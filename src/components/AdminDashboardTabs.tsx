@@ -1,32 +1,35 @@
 
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import AdminAnalyticsDashboard from "./AdminAnalyticsDashboard";
-import AdminUserManagement from "./AdminUserManagement";
-import AdminContentManagement from "./AdminContentManagement";
-import AdminSystemSettings from "./AdminSystemSettings";
+import { NavLink } from "react-router-dom";
+import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+
+const adminNavLinks = [
+    { to: "/admin/analytics", label: "Analytics Dashboard" },
+    { to: "/admin/users", label: "User Management" },
+    { to: "/admin/content", label: "Content & Community" },
+    { to: "/admin/settings", label: "System Settings" },
+];
 
 const AdminDashboardTabs = () => {
   return (
-    <Tabs defaultValue="analytics" className="w-full">
-      <TabsList className="grid w-full grid-cols-4">
-        <TabsTrigger value="analytics">Analytics Dashboard</TabsTrigger>
-        <TabsTrigger value="users">User Management</TabsTrigger>
-        <TabsTrigger value="content">Content & Community</TabsTrigger>
-        <TabsTrigger value="settings">System Settings</TabsTrigger>
-      </TabsList>
-      <TabsContent value="analytics" className="py-6">
-        <AdminAnalyticsDashboard />
-      </TabsContent>
-      <TabsContent value="users" className="py-6">
-        <AdminUserManagement />
-      </TabsContent>
-      <TabsContent value="content" className="py-6">
-        <AdminContentManagement />
-      </TabsContent>
-      <TabsContent value="settings" className="py-6">
-        <AdminSystemSettings />
-      </TabsContent>
-    </Tabs>
+    <nav className="grid grid-cols-4 rounded-lg bg-muted p-1">
+      {adminNavLinks.map((link) => (
+        <NavLink
+          key={link.to}
+          to={link.to}
+          className={({ isActive }) => cn(
+            buttonVariants({ variant: "ghost", size: "sm" }),
+            "transition-all duration-200",
+            isActive 
+              ? "bg-background text-primary shadow-sm"
+              : "hover:bg-background/50",
+            "font-medium"
+          )}
+        >
+          {link.label}
+        </NavLink>
+      ))}
+    </nav>
   );
 };
 
