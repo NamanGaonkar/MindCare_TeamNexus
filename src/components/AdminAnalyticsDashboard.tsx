@@ -161,7 +161,7 @@ const AdminAnalyticsDashboard = () => {
                             <p className="font-semibold">Peak Hours: 10 PM - 2 AM</p>
                             <p className="text-sm mt-1">68% of AI interactions occur during these hours.</p>
                         </div>
-                    </CradContent>
+                    </CardContent>
                 </Card>
             </div>
         </div>
