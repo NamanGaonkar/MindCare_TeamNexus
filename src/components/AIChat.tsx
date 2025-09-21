@@ -1,9 +1,11 @@
+
 import { useState } from "react";
+import { Link } from "react-router-dom"; // Import Link
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Bot, Send, User, Heart, AlertCircle, CheckCircle, Shield } from "lucide-react";
+import { Bot, Send, User, Heart, AlertCircle, Shield } from "lucide-react";
 
 const AIChat = () => {
   const [messages, setMessages] = useState([
@@ -192,9 +194,12 @@ const AIChat = () => {
                       <span>Confidential & safe</span>
                     </div>
                   </div>
-                  <Button variant="link" size="sm" className="text-xs p-0">
-                    Connect with human counselor
-                  </Button>
+                  {/* UPDATED BUTTON */}
+                  <Link to="/booking">
+                    <Button variant="link" size="sm" className="text-xs p-0 h-auto">
+                      Connect with human counselor
+                    </Button>
+                  </Link>
                 </div>
               </div>
             </CardContent>

@@ -14,6 +14,7 @@ import AdminDashboardPage from "./pages/AdminDashboardPage";
 import PeerHelperApplicationPage from "./pages/PeerHelperApplicationPage";
 import LoginPage from "./pages/LoginPage";
 import SignUpPage from "./pages/SignUpPage";
+import PostDetailPage from "./pages/PostDetailPage"; // Import the new page
 import { AuthProvider } from "./contexts/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
 
@@ -38,6 +39,7 @@ const App = () => (
               <Route path="/booking" element={<BookingSystemPage />} />
               <Route path="/resources" element={<ResourceHubPage />} />
               <Route path="/community" element={<CommunityPage />} />
+              <Route path="/community/post/:postId" element={<PostDetailPage />} /> {/* Add the new route */}
               <Route path="/peer-helper-application" element={<PeerHelperApplicationPage />} />
               {/* Note: Admin route protection might need an extra layer based on user role */}
               <Route path="/admin" element={<AdminDashboardPage />} />
