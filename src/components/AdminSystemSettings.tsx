@@ -55,7 +55,7 @@ const AdminSystemSettings = () => {
             <CardHeader>
                 <CardTitle className="flex items-center"><BookOpen className="mr-2"/>Counselor & Booking</CardTitle>
                 <CardDescription>Manage booking system parameters.</CardDescription>
-            </Header>
+            </CardHeader>
             <CardContent className="space-y-6">
                 <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between rounded-lg border p-4 gap-3">
                     <Label htmlFor="online-booking-enabled" className="flex flex-col space-y-1">
