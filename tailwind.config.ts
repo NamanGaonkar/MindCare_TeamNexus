@@ -69,11 +69,15 @@ export default {
       boxShadow: {
         'soft': 'var(--shadow-soft)',
         'medium': 'var(--shadow-medium)',
+        'glow': 'var(--shadow-glow)',
       },
       backgroundImage: {
         'gradient-primary': 'var(--gradient-primary)',
         'gradient-wellness': 'var(--gradient-wellness)',
         'gradient-calm': 'var(--gradient-calm)',
+        'gradient-hero': 'var(--gradient-hero)',
+        'pattern-dots': 'var(--pattern-dots)',
+        'pattern-grid': 'var(--pattern-grid)',
       },
       transitionTimingFunction: {
         'smooth': 'var(--transition-smooth)',
