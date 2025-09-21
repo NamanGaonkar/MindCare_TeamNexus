@@ -3,84 +3,83 @@
 @tailwind utilities;
 
 /* 
-  MindCare: A Calm & Trustworthy Theme for Therapy
+  MindCare: A Professional & Reassuring Red Theme
   - Base: Soft, warm off-white for a peaceful feeling.
-  - Primary: Calming blue for trustworthy actions.
-  - Secondary: Muted green for wellness and growth.
-  - Text: High-contrast, gentle charcoal blue for readability.
+  - Primary: A professional, reassuring red for key actions.
+  - Text: High-contrast, dark charcoal for excellent readability.
 */
 
 @layer base {
   :root {
     /* Core Background & Text */
-    --background: 33 18% 95%; /* #F4F1ED - Soft Off-White */
-    --foreground: 216 10% 27%; /* #3E434D - Charcoal Blue */
+    --background: 30 20% 96%; /* #F7F5F4 - A very light, soft neutral */
+    --foreground: 20 15% 25%; /* #4D4542 - Dark, warm charcoal */
 
     /* Cards & Surfaces */
     --card: 0 0% 100%; /* #FFFFFF - Pure White */
-    --card-foreground: 216 10% 27%;
+    --card-foreground: 20 15% 25%;
 
     /* Popover & Overlays */
     --popover: 0 0% 100%;
-    --popover-foreground: 216 10% 27%;
+    --popover-foreground: 20 15% 25%;
 
-    /* Primary UI (Trustworthy Actions) */
-    --primary: 209 34% 63%; /* #80A1C1 - Calming Blue */
-    --primary-foreground: 216 10% 15%; /* Darkest charcoal for max contrast */
+    /* Primary UI (Key Actions) */
+    --primary: 0 50% 55%; /* #C95D5D - A professional, reassuring red */
+    --primary-foreground: 0 0% 100%; /* White text on the red button */
 
-    /* Secondary UI (Wellness & Growth) */
-    --secondary: 148 29% 75%; /* #A8D5BA - Muted Green */
-    --secondary-foreground: 216 10% 15%; /* Darkest charcoal for max contrast */
+    /* Secondary UI (Less important actions) */
+    --secondary: 30 20% 90%; /* Light gray */
+    --secondary-foreground: 20 15% 25%; /* Dark charcoal text */
 
     /* Muted - For hints and less important text */
-    --muted: 33 18% 90%;
-    --muted-foreground: 216 10% 45%;
+    --muted: 30 20% 94%;
+    --muted-foreground: 20 15% 50%;
 
-    /* Accent - Can be the primary blue for focus rings/links */
-    --accent: 209 34% 63%;
-    --accent-foreground: 216 10% 15%;
+    /* Accent - Can be the primary red for focus rings/links */
+    --accent: 0 50% 55%;
+    --accent-foreground: 0 0% 100%;
 
     /* Destructive Actions */
-    --destructive: 0 70% 65%; /* Softer, less alarming red */
+    --destructive: 0 70% 60%; /* A slightly stronger red for alerts */
     --destructive-foreground: 0 0% 100%;
     
     /* Other Status Colors */
-    --success: 148 40% 55%; /* A slightly stronger version of the secondary green */
-    --warning: 35 85% 65%;
+    --success: 145 60% 45%; 
+    --warning: 35 85% 60%;
 
     /* Borders & Inputs */
-    --border: 33 18% 88%;
-    --input: 33 18% 98%;
-    --ring: 209 34% 73%; /* Lighter blue for focus rings */
+    --border: 30 20% 88%;
+    --input: 30 20% 98%;
+    --ring: 0 50% 65%; /* Lighter red for focus rings */
 
     /* Design System Extras */
     --radius: 0.75rem;
-    --shadow-soft: 0 4px 15px -2px hsl(209 34% 63% / 0.1);
-    --shadow-medium: 0 8px 25px -4px hsl(209 34% 63% / 0.15);
+    --shadow-soft: 0 4px 15px -2px hsl(0 50% 55% / 0.1);
+    --shadow-medium: 0 8px 25px -4px hsl(0 50% 55% / 0.15);
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .dark {
-    /* A calming dark mode variant */
-    --background: 216 10% 15%; /* Dark Charcoal Blue */
-    --foreground: 33 18% 90%; /* Light, warm text */
-    --card: 216 10% 20%;
-    --card-foreground: 33 18% 90%;
-    --popover: 216 10% 15%;
-    --popover-foreground: 33 18% 90%;
-    --primary: 209 34% 63%;
-    --primary-foreground: 216 10% 10%;
-    --secondary: 148 29% 75%;
-    --secondary-foreground: 216 10% 10%;
-    --muted: 216 10% 25%;
-    --muted-foreground: 33 18% 70%;
-    --accent: 209 34% 63%;
-    --accent-foreground: 216 10% 10%;
-    --destructive: 0 70% 65%;
+    /* A calming dark mode variant with the red theme */
+    --background: 20 15% 15%; /* Dark, warm charcoal */
+    --foreground: 30 20% 90%; /* Light, warm text */
+    --card: 20 15% 20%;
+    --card-foreground: 30 20% 90%;
+    --popover: 20 15% 15%;
+    --popover-foreground: 30 20% 90%;
+    --primary: 0 50% 55%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 20 15% 25%;
+    --secondary-foreground: 30 20% 90%;
+    --muted: 20 15% 25%;
+    --muted-foreground: 30 20% 70%;
+    --accent: 0 50% 55%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 70% 60%;
     --destructive-foreground: 0 0% 100%;
-    --border: 216 10% 25%;
-    --input: 216 10% 25%;
-    --ring: 209 34% 73%;
+    --border: 20 15% 25%;
+    --input: 20 15% 25%;
+    --ring: 0 50% 65%;
   }
 }
 
