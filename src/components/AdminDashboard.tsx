@@ -15,6 +15,7 @@ import {
   Filter,
   Phone
 } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext"; // Import the useAuth hook
 
 const IndianHelplines = () => (
   <div className="mt-4">
@@ -28,6 +29,10 @@ const IndianHelplines = () => (
 );
 
 const AdminDashboard = () => {
+  const { user } = useAuth(); // Get the current user's role
+
+  // ... (rest of the component's existing data and logic) ...
+
   const keyMetrics = [
     {
       title: "Active Students",
@@ -131,8 +136,8 @@ const AdminDashboard = () => {
     <section className="py-20 bg-muted/30">
       <div className="container mx-auto px-4">
         <div className="max-w-7xl mx-auto">
-          {/* Header */}
-          <div className="flex items-center justify-between mb-8">
+          {/* ... (rest of the header and key metrics) ... */}
+           <div className="flex items-center justify-between mb-8">
             <div>
               <Badge className="mb-4 bg-primary/10 text-primary border-primary/20">
                 📊 Administrative Dashboard
@@ -156,7 +161,6 @@ const AdminDashboard = () => {
             </div>
           </div>
 
-          {/* Key Metrics */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
             {keyMetrics.map((metric, index) => (
               <Card key={index} className="shadow-soft border-border/50">
@@ -179,10 +183,8 @@ const AdminDashboard = () => {
           </div>
 
           <div className="grid lg:grid-cols-3 gap-8">
-            {/* Main Analytics */}
-            <div className="lg:col-span-2 space-y-6">
-              {/* Wellness Trends */}
-              <Card className="shadow-soft border-border/50">
+            <div className="lg:col-span-2 space-y-6"> 
+               <Card className="shadow-soft border-border/50">
                 <CardHeader>
                   <CardTitle className="flex items-center space-x-2">
                     <BarChart3 className="h-5 w-5" />
@@ -230,10 +232,8 @@ const AdminDashboard = () => {
               </Card>
             </div>
 
-            {/* Sidebar */}
             <div className="space-y-6">
-              {/* Alerts */}
-              <Card className="shadow-soft border-border/50">
+               <Card className="shadow-soft border-border/50">
                 <CardHeader>
                   <CardTitle className="flex items-center justify-between">
                     <span>System Alerts</span>
@@ -265,20 +265,27 @@ const AdminDashboard = () => {
                 </CardContent>
               </Card>
 
-              {/* Quick Actions */}
+              {/* MODIFIED Quick Actions Card */}
               <Card className="shadow-soft border-border/50">
                 <CardHeader>
                   <CardTitle>Quick Actions</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-3">
-                  <Button variant="outline" className="w-full justify-start">
-                    <Users className="h-4 w-4 mr-2" />
-                    View All Students
-                  </Button>
-                  <Button variant="outline" className="w-full justify-start">
-                    <Calendar className="h-4 w-4 mr-2" />
-                    Counselor Schedules
-                  </Button>
+                  {/* Show all actions if user is NOT a standard admin */}
+                  {user?.role !== 'admin' && (
+                    <>
+                      <Button variant="outline" className="w-full justify-start">
+                        <Users className="h-4 w-4 mr-2" />
+                        View All Students
+                      </Button>
+                      <Button variant="outline" className="w-full justify-start">
+                        <Calendar className="h-4 w-4 mr-2" />
+                        Counselor Schedules
+                      </Button>
+                    </>
+                  )}
+                  
+                  {/* Actions for all admin-level users */}
                   <Button variant="outline" className="w-full justify-start">
                     <MessageSquare className="h-4 w-4 mr-2" />
                     Community Moderation
@@ -302,8 +309,6 @@ const AdminDashboard = () => {
               </Card>
             </div>
           </div>
-
-          {/* Bottom Notice */}
           <Card className="mt-8 bg-secondary/5 border-secondary/20">
             <CardContent className="p-6 text-center">
               <h4 className="font-semibold text-secondary mb-2">
