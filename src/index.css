@@ -10,75 +10,79 @@
 
 @layer base {
   :root {
-    /* Core Background & Text - HIGH CONTRAST */
-    --background: 210 17% 98%; /* #F8F9FA - Calm Off-White */
-    --foreground: 210 10% 15%; /* #212529 - Dark Charcoal for Readability */
+    /* Core Background & Text */
+    --background: 54 67% 95%; /* Light cream background #F5F2E8 */
+    --foreground: 203 38% 25%; /* Dark blue text #2C3E50 */
 
     /* Cards & Surfaces */
-    --card: 0 0% 100%; /* #FFFFFF - Pure White */
-    --card-foreground: 210 10% 15%; /* Dark Charcoal Text */
+    --card: 0 0% 100%; /* Pure White */
+    --card-foreground: 203 38% 25%; /* Dark blue text */
 
     /* Popover & Overlays */
     --popover: 0 0% 100%;
-    --popover-foreground: 210 10% 15%;
+    --popover-foreground: 203 38% 25%;
 
-    /* Primary UI (Trustworthy Actions) */
-    --primary: 228 90% 63%; /* #4C6EF5 - Professional Blue */
-    --primary-foreground: 0 0% 100%; /* #FFFFFF - White Text for Contrast */
+    /* Primary UI (Main Actions) */
+    --primary: 203 38% 42%; /* #456990 - Main dark blue */
+    --primary-foreground: 0 0% 100%; /* White text */
+    --primary-glow: 217 33% 63%; /* #80a1c1 - Light blue glow */
 
-    /* Secondary UI (Less important actions) */
-    --secondary: 210 17% 93%; /* Light Gray */
-    --secondary-foreground: 210 10% 15%; /* Dark Charcoal Text */
+    /* Secondary UI (Secondary actions) */
+    --secondary: 217 33% 85%; /* Light blue-gray background */
+    --secondary-foreground: 203 38% 25%; /* Dark blue text */
 
     /* Muted - For hints and less important text */
-    --muted: 210 17% 95%;
-    --muted-foreground: 210 10% 40%;
+    --muted: 54 67% 90%;
+    --muted-foreground: 203 38% 50%;
 
-    /* Accent - For focus rings/links */
-    --accent: 228 90% 63%;
+    /* Accent - For highlights */
+    --accent: 217 33% 63%; /* #80a1c1 - Light blue-gray */
     --accent-foreground: 0 0% 100%;
 
     /* Destructive Actions */
-    --destructive: 0 84% 60%;
+    --destructive: 358 77% 70%; /* #EF767A - Coral pink */
     --destructive-foreground: 0 0% 100%;
     
     /* Other Status Colors */
-    --success: 145 63% 42%;
-    --warning: 45 93% 47%;
+    --success: 54 67% 81%; /* #EEE3AB - Light yellow/cream */
+    --warning: 358 77% 70%; /* #EF767A - Coral pink */
 
     /* Borders & Inputs */
-    --border: 210 17% 90%;
+    --border: 217 33% 80%;
     --input: 0 0% 100%;
-    --ring: 228 90% 73%; /* Lighter blue for focus rings */
+    --ring: 217 33% 63%; /* Light blue for focus rings */
 
     /* Design System Extras */
     --radius: 0.5rem;
-    --shadow-soft: 0 4px 15px -2px hsl(228 90% 63% / 0.1);
-    --shadow-medium: 0 8px 25px -4px hsl(228 90% 63% / 0.15);
+    --shadow-soft: 0 4px 15px -2px hsl(203 38% 42% / 0.1);
+    --shadow-medium: 0 8px 25px -4px hsl(203 38% 42% / 0.15);
+    --gradient-primary: linear-gradient(135deg, hsl(203 38% 42%), hsl(217 33% 63%));
+    --gradient-wellness: linear-gradient(135deg, hsl(54 67% 81%), hsl(217 33% 63%));
+    --gradient-calm: linear-gradient(180deg, hsl(54 67% 95%), hsl(217 33% 90%));
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .dark {
-    /* A high-contrast, professional dark mode */
-    --background: 210 10% 15%;
-    --foreground: 210 17% 93%;
-    --card: 210 10% 20%;
-    --card-foreground: 210 17% 93%;
-    --popover: 210 10% 15%;
-    --popover-foreground: 210 17% 93%;
-    --primary: 228 90% 63%;
-    --primary-foreground: 0 0% 100%;
-    --secondary: 210 10% 25%;
-    --secondary-foreground: 210 17% 93%;
-    --muted: 210 10% 25%;
-    --muted-foreground: 210 17% 70%;
-    --accent: 228 90% 63%;
-    --accent-foreground: 0 0% 100%;
-    --destructive: 0 72% 51%;
+    /* Dark mode using the same color palette */
+    --background: 203 38% 15%; /* Dark blue background */
+    --foreground: 54 67% 90%; /* Light cream text */
+    --card: 203 38% 20%;
+    --card-foreground: 54 67% 90%;
+    --popover: 203 38% 15%;
+    --popover-foreground: 54 67% 90%;
+    --primary: 217 33% 63%; /* Light blue for dark mode */
+    --primary-foreground: 203 38% 15%;
+    --secondary: 203 38% 25%;
+    --secondary-foreground: 54 67% 90%;
+    --muted: 203 38% 25%;
+    --muted-foreground: 217 33% 70%;
+    --accent: 217 33% 63%;
+    --accent-foreground: 203 38% 15%;
+    --destructive: 358 77% 70%;
     --destructive-foreground: 0 0% 100%;
-    --border: 210 10% 25%;
-    --input: 210 10% 25%;
-    --ring: 228 90% 73%;
+    --border: 203 38% 25%;
+    --input: 203 38% 25%;
+    --ring: 217 33% 63%;
   }
 }
 
