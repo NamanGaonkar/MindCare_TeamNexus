@@ -10,7 +10,6 @@ import AIChatPage from "./pages/AIChatPage";
 import BookingSystemPage from "./pages/BookingSystemPage";
 import ResourceHubPage from "./pages/ResourceHubPage";
 import CommunityPage from "./pages/CommunityPage";
-import AdminLayout from "./components/AdminLayout"; // Corrected import
 import AdminAnalyticsPage from "./pages/AdminAnalyticsPage";
 import AdminUserManagementPage from "./pages/AdminUserManagementPage";
 import AdminContentManagementPage from "./pages/AdminContentManagementPage";
@@ -47,13 +46,11 @@ const App = () => (
               <Route path="/peer-helper-application" element={<PeerHelperApplicationPage />} />
 
               {/* Admin Routes */}
-              <Route path="/admin" element={<AdminLayout />}>
-                <Route index element={<Navigate to="analytics" replace />} />
-                <Route path="analytics" element={<AdminAnalyticsPage />} />
-                <Route path="users" element={<AdminUserManagementPage />} />
-                <Route path="content" element={<AdminContentManagementPage />} />
-                <Route path="settings" element={<AdminSystemSettingsPage />} />
-              </Route>
+              <Route path="/admin" element={<Navigate to="/admin/analytics" replace />} />
+              <Route path="/admin/analytics" element={<AdminAnalyticsPage />} />
+              <Route path="/admin/users" element={<AdminUserManagementPage />} />
+              <Route path="/admin/content" element={<AdminContentManagementPage />} />
+              <Route path="/admin/settings" element={<AdminSystemSettingsPage />} />
             </Route>
 
             {/* Catch-all route */}
