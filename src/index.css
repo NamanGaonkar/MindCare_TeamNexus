@@ -10,78 +10,78 @@
 
 @layer base {
   :root {
-    /* Core Background & Text */
-    --background: 54 67% 95%; /* Light cream background #F5F2E8 */
-    --foreground: 203 38% 25%; /* Dark blue text #2C3E50 */
+    /* Core Background & Text - Using EF767A and 456990 */
+    --background: 358 77% 96%; /* Light coral background */
+    --foreground: 211 35% 25%; /* Dark blue text #456990 variant */
 
-    /* Cards & Surfaces */
-    --card: 0 0% 100%; /* Pure White */
-    --card-foreground: 203 38% 25%; /* Dark blue text */
+    /* Cards & Surfaces - Using EEE3AB for UI elements */
+    --card: 50 67% 80%; /* #EEE3AB - Light cream for cards */
+    --card-foreground: 211 35% 25%; /* Dark blue text */
 
     /* Popover & Overlays */
-    --popover: 0 0% 100%;
-    --popover-foreground: 203 38% 25%;
+    --popover: 50 67% 80%; /* #EEE3AB */
+    --popover-foreground: 211 35% 25%;
 
-    /* Primary UI (Main Actions) */
-    --primary: 203 38% 42%; /* #456990 - Main dark blue */
-    --primary-foreground: 0 0% 100%; /* White text */
-    --primary-glow: 217 33% 63%; /* #80a1c1 - Light blue glow */
+    /* Primary UI - Using 80a1c1 for UI elements */
+    --primary: 217 33% 63%; /* #80a1c1 - Light blue-gray for buttons */
+    --primary-foreground: 211 35% 15%; /* Dark blue text */
+    --primary-glow: 217 33% 73%; /* Lighter version of 80a1c1 */
 
-    /* Secondary UI (Secondary actions) */
-    --secondary: 217 33% 85%; /* Light blue-gray background */
-    --secondary-foreground: 203 38% 25%; /* Dark blue text */
+    /* Secondary UI - Using EEE3AB */
+    --secondary: 50 67% 80%; /* #EEE3AB - Light cream */
+    --secondary-foreground: 211 35% 25%; /* Dark blue text */
 
-    /* Muted - For hints and less important text */
-    --muted: 54 67% 90%;
-    --muted-foreground: 203 38% 50%;
+    /* Muted - Background colors using EF767A */
+    --muted: 358 77% 85%; /* Light coral */
+    --muted-foreground: 211 35% 40%;
 
-    /* Accent - For highlights */
-    --accent: 217 33% 63%; /* #80a1c1 - Light blue-gray */
-    --accent-foreground: 0 0% 100%;
+    /* Accent - Using 80a1c1 for highlights */
+    --accent: 217 33% 63%; /* #80a1c1 */
+    --accent-foreground: 211 35% 15%;
 
-    /* Destructive Actions */
-    --destructive: 358 77% 70%; /* #EF767A - Coral pink */
+    /* Destructive Actions - Using 456990 */
+    --destructive: 211 35% 42%; /* #456990 - Dark blue */
     --destructive-foreground: 0 0% 100%;
     
     /* Other Status Colors */
-    --success: 54 67% 81%; /* #EEE3AB - Light yellow/cream */
-    --warning: 358 77% 70%; /* #EF767A - Coral pink */
+    --success: 50 67% 80%; /* #EEE3AB - Light cream */
+    --warning: 358 77% 70%; /* #EF767A - Coral */
 
-    /* Borders & Inputs */
-    --border: 217 33% 80%;
-    --input: 0 0% 100%;
-    --ring: 217 33% 63%; /* Light blue for focus rings */
+    /* Borders & Inputs - Using background colors */
+    --border: 358 77% 80%; /* Light coral */
+    --input: 50 67% 85%; /* Light cream */
+    --ring: 217 33% 63%; /* #80a1c1 for focus */
 
     /* Design System Extras */
     --radius: 0.5rem;
-    --shadow-soft: 0 4px 15px -2px hsl(203 38% 42% / 0.1);
-    --shadow-medium: 0 8px 25px -4px hsl(203 38% 42% / 0.15);
-    --gradient-primary: linear-gradient(135deg, hsl(203 38% 42%), hsl(217 33% 63%));
-    --gradient-wellness: linear-gradient(135deg, hsl(54 67% 81%), hsl(217 33% 63%));
-    --gradient-calm: linear-gradient(180deg, hsl(54 67% 95%), hsl(217 33% 90%));
+    --shadow-soft: 0 4px 15px -2px hsl(211 35% 42% / 0.1);
+    --shadow-medium: 0 8px 25px -4px hsl(211 35% 42% / 0.15);
+    --gradient-primary: linear-gradient(135deg, hsl(217 33% 63%), hsl(50 67% 80%));
+    --gradient-wellness: linear-gradient(135deg, hsl(50 67% 80%), hsl(358 77% 85%));
+    --gradient-calm: linear-gradient(180deg, hsl(358 77% 96%), hsl(50 67% 90%));
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .dark {
-    /* Dark mode using the same color palette */
-    --background: 203 38% 15%; /* Dark blue background */
-    --foreground: 54 67% 90%; /* Light cream text */
-    --card: 203 38% 20%;
-    --card-foreground: 54 67% 90%;
-    --popover: 203 38% 15%;
-    --popover-foreground: 54 67% 90%;
-    --primary: 217 33% 63%; /* Light blue for dark mode */
-    --primary-foreground: 203 38% 15%;
-    --secondary: 203 38% 25%;
-    --secondary-foreground: 54 67% 90%;
-    --muted: 203 38% 25%;
+    /* Dark mode using coral and dark blue palette */
+    --background: 211 35% 15%; /* Dark blue background #456990 darker */
+    --foreground: 50 67% 85%; /* Light cream text */
+    --card: 211 35% 20%;
+    --card-foreground: 50 67% 85%;
+    --popover: 211 35% 15%;
+    --popover-foreground: 50 67% 85%;
+    --primary: 217 33% 63%; /* #80a1c1 - Light blue UI element */
+    --primary-foreground: 211 35% 15%;
+    --secondary: 50 67% 75%; /* #EEE3AB darker for dark mode */
+    --secondary-foreground: 211 35% 15%;
+    --muted: 358 77% 25%; /* Dark coral */
     --muted-foreground: 217 33% 70%;
     --accent: 217 33% 63%;
-    --accent-foreground: 203 38% 15%;
-    --destructive: 358 77% 70%;
+    --accent-foreground: 211 35% 15%;
+    --destructive: 211 35% 42%;
     --destructive-foreground: 0 0% 100%;
-    --border: 203 38% 25%;
-    --input: 203 38% 25%;
+    --border: 211 35% 25%;
+    --input: 211 35% 25%;
     --ring: 217 33% 63%;
   }
 }
