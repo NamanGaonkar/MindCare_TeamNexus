@@ -2,40 +2,39 @@
 @tailwind components;
 @tailwind utilities;
 
-/* MindCare Design System - New color palette
+/* MindCare Design System - New color palette (Corrected)
 All colors MUST be HSL for proper theming.
 */
 
 @layer base {
   :root {
-    /* Core Background & Text */
-    --background: 209 34% 63%; /* Air superiority blue */
-    --foreground: 213 35% 22%; /* Darker Lapis for text */
+    /* Core Background & Text (from second image) */
+    --background: 213 35% 42%; /* Lapis Lazuli */
+    --foreground: 0 0% 100%; /* White text for high contrast on dark blue */
 
-    /* Cards & Surfaces */
-    --card: 50 60% 80%; /* Vanilla */
-    --card-foreground: 213 35% 22%; /* Darker Lapis for text */
+    /* Cards & Surfaces (from second image) */
+    --card: 358 82% 73%; /* Light coral */
+    --card-foreground: 213 35% 22%; /* Darker Lapis for text on coral cards */
 
     /* Popover & Overlays */
-    --popover: 50 60% 80%; /* Vanilla */
-    --popover-foreground: 213 35% 22%; /* Darker Lapis for text */
+    --popover: 358 82% 73%; /* Light coral */
+    --popover-foreground: 213 35% 22%;
 
-    /* Primary - Light Coral */
-    --primary: 358 82% 73%; /* Light coral */
-    --primary-foreground: 0 0% 100%; /* White text on coral */
-    --primary-glow: 358 82% 83%; /* Lighter coral for glow */
+    /* Primary - Air superiority blue (from first image) */
+    --primary: 209 34% 63%; /* Air superiority blue */
+    --primary-foreground: 213 35% 15%; /* Darkest Lapis for text on buttons */
 
-    /* Secondary - Lapis Lazuli */
-    --secondary: 213 35% 42%; /* Lapis Lazuli */
-    --secondary-foreground: 0 0% 100%; /* White text on lapis */
+    /* Secondary - Vanilla (from first image) */
+    --secondary: 50 60% 80%; /* Vanilla */
+    --secondary-foreground: 213 35% 22%; /* Darker Lapis for text on buttons */
 
     /* Muted - A softer version of the background */
-    --muted: 209 34% 73%;
-    --muted-foreground: 213 35% 32%;
+    --muted: 213 35% 52%;
+    --muted-foreground: 0 0% 90%; /* Light gray text */
 
-    /* Accent - Also Lapis Lazuli as it's a strong accent */
-    --accent: 213 35% 42%; /* Lapis Lazuli */
-    --accent-foreground: 0 0% 100%;
+    /* Accent - Air superiority blue, same as primary */
+    --accent: 209 34% 63%;
+    --accent-foreground: 213 35% 15%;
 
     /* Status Colors */
     --destructive: 0 70% 60%;
@@ -44,31 +43,31 @@ All colors MUST be HSL for proper theming.
     --warning: 35 90% 60%;
 
     /* Borders & Inputs */
-    --border: 209 34% 53%; /* Slightly darker background color for borders */
-    --input: 209 34% 70%; /* Lighter background for inputs */
-    --ring: 358 82% 73%; /* Ring color to match primary */
+    --border: 213 35% 52%; /* Slightly lighter Lapis for borders */
+    --input: 213 35% 52%; 
+    --ring: 209 34% 63%; /* Ring color to match primary */
 
     /* Design System Extras */
     --radius: 12px;
-    --shadow-soft: 0 4px 20px -2px hsl(213 35% 42% / 0.15); /* Shadow from Lapis Lazuli */
-    --shadow-medium: 0 8px 30px -4px hsl(213 35% 42% / 0.2);
-    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(358 82% 63%)); /* Coral gradient */
-    --gradient-wellness: linear-gradient(135deg, hsl(var(--secondary)), hsl(213 35% 52%)); /* Lapis gradient */
-    --gradient-calm: linear-gradient(180deg, hsl(var(--background)), hsl(209 34% 73%));
+    --shadow-soft: 0 4px 20px -2px hsl(0 0% 0% / 0.15); 
+    --shadow-medium: 0 8px 30px -4px hsl(0 0% 0% / 0.2);
+    --gradient-primary: linear-gradient(135deg, hsl(var(--primary)), hsl(209 34% 73%));
+    --gradient-wellness: linear-gradient(135deg, hsl(var(--secondary)), hsl(50 60% 90%));
+    --gradient-calm: linear-gradient(180deg, hsl(var(--background)), hsl(213 35% 52%));
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
-    --sidebar-background: 50 60% 85%; /* Lighter Vanilla */
-    --sidebar-foreground: 213 35% 42%; /* Lapis text */
-    --sidebar-primary: 358 82% 73%; /* Coral */
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 209 34% 70%;
-    --sidebar-accent-foreground: 213 35% 42%;
-    --sidebar-border: 209 34% 53%;
-    --sidebar-ring: 358 82% 73%;
+    --sidebar-background: 358 82% 78%; /* Lighter Coral */
+    --sidebar-foreground: 213 35% 22%; /* Dark Lapis text */
+    --sidebar-primary: 209 34% 63%; /* Air superiority blue */
+    --sidebar-primary-foreground: 213 35% 15%;
+    --sidebar-accent: 213 35% 52%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-border: 213 35% 32%;
+    --sidebar-ring: 209 34% 63%;
   }
 
   .dark {
-    /* TODO: Define a dark theme based on the new palette */
+    /* The dark theme is based on the previous palette, it should be updated if needed */
     --background: 222.2 84% 4.9%;
     --foreground: 210 40% 98%;
 
