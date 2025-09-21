@@ -1,13 +1,8 @@
 
-import AdminUserManagement from "@/components/AdminUserManagement";
-import AdminLayout from "@/components/AdminLayout";
+import AdminUserManagement from "../components/AdminUserManagement";
 
 const AdminUserManagementPage = () => {
-  return (
-    <AdminLayout>
-      <AdminUserManagement />
-    </AdminLayout>
-  );
+  return <AdminUserManagement />;
 };
 
 export default AdminUserManagementPage;

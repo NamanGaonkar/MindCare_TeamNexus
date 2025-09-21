@@ -1,13 +1,8 @@
 
-import AdminContentManagement from "@/components/AdminContentManagement";
-import AdminLayout from "@/components/AdminLayout";
+import AdminContentManagement from "../components/AdminContentManagement";
 
 const AdminContentManagementPage = () => {
-  return (
-    <AdminLayout>
-      <AdminContentManagement />
-    </AdminLayout>
-  );
+  return <AdminContentManagement />;
 };
 
 export default AdminContentManagementPage;

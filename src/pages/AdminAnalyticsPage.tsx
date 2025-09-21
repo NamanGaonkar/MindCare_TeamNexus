@@ -1,13 +1,8 @@
 
-import AdminAnalyticsDashboard from "@/components/AdminAnalyticsDashboard";
-import AdminLayout from "@/components/AdminLayout";
+import AdminAnalyticsDashboard from "../components/AdminAnalyticsDashboard";
 
 const AdminAnalyticsPage = () => {
-  return (
-    <AdminLayout>
-      <AdminAnalyticsDashboard />
-    </AdminLayout>
-  );
+  return <AdminAnalyticsDashboard />;
 };
 
 export default AdminAnalyticsPage;

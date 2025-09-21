@@ -1,13 +1,8 @@
 
-import AdminSystemSettings from "@/components/AdminSystemSettings";
-import AdminLayout from "@/components/AdminLayout";
+import AdminSystemSettings from "../components/AdminSystemSettings";
 
 const AdminSystemSettingsPage = () => {
-  return (
-    <AdminLayout>
-      <AdminSystemSettings />
-    </AdminLayout>
-  );
+  return <AdminSystemSettings />;
 };
 
 export default AdminSystemSettingsPage;

@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { UserPlus, Search } from "lucide-react";
+import { UserPlus, Search, LogOut } from "lucide-react";
 
 const users = [
   {
@@ -61,10 +61,16 @@ const AdminUserManagement = () => {
             <CardTitle>User Directory</CardTitle>
             <p className="text-sm text-muted-foreground mt-1">Manage all users, roles, and permissions.</p>
         </div>
-        <Button className="w-full md:w-auto">
-            <UserPlus className="h-4 w-4 mr-2"/>
-            Add New User
-        </Button>
+        <div className="flex w-full md:w-auto items-center space-x-2">
+            <Button size="sm" className="w-full md:w-auto">
+                <UserPlus className="h-4 w-4 mr-2"/>
+                Add New User
+            </Button>
+            <Button variant="destructive" size="sm" className="w-full md:w-auto">
+                <LogOut className="h-4 w-4 mr-2" />
+                Logout
+            </Button>
+        </div>
       </CardHeader>
       <CardContent>
         <div className="mb-4">
