@@ -1,102 +1,83 @@
 
+import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
 import { Badge } from "@/components/ui/badge";
-import { Calendar, Video, User, Clock } from "lucide-react";
 
-// Placeholder data for certified counselors
-const counselors = [
-  {
-    id: 1,
-    name: "Dr. Anjali Sharma",
-    specialties: ["Anxiety", "Stress Management", "CBT"],
-    availability: "Next available: Tomorrow at 10:00 AM",
-    image: "/placeholder-user.jpg", // Placeholder image path
-  },
-  {
-    id: 2,
-    name: "Mr. Rohan Verma",
-    specialties: ["Depression", "Relationships", "Mindfulness"],
-    availability: "Next available: Friday at 2:30 PM",
-    image: "/placeholder-user.jpg",
-  },
-  {
-    id: 3,
-    name: "Ms. Priya Desai",
-    specialties: ["Academic Pressure", "Burnout", "Trauma"],
-    availability: "Next available: Monday at 9:00 AM",
-    image: "/placeholder-user.jpg",
-  },
+const timeSlots = [
+  "09:00 AM", "10:00 AM", "11:00 AM", "02:00 PM", "03:00 PM", "04:00 PM"
 ];
 
 const BookingSystem = () => {
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
+  const [selectedTime, setSelectedTime] = useState<string | null>(null);
+
+  const handleBooking = () => {
+    if (selectedDate && selectedTime) {
+      alert(`Session booked for ${selectedDate.toDateString()} at ${selectedTime}`);
+      // Here you would typically handle the booking logic,
+      // like sending data to a backend.
+    } else {
+      alert("Please select a date and time.");
+    }
+  };
+
   return (
     <section className="py-20 bg-muted/30">
       <div className="container mx-auto px-4">
-        <div className="max-w-5xl mx-auto">
-          {/* Header */}
-          <div className="text-center mb-12">
-            <Badge className="mb-4 bg-primary/10 text-primary border-primary/20">
-              📅 Secure Your Session
-            </Badge>
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">
-              Book a Confidential Session
-            </h1>
-            <p className="text-muted-foreground max-w-2xl mx-auto">
-              Choose a certified counselor who fits your needs. All sessions are private, secure, 
-              and tailored to your well-being.
-            </p>
-          </div>
+        <div className="max-w-4xl mx-auto">
+            <div className="text-center mb-12">
+                <Badge className="mb-4 bg-primary/10 text-primary border-primary/20">
+                📅 Secure Your Session
+                </Badge>
+                <h1 className="text-4xl md:text-5xl font-bold mb-4">
+                Book a Confidential Session
+                </h1>
+                <p className="text-muted-foreground max-w-2xl mx-auto">
+                Choose a time that works for you. All sessions are private, secure, and conducted by certified professionals.
+                </p>
+            </div>
 
-          {/* Counselor Listings */}
-          <div className="space-y-8">
-            {counselors.map((counselor) => (
-              <Card key={counselor.id} className="shadow-soft border-border/50 overflow-hidden transition-transform hover:scale-[1.02] hover:shadow-lg">
-                <div className="md:flex">
-                  {/* Counselor Profile Section */}
-                  <div className="md:w-1/3 bg-muted/30 p-6 flex flex-col items-center justify-center text-center">
-                     <div className="w-24 h-24 rounded-full bg-gradient-primary mb-4 flex items-center justify-center ring-4 ring-primary/20">
-                      <User className="h-12 w-12 text-white" />
-                    </div>
-                    <h3 className="text-xl font-semibold mb-2">{counselor.name}</h3>
-                    <div className="flex flex-wrap justify-center gap-2">
-                      {counselor.specialties.map((specialty, index) => (
-                        <Badge key={index} variant="secondary">
-                          {specialty}
-                        </Badge>
-                      ))}
-                    </div>
-                  </div>
-                  
-                  {/* Booking Section */}
-                  <div className="md:w-2/3 p-6 flex flex-col justify-center">
-                    <CardHeader className="p-0 mb-4">
-                      <CardTitle className="text-2xl">Next Available Appointment</CardTitle>
-                    </CardHeader>
-                    <CardContent className="p-0">
-                      <div className="flex items-center space-x-2 text-muted-foreground mb-6">
-                        <Clock className="h-5 w-5" />
-                        <span>{counselor.availability}</span>
-                      </div>
-                      <div className="flex flex-col sm:flex-row gap-4">
-                        {/* These buttons are placeholders for the backend team to implement booking logic */}
-                        <Button size="lg" className="w-full sm:w-auto therapy-gradient hover:shadow-glow transition-all">
-                          <Calendar className="h-4 w-4 mr-2" />
-                          View Full Schedule
-                        </Button>
-                        <Button size="lg" variant="outline" className="w-full sm:w-auto">
-                          <Video className="h-4 w-4 mr-2" />
-                          Request Video Call
-                        </Button>
-                      </div>
-                       <p className="text-xs text-muted-foreground mt-6">
-                        Your booking is confidential and protected.
-                      </p>
-                    </CardContent>
-                  </div>
+          <Card className="shadow-soft border-border/50">
+            <CardContent className="p-8 grid md:grid-cols-2 gap-8 items-start">
+              <div>
+                <CardTitle className="mb-4">1. Select a Date</CardTitle>
+                <Calendar
+                  mode="single"
+                  selected={selectedDate}
+                  onSelect={setSelectedDate}
+                  className="rounded-md border bg-background"
+                  disabled={(date) => date < new Date(new Date().setDate(new Date().getDate() - 1))}
+                />
+              </div>
+              
+              <div>
+                <CardTitle className="mb-4">2. Select a Time</CardTitle>
+                <div className="grid grid-cols-2 gap-3">
+                  {timeSlots.map((slot) => (
+                    <Button 
+                      key={slot}
+                      variant={selectedTime === slot ? "default" : "outline"}
+                      onClick={() => setSelectedTime(slot)}
+                    >
+                      {slot}
+                    </Button>
+                  ))}
                 </div>
-              </Card>
-            ))}
+              </div>
+            </CardContent>
+          </Card>
+
+          <div className="mt-8 text-center">
+            <Button size="lg" onClick={handleBooking} disabled={!selectedDate || !selectedTime}>
+                {selectedDate && selectedTime ? `Confirm Booking for ${selectedTime}` : 'Book Your Session'}
+            </Button>
+            {selectedDate && selectedTime && (
+                <p className="text-sm text-muted-foreground mt-4">
+You have selected {selectedDate.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })} at {selectedTime}.
+                </p>
+            )}
           </div>
         </div>
       </div>
