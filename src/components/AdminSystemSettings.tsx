@@ -11,14 +11,51 @@ import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { Bot, BookOpen, Users, MessageSquare } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Bot, BookOpen, Users, MessageSquare, Trash2, UserPlus } from "lucide-react";
+import { useState } from "react";
 
 const AdminSystemSettings = () => {
-  const counselors = [
-    { id: 1, name: "Dr. Sarah Johnson", isAvailable: true },
-    { id: 2, name: "Dr. Michael Chen", isAvailable: true },
-    { id: 3, name: "Dr. Emily Rodriguez", isAvailable: false },
-  ];
+  // Backend team will replace this with a state management solution (e.g., React Query)
+  const [counselors, setCounselors] = useState([
+    { id: 1, name: "Dr. Sarah Johnson", email: "s.johnson@university.edu", isAvailable: true },
+    { id: 2, name: "Dr. Michael Chen", email: "m.chen@university.edu", isAvailable: true },
+    { id: 3, name: "Dr. Emily Rodriguez", email: "e.rodriguez@university.edu", isAvailable: false },
+  ]);
+
+  const [newCounselor, setNewCounselor] = useState({ name: "", email: "" });
+
+  const handleAddCounselor = () => {
+    if (newCounselor.name && newCounselor.email) {
+      setCounselors([
+        ...counselors,
+        {
+          id: counselors.length + 1, // Placeholder ID
+          ...newCounselor,
+          isAvailable: true,
+        },
+      ]);
+      setNewCounselor({ name: "", email: "" });
+      // Backend team: Add API call to persist the new counselor
+      console.log("Frontend: New counselor added. Backend integration needed.");
+    }
+  };
+
+  const handleRemoveCounselor = (id: number) => {
+    setCounselors(counselors.filter((c) => c.id !== id));
+    // Backend team: Add API call to remove the counselor
+    console.log(`Frontend: Counselor with id ${id} removed. Backend integration needed.`);
+  };
+
+  const handleToggleAvailability = (id: number) => {
+    setCounselors(
+      counselors.map((c) =>
+        c.id === id ? { ...c, isAvailable: !c.isAvailable } : c
+      )
+    );
+    // Backend team: Add API call to update availability
+    console.log(`Frontend: Availability for counselor ${id} toggled. Backend integration needed.`);
+  };
 
   return (
     <div className="space-y-8">
@@ -61,52 +98,6 @@ const AdminSystemSettings = () => {
               </CardFooter>
           </Card>
 
-          {/* Counselor & Booking Settings */}
-          <Card>
-              <CardHeader>
-                  <CardTitle className="flex items-center"><BookOpen className="mr-2"/>Counselor & Booking</CardTitle>
-                  <CardDescription>Manage booking system parameters.</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                  <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between rounded-lg border p-4 gap-3">
-                      <Label htmlFor="online-booking-enabled" className="flex flex-col space-y-1">
-                          <span>Online Booking Enabled</span>
-                          <span className="font-normal text-sm text-muted-foreground">
-                          Allow students to book appointments online.
-                          </span>
-                      </Label>
-                      <Switch id="online-booking-enabled" defaultChecked />
-                  </div>
-              </CardContent>
-              <CardFooter className="border-t px-6 py-4">
-                  <Button>Save Booking Settings</Button>
-              </CardFooter>
-          </Card>
-
-          {/* Counselor Availability Settings */}
-          <Card>
-              <CardHeader>
-                  <CardTitle className="flex items-center"><Users className="mr-2"/>Counselor Availability</CardTitle>
-                  <CardDescription>Control which counselors can receive bookings from students.</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                  {counselors.map((counselor) => (
-                    <div key={counselor.id} className="flex flex-col sm:flex-row items-start sm:items-center justify-between rounded-lg border p-4 gap-3">
-                        <Label htmlFor={`counselor-${counselor.id}`} className="flex flex-col space-y-1">
-                            <span>{counselor.name}</span>
-                            <span className="font-normal text-sm text-muted-foreground">
-                            {counselor.isAvailable ? 'Currently accepting bookings' : 'Not accepting bookings'}
-                            </span>
-                        </Label>
-                        <Switch id={`counselor-${counselor.id}`} defaultChecked={counselor.isAvailable} />
-                    </div>
-                  ))}
-              </CardContent>
-              <CardFooter className="border-t px-6 py-4">
-                  <Button>Save Availability Settings</Button>
-              </CardFooter>
-          </Card>
-
           {/* Community Management */}
           <Card>
               <CardHeader>
@@ -135,6 +126,58 @@ const AdminSystemSettings = () => {
               </CardContent>
               <CardFooter className="border-t px-6 py-4">
                   <Button>Save Community Settings</Button>
+              </CardFooter>
+          </Card>
+
+          {/* Counselor Management Card */}
+          <Card className="lg:col-span-2">
+              <CardHeader>
+                  <CardTitle className="flex items-center"><Users className="mr-2"/>Counselor Management</CardTitle>
+                  <CardDescription>Add, remove, and manage the availability of counselors.</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                {/* Counselor List */}
+                {counselors.map((counselor) => (
+                    <div key={counselor.id} className="flex flex-col sm:flex-row items-start sm:items-center justify-between rounded-lg border p-4 gap-3">
+                        <div className="flex flex-col">
+                            <span className="font-semibold">{counselor.name}</span>
+                            <span className="text-sm text-muted-foreground">{counselor.email}</span>
+                        </div>
+                        <div className="flex items-center gap-4">
+                            <Switch 
+                              id={`counselor-${counselor.id}`} 
+                              checked={counselor.isAvailable} 
+                              onCheckedChange={() => handleToggleAvailability(counselor.id)}
+                            />
+                            <Button variant="ghost" size="icon" onClick={() => handleRemoveCounselor(counselor.id)}>
+                              <Trash2 className="h-4 w-4 text-destructive" />
+                            </Button>
+                        </div>
+                    </div>
+                ))}
+              </CardContent>
+              {/* Add New Counselor Form */}
+              <CardFooter className="border-t p-6 flex-col items-start gap-4">
+                  <h4 className="text-md font-semibold">Add New Counselor</h4>
+                  <div className="flex flex-col sm:flex-row w-full gap-4">
+                      <Input
+                          placeholder="Counselor Name"
+                          value={newCounselor.name}
+                          onChange={(e) => setNewCounselor({ ...newCounselor, name: e.target.value })}
+                          className="flex-grow"
+                      />
+                      <Input
+                          type="email"
+                          placeholder="Counselor Email"
+                          value={newCounselor.email}
+                          onChange={(e) => setNewCounselor({ ...newCounselor, email: e.target.value })}
+                          className="flex-grow"
+                      />
+                      <Button onClick={handleAddCounselor}>
+                          <UserPlus className="mr-2 h-4 w-4" />
+                          Add Counselor
+                      </Button>
+                  </div>
               </CardFooter>
           </Card>
       </div>

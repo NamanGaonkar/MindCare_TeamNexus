@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { toast } from "sonner";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -6,13 +7,30 @@ import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { MessageSquare, Users, Clock, Pin, ThumbsUp, Reply, MoreHorizontal, HelpingHand } from "lucide-react";
+import { MessageSquare, Users, Clock, Pin, ThumbsUp, Reply, MoreHorizontal, HelpingHand, Send } from "lucide-react";
 import { Link } from "react-router-dom";
+
+// Enhanced: Define a type for our Post for better state management
+interface ForumPost {
+  id: number;
+  title: string;
+  author: string;
+  category: string;
+  timeAgo: string;
+  replies: number;
+  likes: number;
+  isPinned: boolean;
+  preview: string;
+  tags: string[];
+}
 
 const Community = () => {
   const [showNewPost, setShowNewPost] = useState(false);
-  const [displayedPosts, setDisplayedPosts] = useState(3);
   const [loadingMore, setLoadingMore] = useState(false);
+  
+  // Enhanced: State for active reply sections and their content
+  const [activeReply, setActiveReply] = useState<number | null>(null);
+  const [replyContent, setReplyContent] = useState("");
 
   const forumStats = [
     { label: "Active Members", value: "2,847", icon: Users },
@@ -21,7 +39,8 @@ const Community = () => {
     { label: "Response Time", value: "< 2hr", icon: Clock },
   ];
 
-  const allForumPosts = [
+  // Enhanced: Expanded list of posts for a more dynamic "Load More" experience
+  const [allForumPosts, setAllForumPosts] = useState<ForumPost[]>([
     {
       id: 1,
       title: "Managing exam anxiety - tips that actually work",
@@ -94,24 +113,79 @@ const Community = () => {
       preview: "Wanted to share how joining a study group completely changed my academic experience and mental health.",
       tags: ["study-group", "success", "social"],
     },
-  ];
+     {
+      id: 7,
+      title: "Tips for making friends in large lectures?",
+      author: "QuietStudent",
+      category: "Social Connection",
+      timeAgo: "2d ago",
+      replies: 19,
+      likes: 33,
+      isPinned: false,
+      preview: "It feels impossible to meet people in a class of 300. How do you approach people without being awkward?",
+      tags: ["social", "friends", "university"],
+    },
+    {
+      id: 8,
+      title: "How do you handle roommate conflicts?",
+      author: "StressedRoommate",
+      category: "Social Connection",
+      timeAgo: "3d ago",
+      replies: 25,
+      likes: 38,
+      isPinned: false,
+      preview: "My roommate and I have completely different lifestyles and it's causing a lot of tension. Any advice for navigating this?",
+      tags: ["roommates", "conflict", "communication"],
+    },
+    {
+      id: 9,
+      title: "Positive outcomes from seeking help",
+      author: "GratefulStudent",
+      category: "Success Stories",
+      timeAgo: "4d ago",
+      replies: 12,
+      likes: 55,
+      isPinned: false,
+      preview: "I was hesitant to use campus resources, but I'm so glad I did. It made a huge difference.",
+      tags: ["success", "therapy", "support"],
+    },
+  ]);
 
+  const [displayedPosts, setDisplayedPosts] = useState(3);
   const forumPosts = allForumPosts.slice(0, displayedPosts);
 
-  const handleLoadMore = async () => {
+  // FIX: Implemented handleLoadMore to add more posts
+  const handleLoadMore = () => {
     setLoadingMore(true);
-    // Simulate loading delay
-    await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    const newDisplayCount = displayedPosts + 3;
-    setDisplayedPosts(Math.min(newDisplayCount, allForumPosts.length));
-    setLoadingMore(false);
-    
-    if (newDisplayCount >= allForumPosts.length) {
-      toast.success("All discussions loaded!");
-    } else {
-      toast.success(`Loaded ${Math.min(3, allForumPosts.length - displayedPosts)} more discussions`);
+    setTimeout(() => {
+      const newDisplayCount = displayedPosts + 3;
+      setDisplayedPosts(Math.min(newDisplayCount, allForumPosts.length));
+      setLoadingMore(false);
+      if (newDisplayCount >= allForumPosts.length) {
+        toast.success("All discussions loaded!");
+      } else {
+        toast.success("Loaded more discussions.");
+      }
+    }, 1000); // Simulate network delay
+  };
+  
+  // FIX: Implemented handleReplySubmit to add replies to posts
+  const handleReplySubmit = (postId: number) => {
+    if (!replyContent.trim()) {
+        toast.error("Reply cannot be empty.");
+        return;
     }
+    // Backend Team: This is where you'd make an API call to submit the reply.
+    console.log(`Replying to post ${postId}:`, replyContent);
+
+    // Frontend update simulation
+    setAllForumPosts(allForumPosts.map(p => 
+        p.id === postId ? { ...p, replies: p.replies + 1 } : p
+    ));
+
+    toast.success("Your reply has been posted!");
+    setActiveReply(null); // Close the reply input
+    setReplyContent(""); // Reset the input field
   };
 
   const categoryColors = {
@@ -119,6 +193,7 @@ const Community = () => {
     "Social Connection": "secondary",
     "Sleep & Wellness": "accent",
     "Success Stories": "success",
+    "Mental Health Support": "warning",
   };
 
   return (
@@ -245,12 +320,34 @@ const Community = () => {
                             <ThumbsUp className="h-4 w-4 mr-1" />
                             {post.likes}
                           </Button>
-                          <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-primary">
-                            <Reply className="h-4 w-4 mr-1" />
-                            {post.replies}
-                          </Button>
+                           <Button 
+                              variant="ghost" 
+                              size="sm" 
+                              className="text-muted-foreground hover:text-primary"
+                              onClick={() => setActiveReply(activeReply === post.id ? null : post.id)}
+                            >
+                              <Reply className="h-4 w-4 mr-1" />
+                              {post.replies}
+                            </Button>
                         </div>
                       </div>
+                      
+                      {/* FIX: Reply input section, appears when reply button is clicked */}
+                      {activeReply === post.id && (
+                        <div className="mt-4 pt-4 border-t border-border/50">
+                           <div className="flex items-center space-x-3">
+                                <Input 
+                                    type="text"
+                                    placeholder="Write a reply..."
+                                    value={replyContent}
+                                    onChange={(e) => setReplyContent(e.target.value)}
+                                />
+                                <Button size="icon" onClick={() => handleReplySubmit(post.id)}>
+                                    <Send className="h-4 w-4"/>
+                                </Button>
+                           </div>
+                        </div>
+                      )}
                     </CardContent>
                   </Card>
                 ))}
