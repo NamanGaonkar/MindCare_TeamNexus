@@ -15,17 +15,17 @@ const ResourceHub = () => {
     {
       title: "Managing Anxiety",
       description: "A 10-minute guided meditation for anxiety relief.",
-      videoUrl: "https://www.youtube.com/watch?v=O-6f5wQXSu8",
+      videoUrl: "https://www.youtube.com/watch?v=1Evwgu369Jw",
     },
     {
       title: "Improving Sleep",
       description: "Fall asleep quickly with this guided sleep meditation.",
-      videoUrl: "https://www.youtube.com/watch?v=F28MGLlpP90",
+      videoUrl: "https://www.youtube.com/watch?v=aEqlQvczMJQ",
     },
     {
       title: "Handling Academic Stress",
       description: "Practical tips for managing stress during exam season.",
-      videoUrl: "https://www.youtube.com/watch?v=R-4i26s_7sY",
+      videoUrl: "https://www.youtube.com/watch?v=Nw-ksE2PeMA",
     },
     {
       title: "Mindfulness & Meditation",
@@ -35,12 +35,12 @@ const ResourceHub = () => {
     {
       title: "Coping with Depression",
       description: "Understanding and coping with feelings of depression.",
-      videoUrl: "https://www.youtube.com/watch?v=P6A2A-1-p-c",
+      videoUrl: "https://www.youtube.com/watch?v=4-079YIasck",
     },
     {
       title: "Building Resilience",
       description: "Develop mental strength and bounce back from adversity.",
-      videoUrl: "https://www.youtube.com/watch?v=gS_yO1x_y-Y",
+      videoUrl: "https://www.youtube.com/watch?v=R18O8bRwGls",
     },
     {
       title: "Quick Relaxation Techniques",
@@ -50,7 +50,7 @@ const ResourceHub = () => {
      {
       title: "Study & Focus Tips",
       description: "The Pomodoro Technique for effective studying.",
-      videoUrl: "https://www.youtube.com/watch?v=H0i11Yj-e1g",
+      videoUrl: "https://www.youtube.com/watch?v=VFW3Ld7JO0w",
     },
   ];
 

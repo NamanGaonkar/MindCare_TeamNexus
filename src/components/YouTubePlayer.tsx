@@ -2,15 +2,7 @@ import { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search, Play, Youtube, ExternalLink } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
-
-interface Video {
-  id: string;
-  title: string;
-  description: string;
-  thumbnail: string;
-}
+import { Search, Play, Youtube } from "lucide-react";
 
 interface YouTubePlayerProps {
   initialVideo?: {
@@ -25,44 +17,19 @@ const YouTubePlayer = ({ initialVideo }: YouTubePlayerProps) => {
     initialVideo ? getVideoIdFromUrl(initialVideo.videoUrl) : null
   );
   const [searchTerm, setSearchTerm] = useState('');
-  const [searchResults, setSearchResults] = useState<Video[]>([]);
-  const [isSearching, setIsSearching] = useState(false);
 
   function getVideoIdFromUrl(url: string): string | null {
     const match = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^&\n?#]+)/);
     return match ? match[1] : null;
   }
 
-  // Mock search function - in real app, this would use YouTube API
-  const searchYouTube = async (query: string) => {
-    setIsSearching(true);
-    // Simulate API call delay
-    await new Promise(resolve => setTimeout(resolve, 1000));
+  // Search function that redirects to YouTube
+  const searchYouTube = (query: string) => {
+    if (!query.trim()) return;
     
-    // Mock results based on mental health topics
-    const mockResults: Video[] = [
-      {
-        id: "O-6f5wQXSu8",
-        title: `${query} - Guided Meditation`,
-        description: `10-minute guided meditation for ${query.toLowerCase()}`,
-        thumbnail: `https://img.youtube.com/vi/O-6f5wQXSu8/mqdefault.jpg`
-      },
-      {
-        id: "F28MGLlpP90",
-        title: `${query} - Sleep Meditation`,
-        description: `Relaxing sleep meditation for ${query.toLowerCase()}`,
-        thumbnail: `https://img.youtube.com/vi/F28MGLlpP90/mqdefault.jpg`
-      },
-      {
-        id: "R-4i26s_7sY",
-        title: `${query} - Coping Strategies`,
-        description: `Practical tips for managing ${query.toLowerCase()}`,
-        thumbnail: `https://img.youtube.com/vi/R-4i26s_7sY/mqdefault.jpg`
-      }
-    ];
-    
-    setSearchResults(mockResults);
-    setIsSearching(false);
+    // Redirect to YouTube with search query
+    const youtubeSearchUrl = `https://www.youtube.com/results?search_query=${encodeURIComponent(query + ' mental health meditation')}`;
+    window.open(youtubeSearchUrl, '_blank');
   };
 
   const handleSearch = (e: React.FormEvent) => {
@@ -111,7 +78,7 @@ const YouTubePlayer = ({ initialVideo }: YouTubePlayerProps) => {
         </Card>
       </div>
 
-      {/* Search and Results */}
+      {/* Search and Info */}
       <div className="space-y-4">
         {/* Search Bar */}
         <Card className="shadow-soft border-border/50">
@@ -127,7 +94,7 @@ const YouTubePlayer = ({ initialVideo }: YouTubePlayerProps) => {
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="flex-1"
                 />
-                <Button type="submit" size="icon" disabled={isSearching}>
+                <Button type="submit" size="icon">
                   <Search className="h-4 w-4" />
                 </Button>
               </div>
@@ -135,47 +102,18 @@ const YouTubePlayer = ({ initialVideo }: YouTubePlayerProps) => {
           </CardContent>
         </Card>
 
-        {/* Search Results */}
-        {(searchResults.length > 0 || isSearching) && (
-          <Card className="shadow-soft border-border/50">
-            <CardHeader>
-              <CardTitle className="text-lg">Search Results</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              {isSearching ? (
-                <div className="space-y-3">
-                  {[1, 2, 3].map((i) => (
-                    <div key={i} className="flex space-x-3 animate-pulse">
-                      <div className="w-20 h-14 bg-muted rounded"></div>
-                      <div className="flex-1 space-y-2">
-                        <div className="h-4 bg-muted rounded w-3/4"></div>
-                        <div className="h-3 bg-muted rounded w-1/2"></div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                searchResults.map((video) => (
-                  <div
-                    key={video.id}
-                    className="flex space-x-3 p-2 rounded-lg hover:bg-muted/50 cursor-pointer transition-colors"
-                    onClick={() => playVideo(video.id)}
-                  >
-                    <img
-                      src={video.thumbnail}
-                      alt={video.title}
-                      className="w-20 h-14 object-cover rounded"
-                    />
-                    <div className="flex-1 min-w-0">
-                      <h4 className="text-sm font-medium line-clamp-2">{video.title}</h4>
-                      <p className="text-xs text-muted-foreground line-clamp-1">{video.description}</p>
-                    </div>
-                  </div>
-                ))
-              )}
-            </CardContent>
-          </Card>
-        )}
+        {/* Search Info */}
+        <Card className="shadow-soft border-border/50">
+          <CardHeader>
+            <CardTitle className="text-lg">Search Info</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-sm text-muted-foreground">
+              Click the search button to find mental health videos on YouTube. 
+              This will open YouTube in a new tab with your search query.
+            </p>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );
