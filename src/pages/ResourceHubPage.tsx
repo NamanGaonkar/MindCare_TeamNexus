@@ -1,7 +1,9 @@
 
 import React from 'react';
 import YouTubePlayer from '@/components/YouTubePlayer';
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
+import { Button } from '@/components/ui/button';
+import { PlayCircle, ExternalLink } from 'lucide-react';
 
 const resources = {
   "Mental Health Awareness": [
@@ -110,33 +112,33 @@ const resources = {
 const channels = {
     "Motivation & Support Channels": [
         {
-            title: "Psych Hub - Mental Health Wisdom from Experts",
+            title: "Psych Hub",
             description: "Expert advice on mental health and therapy approaches.",
             url: "https://www.youtube.com/c/PsychHub",
         },
         {
-            title: "Kati Morton - Licensed Therapist Mental Health Advice",
-            description: "Mental health education and support for various topics.",
+            title: "Kati Morton",
+            description: "Licensed therapist providing mental health education and support.",
             url: "https://www.youtube.com/user/KatiMorton",
         },
         {
-            title: "Psych2Go - Animated Mental Health Education",
-            description: "Engaging videos explaining psychological concepts for young adults.",
+            title: "Psych2Go",
+            description: "Engaging animated videos on psychological concepts.",
             url: "https://www.youtube.com/@Psych2Go",
         },
         {
-            title: "How to ADHD - Support and Tips for ADHD",
+            title: "How to ADHD",
             description: "Evidence-based help and community for ADHD management.",
             url: "https://www.youtube.com/@HowToADHD",
         },
         {
-            title: "Infinite Waters - Motivational and Mental Health Talks",
-            description: "Combining motivation with mental and emotional wellness guidance.",
+            title: "Infinite Waters",
+            description: "Motivational talks on mental and emotional wellness.",
             url: "https://www.youtube.com/@InfiniteWaters",
         },
         {
-            title: "Therapy in a Nutshell - Scientific Mental Health Resources",
-            description: "Simple, scientific breakdowns of mental health and coping tools.",
+            title: "Therapy in a Nutshell",
+            description: "Scientific breakdowns of mental health and coping tools.",
             url: "https://www.youtube.com/@TherapyInANutshell",
         },
     ],
@@ -145,27 +147,32 @@ const channels = {
 const ResourceHubPage: React.FC = () => {
   return (
     <div className="container mx-auto px-4 py-12">
-      <div className="text-center mb-12">
-        <h1 className="text-4xl font-extrabold text-gray-900 sm:text-5xl">
+      <div className="text-center mb-16">
+        <h1 className="text-4xl font-extrabold tracking-tight text-gray-900 sm:text-5xl lg:text-6xl">
           Resource Hub
         </h1>
-        <p className="mt-4 text-xl text-gray-600">
-          A curated collection of resources to support your mental wellbeing.
+        <p className="mt-4 max-w-3xl mx-auto text-xl text-gray-600">
+          Your central place for curated videos and channels to support your mental wellbeing.
         </p>
       </div>
 
       {Object.entries(resources).map(([category, items]) => (
         <div key={category} className="mb-16">
-          <h2 className="text-3xl font-bold text-gray-800 mb-8 pb-2 border-b-2 border-gray-200">{category}</h2>
+          <h2 className="text-3xl font-bold text-gray-800 mb-8">{category}</h2>
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
             {items.map((item) => (
-              <Card key={item.title} className="overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 ease-in-out">
+              <Card key={item.title} className="flex flex-col overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300">
+                <div className="relative group">
+                   <YouTubePlayer videoId={item.videoId} />
+                   <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                       <PlayCircle className="h-20 w-20 text-white" />
+                   </div>
+                </div>
                 <CardHeader>
-                  <YouTubePlayer videoId={item.videoId} />
+                  <CardTitle className="text-lg leading-snug">{item.title}</CardTitle>
                 </CardHeader>
-                <CardContent>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">{item.title}</h3>
-                  <p className="text-sm text-gray-600">{item.description}</p>
+                <CardContent className="flex-grow">
+                  <p className="text-sm text-muted-foreground">{item.description}</p>
                 </CardContent>
               </Card>
             ))}
@@ -173,21 +180,24 @@ const ResourceHubPage: React.FC = () => {
         </div>
       ))}
 
-    {Object.entries(channels).map(([category, items]) => (
+      {Object.entries(channels).map(([category, items]) => (
         <div key={category} className="mb-16">
-          <h2 className="text-3xl font-bold text-gray-800 mb-8 pb-2 border-b-2 border-gray-200">{category}</h2>
+          <h2 className="text-3xl font-bold text-gray-800 mb-8">{category}</h2>
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
             {items.map((item) => (
-                 <a href={item.url} target="_blank" rel="noopener noreferrer" className="block">
-                    <Card key={item.title} className="overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 ease-in-out h-full">
-                        <CardHeader>
-                        <CardTitle className="text-lg font-semibold text-gray-900 mb-2">{item.title}</CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                        <p className="text-sm text-gray-600">{item.description}</p>
-                        </CardContent>
-                    </Card>
-                </a>
+              <Card key={item.title} className="flex flex-col overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300">
+                <CardHeader className="flex-grow">
+                  <CardTitle className="text-xl">{item.title}</CardTitle>
+                  <p className="text-sm text-muted-foreground pt-2">{item.description}</p>
+                </CardHeader>
+                <CardFooter>
+                  <a href={item.url} target="_blank" rel="noopener noreferrer" className="w-full">
+                    <Button className="w-full">
+                      <ExternalLink className="mr-2 h-4 w-4" /> Visit Channel
+                    </Button>
+                  </a>
+                </CardFooter>
+              </Card>
             ))}
           </div>
         </div>
