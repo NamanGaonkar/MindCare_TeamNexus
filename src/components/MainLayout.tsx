@@ -7,7 +7,7 @@ const MainLayout: React.FC = () => {
   return (
     <div>
       <Header />
-      <main>
+      <main className="pt-20"> {/* Added padding-top to push content below the header */}
         <Outlet />
       </main>
     </div>

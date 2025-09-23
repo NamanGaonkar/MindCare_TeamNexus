@@ -28,7 +28,7 @@ const VideoPlayerModal: React.FC<VideoPlayerModalProps> = ({ videoId, onClose })
       onClick={onClose} // Close modal on overlay click
     >
       <div 
-        className="relative bg-black rounded-lg shadow-xl w-full max-w-6xl"
+        className="relative bg-black rounded-lg shadow-xl w-full max-w-7xl"
         onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside the player
       >
         <button
@@ -38,7 +38,7 @@ const VideoPlayerModal: React.FC<VideoPlayerModalProps> = ({ videoId, onClose })
         >
           <X size={32} />
         </button>
-        <div className="aspect-w-16 aspect-h-9">
+        <div className="aspect-w-16 aspect-h-8">
             <YouTubePlayer videoId={videoId} />
         </div>
       </div>
