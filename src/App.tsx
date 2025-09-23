@@ -22,6 +22,7 @@ import SignUpPage from "./pages/SignUpPage";
 import PostDetailPage from "./pages/PostDetailPage";
 import { AuthProvider } from "./contexts/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
+import MainLayout from "./components/MainLayout";
 
 const queryClient = new QueryClient();
 
@@ -40,12 +41,14 @@ const App = () => (
 
             {/* Protected Routes */}
             <Route element={<ProtectedRoute />}>
-              <Route path="/ai-chat" element={<AIChatPage />} />
-              <Route path="/booking" element={<BookingSystemPage />} />
-              <Route path="/resources" element={<ResourceHubPage />} />
-              <Route path="/community" element={<CommunityPage />} />
-              <Route path="/community/post/:postId" element={<PostDetailPage />} />
-              <Route path="/peer-helper-application" element={<PeerHelperApplicationPage />} />
+              <Route element={<MainLayout />}>
+                  <Route path="/ai-chat" element={<AIChatPage />} />
+                  <Route path="/booking" element={<BookingSystemPage />} />
+                  <Route path="/resources" element={<ResourceHubPage />} />
+                  <Route path="/community" element={<CommunityPage />} />
+                  <Route path="/community/post/:postId" element={<PostDetailPage />} />
+                  <Route path="/peer-helper-application" element={<PeerHelperApplicationPage />} />
+              </Route>
 
               {/* Admin Routes */}
               <Route path="/admin" element={<AdminLayout />}>
