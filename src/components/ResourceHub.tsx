@@ -1,7 +1,16 @@
+import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Youtube } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Youtube, Play } from "lucide-react";
+import YouTubePlayer from "./YouTubePlayer";
 
 const ResourceHub = () => {
+  const [selectedVideo, setSelectedVideo] = useState<{
+    title: string;
+    description: string;
+    videoUrl: string;
+  } | null>(null);
+
   const resourceTopics = [
     {
       title: "Managing Anxiety",
@@ -59,20 +68,42 @@ const ResourceHub = () => {
             </p>
           </div>
 
+          {/* Video Player Section */}
+          {selectedVideo && (
+            <div className="mb-12">
+              <YouTubePlayer initialVideo={selectedVideo} />
+            </div>
+          )}
+
           {/* Resource Topic Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {resourceTopics.map((topic) => (
-              <a
-                key={topic.title}
-                href={topic.videoUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block group"
-              >
-                <Card className="h-full hover:shadow-lg transition-shadow duration-300 border-border/50 hover:border-primary/50">
+              <div key={topic.title} className="block group">
+                <Card className="h-full hover:shadow-lg transition-shadow duration-300 border-border/50 hover:border-primary/50 cursor-pointer"
+                      onClick={() => setSelectedVideo(topic)}>
                   <CardHeader className="flex-row items-center justify-between">
-                    <CardTitle>{topic.title}</CardTitle>
-                    <Youtube className="h-6 w-6 text-red-600" />
+                    <CardTitle className="flex-1">{topic.title}</CardTitle>
+                    <div className="flex items-center gap-2">
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setSelectedVideo(topic);
+                        }}
+                      >
+                        <Play className="h-4 w-4 mr-1" />
+                        Play
+                      </Button>
+                      <a
+                        href={topic.videoUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <Youtube className="h-6 w-6 text-red-600 hover:opacity-75 transition-opacity" />
+                      </a>
+                    </div>
                   </CardHeader>
                   <CardContent>
                     <p className="text-muted-foreground text-sm">
@@ -80,7 +111,7 @@ const ResourceHub = () => {
                     </p>
                   </CardContent>
                 </Card>
-              </a>
+              </div>
             ))}
           </div>
         </div>

@@ -11,6 +11,7 @@ import BookingSystemPage from "./pages/BookingSystemPage";
 import ResourceHubPage from "./pages/ResourceHubPage";
 import CommunityPage from "./pages/CommunityPage";
 import AdminLayout from "./components/AdminLayout";
+import CounselorManagement from "./components/CounselorManagement";
 import AdminAnalyticsPage from "./pages/AdminAnalyticsPage";
 import AdminUserManagementPage from "./pages/AdminUserManagementPage";
 import AdminContentManagementPage from "./pages/AdminContentManagementPage";
@@ -52,6 +53,15 @@ const App = () => (
                 <Route path="analytics" element={<AdminAnalyticsPage />} />
                 <Route path="users" element={<AdminUserManagementPage />} />
                 <Route path="content" element={<AdminContentManagementPage />} />
+                <Route path="counselors" element={
+                  <div className="space-y-8">
+                    <div>
+                      <h2 className="text-2xl font-bold">Counselor Management</h2>
+                      <p className="text-muted-foreground">Manage counselors and their schedules</p>
+                    </div>
+                    <CounselorManagement />
+                  </div>
+                } />
                 <Route path="settings" element={<AdminSystemSettingsPage />} />
               </Route>
             </Route>

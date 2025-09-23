@@ -1,4 +1,5 @@
 
+import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -6,6 +7,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Textarea } from "@/components/ui/textarea";
 import { ThumbsUp, Reply, Pin } from "lucide-react";
 import { useParams } from "react-router-dom";
+import { toast } from "sonner";
 
 // Placeholder data for a single post - in a real app, you'd fetch this by ID
 const postData = {
@@ -20,14 +22,14 @@ const postData = {
   likes: 47,
   replies: [
     {
-      id: 1,
+      id: "1",
       author: "SupportivePeer",
       timeAgo: "1h ago",
       content: "This is great advice! The Pomodoro Technique is a lifesaver. I also find that writing down all my worries before an exam helps to clear my head.",
       likes: 12,
     },
     {
-      id: 2,
+      id: "2",
       author: "FirstYear_2024",
       timeAgo: "45m ago",
       content: "Thanks for sharing! I've been struggling a lot with this. Going to try the sunlight tip tomorrow.",
@@ -37,7 +39,28 @@ const postData = {
 };
 
 const PostDetail = () => {
-  const { postId } = useParams(); // In a real app, you would use this ID to fetch post data
+  const { postId } = useParams();
+  const [newReply, setNewReply] = useState('');
+  const [replyingTo, setReplyingTo] = useState<string | null>(null);
+  const [replies, setReplies] = useState(postData.replies);
+
+  const handleSubmitReply = (parentId?: string) => {
+    if (!newReply.trim()) return;
+
+    const reply = {
+      id: Date.now().toString(),
+      author: "You",
+      timeAgo: "now",
+      content: newReply,
+      likes: 0,
+      parentId
+    };
+
+    setReplies([...replies, reply]);
+    setNewReply('');
+    setReplyingTo(null);
+    toast.success('Reply posted successfully!');
+  };
 
   return (
     <section className="py-12 bg-muted/20">
@@ -93,15 +116,27 @@ const PostDetail = () => {
               <CardTitle className="text-xl">Join the Discussion</CardTitle>
             </CardHeader>
             <CardContent>
-              <Textarea placeholder="Write your reply..." rows={4} className="mb-4" />
-              <Button className="w-full sm:w-auto">Submit Reply</Button>
+              <Textarea 
+                placeholder="Write your reply..." 
+                rows={4} 
+                className="mb-4"
+                value={newReply}
+                onChange={(e) => setNewReply(e.target.value)}
+              />
+              <Button 
+                className="w-full sm:w-auto"
+                onClick={() => handleSubmitReply()}
+                disabled={!newReply.trim()}
+              >
+                Submit Reply
+              </Button>
             </CardContent>
           </Card>
 
           {/* Replies Section */}
           <div className="space-y-6">
             <h3 className="text-2xl font-semibold border-b pb-3 mb-4">Replies</h3>
-            {postData.replies.map((reply) => (
+            {replies.map((reply) => (
               <Card key={reply.id} className="shadow-soft border-border/50 bg-card/50">
                 <CardHeader className="p-4 flex flex-row items-center justify-between">
                   <div className="flex items-center space-x-3">
@@ -116,12 +151,55 @@ const PostDetail = () => {
                 </CardHeader>
                 <CardContent className="p-4 pt-0">
                   <p className="text-sm mb-4">{reply.content}</p>
-                  <div className="flex items-center space-x-2">
-                    <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-primary">
-                      <ThumbsUp className="h-4 w-4" />
+                  <div className="flex items-center space-x-4">
+                    <div className="flex items-center space-x-2">
+                      <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-primary">
+                        <ThumbsUp className="h-4 w-4" />
+                      </Button>
+                      <span className="text-xs text-muted-foreground">{reply.likes}</span>
+                    </div>
+                    <Button 
+                      variant="ghost" 
+                      size="sm" 
+                      className="text-muted-foreground hover:text-primary"
+                      onClick={() => setReplyingTo(replyingTo === reply.id ? null : reply.id)}
+                    >
+                      <Reply className="h-4 w-4 mr-1" />
+                      Reply
                     </Button>
-                    <span className="text-xs text-muted-foreground">{reply.likes}</span>
                   </div>
+                  
+                  {/* Nested Reply Form */}
+                  {replyingTo === reply.id && (
+                    <div className="mt-4 pl-4 border-l-2 border-muted">
+                      <Textarea 
+                        placeholder={`Reply to ${reply.author}...`}
+                        rows={3}
+                        className="mb-3"
+                        value={newReply}
+                        onChange={(e) => setNewReply(e.target.value)}
+                      />
+                      <div className="flex gap-2">
+                        <Button 
+                          size="sm"
+                          onClick={() => handleSubmitReply(reply.id)}
+                          disabled={!newReply.trim()}
+                        >
+                          Post Reply
+                        </Button>
+                        <Button 
+                          size="sm" 
+                          variant="outline"
+                          onClick={() => {
+                            setReplyingTo(null);
+                            setNewReply('');
+                          }}
+                        >
+                          Cancel
+                        </Button>
+                      </div>
+                    </div>
+                  )}
                 </CardContent>
               </Card>
             ))}
