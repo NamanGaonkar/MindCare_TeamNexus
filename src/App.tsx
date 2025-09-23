@@ -11,9 +11,11 @@ import BookingSystemPage from "./pages/BookingSystemPage";
 import ResourceHubPage from "./pages/ResourceHubPage";
 import CommunityPage from "./pages/CommunityPage";
 import AdminLayout from "./components/AdminLayout";
+import CounselorManagement from "./components/CounselorManagement";
 import AdminAnalyticsPage from "./pages/AdminAnalyticsPage";
 import AdminUserManagementPage from "./pages/AdminUserManagementPage";
 import AdminContentManagementPage from "./pages/AdminContentManagementPage";
+import AdminControlPage from "./pages/AdminControlPage";
 import AdminSystemSettingsPage from "./pages/AdminSystemSettingsPage";
 import PeerHelperApplicationPage from "./pages/PeerHelperApplicationPage";
 import LoginPage from "./pages/LoginPage";
@@ -48,10 +50,20 @@ const App = () => (
 
               {/* Admin Routes */}
               <Route path="/admin" element={<AdminLayout />}>
-                <Route index element={<Navigate to="analytics" replace />} />
+                <Route index element={<Navigate to="control" replace />} />
+                <Route path="control" element={<AdminControlPage />} />
                 <Route path="analytics" element={<AdminAnalyticsPage />} />
                 <Route path="users" element={<AdminUserManagementPage />} />
                 <Route path="content" element={<AdminContentManagementPage />} />
+                <Route path="counselors" element={
+                  <div className="space-y-8">
+                    <div>
+                      <h2 className="text-2xl font-bold">Counselor Management</h2>
+                      <p className="text-muted-foreground">Manage counselors and their schedules</p>
+                    </div>
+                    <CounselorManagement />
+                  </div>
+                } />
                 <Route path="settings" element={<AdminSystemSettingsPage />} />
               </Route>
             </Route>

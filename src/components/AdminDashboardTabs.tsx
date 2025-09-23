@@ -4,15 +4,17 @@ import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 const adminNavItems = [
+  { name: "Control", href: "/admin/control" },
   { name: "Analytics", href: "/admin/analytics" },
-  { name: "User Management", href: "/admin/users" },
-  { name: "Content & Community", href: "/admin/content" },
-  { name: "System Settings", href: "/admin/settings" },
+  { name: "Users", href: "/admin/users" },
+  { name: "Counselors", href: "/admin/counselors" },
+  { name: "Content", href: "/admin/content" },
+  { name: "Settings", href: "/admin/settings" },
 ];
 
 const AdminDashboardTabs = () => {
   return (
-    <div className="grid w-full grid-cols-4 items-center justify-center rounded-lg bg-muted p-1 text-muted-foreground">
+    <div className="grid w-full grid-cols-6 items-center justify-center rounded-lg bg-muted p-1 text-muted-foreground">
       {adminNavItems.map((item) => (
         <NavLink
           key={item.name}

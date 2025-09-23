@@ -26,12 +26,12 @@ const Login = () => {
 
   // Demo login handlers
   const handleStudentLogin = () => {
-    login({ name: 'Demo Student', role: 'student' });
+    login('student');
     navigate('/ai-chat');
   };
 
   const handleAdminLogin = () => {
-    login({ name: 'Demo Super Admin', role: 'superadmin' });
+    login('admin');
     navigate('/admin');
   };
 

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { toast } from "sonner";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -10,6 +11,8 @@ import { Link } from "react-router-dom";
 
 const Community = () => {
   const [showNewPost, setShowNewPost] = useState(false);
+  const [displayedPosts, setDisplayedPosts] = useState(3);
+  const [loadingMore, setLoadingMore] = useState(false);
 
   const forumStats = [
     { label: "Active Members", value: "2,847", icon: Users },
@@ -18,7 +21,7 @@ const Community = () => {
     { label: "Response Time", value: "< 2hr", icon: Clock },
   ];
 
-  const forumPosts = [
+  const allForumPosts = [
     {
       id: 1,
       title: "Managing exam anxiety - tips that actually work",
@@ -55,7 +58,61 @@ const Community = () => {
       preview: "I've been staying up until 3-4 AM studying and my sleep is all over the place. How do you maintain a healthy sleep routine?",
       tags: ["sleep", "schedule", "health"],
     },
+    {
+      id: 4,
+      title: "Starting therapy - what to expect?",
+      author: "NewToTherapy",
+      category: "Mental Health Support",
+      timeAgo: "8h ago",
+      replies: 18,
+      likes: 35,
+      isPinned: false,
+      preview: "I've finally decided to start therapy but I'm nervous about the first session. Any advice?",
+      tags: ["therapy", "first-time", "advice"],
+    },
+    {
+      id: 5,
+      title: "Coping with homesickness",
+      author: "OutOfStateFreshman",
+      category: "Social Connection",
+      timeAgo: "12h ago",
+      replies: 22,
+      likes: 29,
+      isPinned: false,
+      preview: "Being 1000 miles from home is harder than I thought. Missing family and friends more than expected.",
+      tags: ["homesickness", "family", "adjustment"],
+    },
+    {
+      id: 6,
+      title: "Study group success story",
+      author: "GroupStudyFan",
+      category: "Success Stories",
+      timeAgo: "1d ago",
+      replies: 8,
+      likes: 41,
+      isPinned: false,
+      preview: "Wanted to share how joining a study group completely changed my academic experience and mental health.",
+      tags: ["study-group", "success", "social"],
+    },
   ];
+
+  const forumPosts = allForumPosts.slice(0, displayedPosts);
+
+  const handleLoadMore = async () => {
+    setLoadingMore(true);
+    // Simulate loading delay
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    
+    const newDisplayCount = displayedPosts + 3;
+    setDisplayedPosts(Math.min(newDisplayCount, allForumPosts.length));
+    setLoadingMore(false);
+    
+    if (newDisplayCount >= allForumPosts.length) {
+      toast.success("All discussions loaded!");
+    } else {
+      toast.success(`Loaded ${Math.min(3, allForumPosts.length - displayedPosts)} more discussions`);
+    }
+  };
 
   const categoryColors = {
     "Academic Stress": "primary",
@@ -199,11 +256,18 @@ const Community = () => {
                 ))}
               </div>
 
-              <div className="text-center mt-8">
-                <Button variant="outline" size="lg">
-                  Load More Discussions
-                </Button>
-              </div>
+              {displayedPosts < allForumPosts.length && (
+                <div className="text-center mt-8">
+                  <Button 
+                    variant="outline" 
+                    size="lg"
+                    onClick={handleLoadMore}
+                    disabled={loadingMore}
+                  >
+                    {loadingMore ? "Loading..." : "Load More Discussions"}
+                  </Button>
+                </div>
+              )}
             </div>
 
             {/* Sidebar */}

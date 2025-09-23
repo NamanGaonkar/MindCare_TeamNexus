@@ -1,22 +1,31 @@
+import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Youtube } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Youtube, Play } from "lucide-react";
+import YouTubePlayer from "./YouTubePlayer";
 
 const ResourceHub = () => {
+  const [selectedVideo, setSelectedVideo] = useState<{
+    title: string;
+    description: string;
+    videoUrl: string;
+  } | null>(null);
+
   const resourceTopics = [
     {
       title: "Managing Anxiety",
       description: "A 10-minute guided meditation for anxiety relief.",
-      videoUrl: "https://www.youtube.com/watch?v=O-6f5wQXSu8",
+      videoUrl: "https://www.youtube.com/watch?v=1Evwgu369Jw",
     },
     {
       title: "Improving Sleep",
       description: "Fall asleep quickly with this guided sleep meditation.",
-      videoUrl: "https://www.youtube.com/watch?v=F28MGLlpP90",
+      videoUrl: "https://www.youtube.com/watch?v=aEqlQvczMJQ",
     },
     {
       title: "Handling Academic Stress",
       description: "Practical tips for managing stress during exam season.",
-      videoUrl: "https://www.youtube.com/watch?v=R-4i26s_7sY",
+      videoUrl: "https://www.youtube.com/watch?v=Nw-ksE2PeMA",
     },
     {
       title: "Mindfulness & Meditation",
@@ -26,12 +35,12 @@ const ResourceHub = () => {
     {
       title: "Coping with Depression",
       description: "Understanding and coping with feelings of depression.",
-      videoUrl: "https://www.youtube.com/watch?v=P6A2A-1-p-c",
+      videoUrl: "https://www.youtube.com/watch?v=4-079YIasck",
     },
     {
       title: "Building Resilience",
       description: "Develop mental strength and bounce back from adversity.",
-      videoUrl: "https://www.youtube.com/watch?v=gS_yO1x_y-Y",
+      videoUrl: "https://www.youtube.com/watch?v=R18O8bRwGls",
     },
     {
       title: "Quick Relaxation Techniques",
@@ -41,7 +50,7 @@ const ResourceHub = () => {
      {
       title: "Study & Focus Tips",
       description: "The Pomodoro Technique for effective studying.",
-      videoUrl: "https://www.youtube.com/watch?v=H0i11Yj-e1g",
+      videoUrl: "https://www.youtube.com/watch?v=VFW3Ld7JO0w",
     },
   ];
 
@@ -59,20 +68,42 @@ const ResourceHub = () => {
             </p>
           </div>
 
+          {/* Video Player Section */}
+          {selectedVideo && (
+            <div className="mb-12">
+              <YouTubePlayer initialVideo={selectedVideo} />
+            </div>
+          )}
+
           {/* Resource Topic Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {resourceTopics.map((topic) => (
-              <a
-                key={topic.title}
-                href={topic.videoUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block group"
-              >
-                <Card className="h-full hover:shadow-lg transition-shadow duration-300 border-border/50 hover:border-primary/50">
+              <div key={topic.title} className="block group">
+                <Card className="h-full hover:shadow-lg transition-shadow duration-300 border-border/50 hover:border-primary/50 cursor-pointer"
+                      onClick={() => setSelectedVideo(topic)}>
                   <CardHeader className="flex-row items-center justify-between">
-                    <CardTitle>{topic.title}</CardTitle>
-                    <Youtube className="h-6 w-6 text-red-600" />
+                    <CardTitle className="flex-1">{topic.title}</CardTitle>
+                    <div className="flex items-center gap-2">
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setSelectedVideo(topic);
+                        }}
+                      >
+                        <Play className="h-4 w-4 mr-1" />
+                        Play
+                      </Button>
+                      <a
+                        href={topic.videoUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <Youtube className="h-6 w-6 text-red-600 hover:opacity-75 transition-opacity" />
+                      </a>
+                    </div>
                   </CardHeader>
                   <CardContent>
                     <p className="text-muted-foreground text-sm">
@@ -80,7 +111,7 @@ const ResourceHub = () => {
                     </p>
                   </CardContent>
                 </Card>
-              </a>
+              </div>
             ))}
           </div>
         </div>
