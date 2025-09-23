@@ -6,10 +6,10 @@ import { useAuth } from "@/contexts/AuthContext";
 import { LogOut } from "lucide-react";
 
 const adminNavItems = [
-  { name: "Analytics", href: "/admin/analytics" },
-  { name: "User Management", href: "/admin/users" },
-  { name: "Content & Community", href: "/admin/content" },
-  { name: "System Settings", href: "/admin/settings" },
+    { name: "Analytics", href: "/admin/analytics" },
+    { name: "User Management", href: "/admin/users" },
+    { name: "Content & Community", href: "/admin/content" },
+    { name: "System Settings", href: "/admin/settings" },
 ];
 
 const AdminLayout = () => {
