@@ -26,8 +26,11 @@ serve(async (req) => {
 
     if (!GEMINI_API_KEY) {
       console.error('GEMINI_API_KEY not found');
-      return new Response(JSON.stringify({ error: 'API key not configured' }), {
-        status: 500,
+      return new Response(JSON.stringify({ 
+        error: 'API key not configured',
+        response: "I'm experiencing configuration issues. Please try again later or contact support if the problem persists."
+      }), {
+        status: 200,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
     }
@@ -66,10 +69,7 @@ Respond with care and understanding while maintaining appropriate boundaries.`;
       }
     ];
 
-    const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=' + GEMINI_API_KEY, {
-    }
-    )
-    const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-1.0-pro:generateContent?key=' + GEMINI_API_KEY, {
+    const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=' + GEMINI_API_KEY, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -109,16 +109,16 @@ Respond with care and understanding while maintaining appropriate boundaries.`;
       const errorText = await response.text();
       console.error('Gemini API error:', errorText);
       return new Response(JSON.stringify({ 
-        error: 'Failed to get response from AI service',
-        details: errorText 
+        error: 'AI service temporarily unavailable',
+        response: "I'm experiencing some technical difficulties right now, but I'm still here to support you. Please know that your feelings are valid and there are people who care about your wellbeing. If you're in crisis, please reach out to a counselor or call a crisis helpline immediately."
       }), {
-        status: 500,
+        status: 200,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
     }
 
     const data = await response.json();
-    console.log('Gemini response:', JSON.stringify(data, null, 2));
+    console.log('Gemini response received');
 
     if (data.candidates && data.candidates[0] && data.candidates[0].content) {
       const aiResponse = data.candidates[0].content.parts[0].text;
@@ -132,10 +132,10 @@ Respond with care and understanding while maintaining appropriate boundaries.`;
     } else {
       console.error('Unexpected response format:', data);
       return new Response(JSON.stringify({ 
-        error: 'Unexpected response format from AI service',
-        fallbackResponse: "I'm here to support you. Sometimes I may have technical difficulties, but I want you to know that your feelings are valid and there are people who care about your wellbeing. If you're in crisis, please reach out to a counselor or call a crisis helpline immediately."
+        error: 'Unexpected response format',
+        response: "I'm here to support you. Sometimes I may have technical difficulties, but I want you to know that your feelings are valid and there are people who care about your wellbeing. If you're in crisis, please reach out to a counselor or call a crisis helpline immediately."
       }), {
-        status: 500,
+        status: 200,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       });
     }
@@ -143,10 +143,9 @@ Respond with care and understanding while maintaining appropriate boundaries.`;
     console.error('Error in gemini-chat function:', error);
     return new Response(JSON.stringify({ 
       error: 'Internal server error',
-      message: error.message,
-      fallbackResponse: "I'm experiencing some technical difficulties right now. Please know that your mental health matters, and if you need immediate support, please consider reaching out to a counselor or trusted friend."
+      response: "I'm experiencing some technical difficulties right now. Please know that your mental health matters, and if you need immediate support, please consider reaching out to a counselor or trusted friend."
     }), {
-      status: 500,
+      status: 200,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
   }

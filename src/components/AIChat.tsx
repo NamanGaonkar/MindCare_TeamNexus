@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { Bot, User, Send, Loader2, Sparkles } from 'lucide-react';
+import { Bot, User, Send, Loader2, Sparkles, RefreshCw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
@@ -24,9 +24,9 @@ const AIChat: React.FC = () => {
   ]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
-  const { user } = useAuth();
   const [chatError, setChatError] = useState<string | null>(null);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const { user, loading } = useAuth();
   const { toast } = useToast();
 
   const scrollToBottom = () => {
@@ -45,21 +45,20 @@ const AIChat: React.FC = () => {
 
       if (error) {
         console.error('Error calling Gemini function:', error);
-        return "I'm experiencing some technical difficulties right now. Please know that your mental health matters. If you need immediate support, consider reaching out to a counselor or trusted friend. You can also book a session with one of our counselors through the 'Book Session' tab.";
+        throw new Error('Failed to connect to AI service');
       }
 
       if (data?.error) {
         console.error('Gemini API error:', data.error);
-        return data.fallbackResponse || "I'm here to support you, but I'm having trouble processing your message right now. Your feelings are valid, and I encourage you to reach out for professional help if needed.";
+        throw new Error(data.error);
       }
 
-      return data.response || "I hear you, and I'm here to support you. Sometimes I may not have the perfect words, but please know that reaching out shows strength. Consider exploring our other resources or booking a session with a professional counselor.";
+      return data?.response || "I'm here to support you. How can I help you today?";
     } catch (error) {
       console.error('Error in getBotResponse:', error);
-      return "I'm having technical difficulties, but I want you to know that your mental health is important. Please consider using our booking system to connect with a professional counselor who can provide the support you deserve.";
+      throw error;
     }
   }, []);
-
 
   const handleSend = async () => {
     if (input.trim() === '' || isLoading) return;
@@ -76,7 +75,6 @@ const AIChat: React.FC = () => {
     setIsLoading(true);
 
     try {
-      setChatError(null);
       const botResponseText = await getBotResponse(currentInput);
       const botMessage: Message = { 
         sender: 'bot', 
@@ -86,17 +84,16 @@ const AIChat: React.FC = () => {
       setMessages((prev) => [...prev, botMessage]);
     } catch (error) {
       console.error('Error getting bot response:', error);
-      setChatError('Failed to get AI response. Please try again.');
       const errorMessage: Message = {
         sender: 'bot',
-        text: "I apologize, but I'm experiencing technical difficulties. Your wellbeing is important - please don't hesitate to book a session with one of our professional counselors if you need support.",
+        text: "I apologize, but I'm experiencing technical difficulties right now. Your mental health is important - please consider booking a session with one of our professional counselors if you need immediate support.",
         timestamp: new Date()
       };
       setMessages((prev) => [...prev, errorMessage]);
       
       toast({
         title: "Connection Issue",
-        description: "Having trouble connecting to AI support. Try booking a session with a counselor instead.",
+        description: "Having trouble connecting to AI support. The chat will continue to work for basic support.",
         variant: "destructive"
       });
     } finally {
@@ -111,8 +108,16 @@ const AIChat: React.FC = () => {
     }
   };
 
-  // Show error state if user is not loaded
-  if (!user) {
+  const retryConnection = () => {
+    setChatError(null);
+    toast({
+      title: "Reconnecting...",
+      description: "Attempting to restore AI chat functionality."
+    });
+  };
+
+  // Show loading while auth is initializing
+  if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[600px]">
         <Loader2 className="h-8 w-8 animate-spin" />
@@ -120,26 +125,16 @@ const AIChat: React.FC = () => {
     );
   }
 
+  // Show error if user is not authenticated
   if (!user) {
     return (
       <div className="flex items-center justify-center min-h-[600px]">
         <Card className="w-full max-w-md text-center">
           <CardContent className="p-6">
             <p className="text-muted-foreground">Please log in to access AI support.</p>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
-
-  // Show chat error if exists
-  if (chatError) {
-    return (
-      <div className="flex items-center justify-center min-h-[600px]">
-        <Card className="w-full max-w-md text-center">
-          <CardContent className="p-6">
-            <p className="text-destructive">{chatError}</p>
-            <Button onClick={() => setChatError(null)} className="mt-4">Try Again</Button>
+            <Button onClick={() => window.location.href = '/login'} className="mt-4">
+              Go to Login
+            </Button>
           </CardContent>
         </Card>
       </div>
@@ -157,6 +152,15 @@ const AIChat: React.FC = () => {
           <CardDescription className="text-base">
             Your safe, confidential space for mental health support and guidance
           </CardDescription>
+          {chatError && (
+            <div className="flex items-center justify-center gap-2 mt-2">
+              <span className="text-sm text-destructive">Connection issues detected</span>
+              <Button size="sm" variant="outline" onClick={retryConnection}>
+                <RefreshCw className="h-3 w-3 mr-1" />
+                Retry
+              </Button>
+            </div>
+          )}
         </CardHeader>
         
         <CardContent className="flex-grow overflow-y-auto p-6 space-y-6">

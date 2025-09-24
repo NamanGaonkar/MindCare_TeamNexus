@@ -21,19 +21,30 @@ const Login = () => {
     const { error } = await login(email, password);
     
     if (!error) {
-      // Check if user is admin and redirect accordingly
-      if (email === 'namanrgaonkar@gmail.com') {
-        navigate('/admin');
-      } else {
-        navigate('/ai-chat');
-      }
+      // Wait a moment for auth state to update
+      setTimeout(() => {
+        if (email === 'namanrgaonkar@gmail.com') {
+          navigate('/admin');
+        } else {
+          navigate('/ai-chat');
+        }
+      }, 1000);
     }
     
     setIsLoading(false);
   };
 
+  // Show loading while auth is initializing
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-background to-primary/5 p-4">
+        <Loader2 className="h-8 w-8 animate-spin" />
+      </div>
+    );
+  }
+
   // Redirect if already logged in
-  if (!loading && user) {
+  if (user) {
     return <Navigate to={user.role === 'admin' ? '/admin' : '/ai-chat'} replace />;
   }
 
