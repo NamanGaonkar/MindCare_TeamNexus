@@ -23,8 +23,8 @@ const Header = () => {
 
   const adminNavItem = { name: "Admin Panel", href: "/admin" };
 
-  // FIX: The role for the demo admin is 'superadmin'. This correctly adds the admin link to the nav.
-  const navItems = user?.role === 'superadmin' ? [...commonNavItems, adminNavItem] : commonNavItems;
+  // Add admin navigation for admin users
+  const navItems = user?.role === 'admin' ? [...commonNavItems, adminNavItem] : commonNavItems;
 
   return (
     <header className="fixed top-0 w-full bg-background/95 backdrop-blur-sm border-b border-border z-50">

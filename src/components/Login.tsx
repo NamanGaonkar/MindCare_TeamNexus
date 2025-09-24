@@ -1,89 +1,92 @@
-
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Link, useNavigate } from "react-router-dom";
+import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { useAuth } from "@/contexts/AuthContext";
-import { Shield, Users } from "lucide-react"; // Import icons
+import { Loader2 } from "lucide-react";
 
 const Login = () => {
-  const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const { login } = useAuth();
+  const navigate = useNavigate();
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Backend team: Implement real authentication logic here.
-    console.log("Login form submitted. Needs backend integration.");
-  };
-
-  // Demo login handlers
-  const handleStudentLogin = () => {
-    login('student');
-    navigate('/ai-chat');
-  };
-
-  const handleAdminLogin = () => {
-    login('admin');
-    navigate('/admin');
+    setIsLoading(true);
+    
+    const { error } = await login(email, password);
+    
+    if (!error) {
+      navigate('/ai-chat');
+    }
+    
+    setIsLoading(false);
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-muted/30">
-      <div className="w-full max-w-md">
-        <Card className="shadow-soft border-border/50">
-          <CardHeader className="text-center">
-            <CardTitle className="text-2xl">Welcome Back</CardTitle>
-            <CardDescription>Sign in to access your mental health resources.</CardDescription>
-          </CardHeader>
-          <form onSubmit={handleLogin}>
-            <CardContent className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
-                <Input id="email" type="email" placeholder="m@example.com" required />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
-                <Input id="password" type="password" required />
-              </div>
-            </CardContent>
-            <CardFooter className="flex flex-col space-y-4">
-              <Button type="submit" className="w-full">Sign In</Button>
-              <div className="text-center text-sm text-muted-foreground">
-                Don't have an account?{" "}
-                <Link to="/signup" className="font-medium text-primary hover:underline">
-                  Sign up
-                </Link>
-              </div>
-            </CardFooter>
-          </form>
-        </Card>
-
-        {/* Demo Login Section */}
-        <Card className="mt-6 bg-muted/50 border-dashed">
-            <CardHeader>
-                <CardTitle className="text-center text-base font-semibold">Demo Access</CardTitle>
-                <CardDescription className="text-center text-xs">For demonstration and testing purposes.</CardDescription>
-            </CardHeader>
-            <CardContent className="flex justify-center gap-4">
-                <Button variant="outline" onClick={handleStudentLogin}>
-                    <Users className="mr-2 h-4 w-4" />
-                    Login as Student
-                </Button>
-                <Button variant="secondary" onClick={handleAdminLogin}>
-                    <Shield className="mr-2 h-4 w-4" />
-                    Login as Admin
-                </Button>
-            </CardContent>
-        </Card>
-      </div>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-background to-primary/5 p-4">
+      <Card className="w-full max-w-md shadow-2xl border-border/50">
+        <CardHeader className="text-center">
+          <CardTitle className="text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+            Welcome Back
+          </CardTitle>
+          <p className="text-muted-foreground">Sign in to your MindCare account</p>
+        </CardHeader>
+        
+        <form onSubmit={handleSubmit}>
+          <CardContent className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="email">Email</Label>
+              <Input
+                id="email"
+                type="email"
+                placeholder="Enter your email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                disabled={isLoading}
+              />
+            </div>
+            
+            <div className="space-y-2">
+              <Label htmlFor="password">Password</Label>
+              <Input
+                id="password"
+                type="password"
+                placeholder="Enter your password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                disabled={isLoading}
+              />
+            </div>
+            
+            <Button type="submit" className="w-full" disabled={isLoading}>
+              {isLoading ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  Signing In...
+                </>
+              ) : (
+                'Sign In'
+              )}
+            </Button>
+          </CardContent>
+        </form>
+        
+        <CardFooter className="flex flex-col space-y-4">
+          <p className="text-sm text-center text-muted-foreground">
+            Don't have an account?{" "}
+            <Link to="/signup" className="text-primary hover:underline font-medium">
+              Sign up here
+            </Link>
+          </p>
+        </CardFooter>
+      </Card>
     </div>
   );
 };
