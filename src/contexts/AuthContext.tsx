@@ -1,5 +1,5 @@
 import { createContext, useState, useContext, ReactNode, useEffect } from 'react';
-import { User, Session } from '@supabase/supabase-js';
+import { User, Session, AuthError } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 
@@ -18,8 +18,8 @@ interface AuthContextType {
   user: (User & { role?: 'student' | 'admin' }) | null;
   profile: Profile | null;
   session: Session | null;
-  login: (email: string, password: string) => Promise<{ error: any }>;
-  signup: (email: string, password: string, userData: any) => Promise<{ error: any }>;
+  login: (email: string, password: string) => Promise<{ error: AuthError | null }>;
+  signup: (email: string, password: string, userData: any) => Promise<{ error: AuthError | null }>;
   logout: () => Promise<void>;
   loading: boolean;
 }
@@ -32,6 +32,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
   const { toast } = useToast();
+  const [initializing, setInitializing] = useState(true);
 
   const fetchProfile = async (userId: string) => {
     try {
@@ -60,6 +61,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       return;
     }
 
+    // Check if this is the admin email
+    const isAdmin = currentUser.email === 'namanrgaonkar@gmail.com';
+    if (isAdmin) {
+      await updateUserRole(currentUser.id, 'admin');
+    }
     const userProfile = await fetchProfile(currentUser.id);
     setProfile(userProfile);
     
@@ -69,6 +75,21 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       role: userProfile?.role || 'student'
     };
     setUser(userWithRole);
+  };
+
+  const updateUserRole = async (userId: string, role: 'admin' | 'student') => {
+    try {
+      const { error } = await supabase
+        .from('profiles')
+        .update({ role })
+        .eq('user_id', userId);
+      
+      if (error) {
+        console.error('Error updating user role:', error);
+      }
+    } catch (error) {
+      console.error('Error updating user role:', error);
+    }
   };
 
   useEffect(() => {
@@ -85,7 +106,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           setProfile(null);
         }
         
-        setLoading(false);
+        if (initializing) setInitializing(false);
+        if (loading) setLoading(false);
       }
     );
 
@@ -95,13 +117,18 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setSession(session);
       if (session?.user) {
         updateUserWithProfile(session.user);
-      } else {
+      } else if (initializing) {
+        setInitializing(false);
         setLoading(false);
       }
     });
 
     return () => subscription.unsubscribe();
   }, []);
+
+  useEffect(() => {
+    if (initializing) setLoading(false);
+  }, [initializing]);
 
   const login = async (email: string, password: string) => {
     try {
@@ -110,6 +137,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         password
       });
 
+      setLoading(false);
       if (error) {
         toast({
           title: "Login Failed",
@@ -131,6 +159,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         variant: "destructive"
       });
       return { error };
+      setLoading(false);
     }
   };
 
@@ -151,6 +180,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         }
       });
 
+      setLoading(false);
       if (error) {
         toast({
           title: "Signup Failed",
@@ -172,6 +202,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         variant: "destructive"
       });
       return { error };
+      setLoading(false);
     }
   };
 
@@ -179,6 +210,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     try {
       const { error } = await supabase.auth.signOut();
       if (!error) {
+        setLoading(false);
         toast({
           title: "Logged Out",
           description: "You have been logged out successfully."

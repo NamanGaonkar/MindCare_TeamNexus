@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { toast } from "sonner";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -31,6 +31,7 @@ const Community = () => {
   const [loadingMore, setLoadingMore] = useState(false);
   const [loadingPosts, setLoadingPosts] = useState(true);
   const [posts, setPosts] = useState<ForumPost[]>([]);
+  const [postsError, setPostsError] = useState<string | null>(null);
   const [activeReply, setActiveReply] = useState<string | null>(null);
   const [replyContent, setReplyContent] = useState("");
   const [newPost, setNewPost] = useState({
@@ -68,8 +69,10 @@ const Community = () => {
     fetchPosts();
   }, []);
 
-  const fetchPosts = async () => {
+  const fetchPosts = useCallback(async () => {
     try {
+      setPostsError(null);
+      
       const { data, error } = await supabase
         .from('posts')
         .select('*')
@@ -78,6 +81,7 @@ const Community = () => {
 
       if (error) {
         console.error('Error fetching posts:', error);
+        setPostsError('Failed to load posts. Please try again.');
         toast.error("Failed to load posts");
         return;
       }
@@ -90,11 +94,12 @@ const Community = () => {
       setPosts(formattedPosts);
     } catch (error) {
       console.error('Error fetching posts:', error);
+      setPostsError('Failed to load posts. Please try again.');
       toast.error("Failed to load posts");
     } finally {
       setLoadingPosts(false);
     }
-  };
+  }, []);
 
   const handleCreatePost = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -200,6 +205,20 @@ const Community = () => {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
         <Loader2 className="h-8 w-8 animate-spin" />
+      </div>
+    );
+  }
+
+  // Show error state for posts
+  if (postsError) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <Card className="w-full max-w-md text-center">
+          <CardContent className="p-6">
+            <p className="text-destructive">{postsError}</p>
+            <Button onClick={() => fetchPosts()} className="mt-4">Try Again</Button>
+          </CardContent>
+        </Card>
       </div>
     );
   }

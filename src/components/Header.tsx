@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Link, useNavigate } from "react-router-dom";
@@ -7,7 +6,7 @@ import { useAuth } from "@/contexts/AuthContext";
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { isAuthenticated, user, logout } = useAuth();
-  const navigate = useNavigate();
+  const navigate = useNavigate(); 
 
   const handleLogout = () => {
     logout();
@@ -26,7 +25,7 @@ const Header = () => {
   // Add admin navigation for admin users
   const navItems = user?.role === 'admin' ? [...commonNavItems, adminNavItem] : commonNavItems;
 
-  return (
+  return ( 
     <header className="fixed top-0 w-full bg-background/95 backdrop-blur-sm border-b border-border z-50">
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">

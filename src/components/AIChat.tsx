@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { Bot, User, Send, Loader2, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -26,6 +26,7 @@ const AIChat: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { user } = useAuth();
+  const [chatError, setChatError] = useState<string | null>(null);
   const { toast } = useToast();
 
   const scrollToBottom = () => {
@@ -34,8 +35,10 @@ const AIChat: React.FC = () => {
 
   useEffect(scrollToBottom, [messages]);
 
-  const getBotResponse = async (userMessage: string): Promise<string> => {
+  const getBotResponse = useCallback(async (userMessage: string): Promise<string> => {
     try {
+      setChatError(null);
+      
       const { data, error } = await supabase.functions.invoke('gemini-chat', {
         body: { message: userMessage }
       });
@@ -55,7 +58,8 @@ const AIChat: React.FC = () => {
       console.error('Error in getBotResponse:', error);
       return "I'm having technical difficulties, but I want you to know that your mental health is important. Please consider using our booking system to connect with a professional counselor who can provide the support you deserve.";
     }
-  };
+  }, []);
+
 
   const handleSend = async () => {
     if (input.trim() === '' || isLoading) return;
@@ -72,6 +76,7 @@ const AIChat: React.FC = () => {
     setIsLoading(true);
 
     try {
+      setChatError(null);
       const botResponseText = await getBotResponse(currentInput);
       const botMessage: Message = { 
         sender: 'bot', 
@@ -81,6 +86,7 @@ const AIChat: React.FC = () => {
       setMessages((prev) => [...prev, botMessage]);
     } catch (error) {
       console.error('Error getting bot response:', error);
+      setChatError('Failed to get AI response. Please try again.');
       const errorMessage: Message = {
         sender: 'bot',
         text: "I apologize, but I'm experiencing technical difficulties. Your wellbeing is important - please don't hesitate to book a session with one of our professional counselors if you need support.",
@@ -105,12 +111,35 @@ const AIChat: React.FC = () => {
     }
   };
 
+  // Show error state if user is not loaded
+  if (!user) {
+    return (
+      <div className="flex items-center justify-center min-h-[600px]">
+        <Loader2 className="h-8 w-8 animate-spin" />
+      </div>
+    );
+  }
+
   if (!user) {
     return (
       <div className="flex items-center justify-center min-h-[600px]">
         <Card className="w-full max-w-md text-center">
           <CardContent className="p-6">
             <p className="text-muted-foreground">Please log in to access AI support.</p>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  // Show chat error if exists
+  if (chatError) {
+    return (
+      <div className="flex items-center justify-center min-h-[600px]">
+        <Card className="w-full max-w-md text-center">
+          <CardContent className="p-6">
+            <p className="text-destructive">{chatError}</p>
+            <Button onClick={() => setChatError(null)} className="mt-4">Try Again</Button>
           </CardContent>
         </Card>
       </div>
