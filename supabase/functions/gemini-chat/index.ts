@@ -69,7 +69,12 @@ Respond with care and understanding while maintaining appropriate boundaries.`;
       }
     ];
 
-    const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=' + GEMINI_API_KEY, {
+    // Updated API endpoint to use the correct model
+    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
+    
+    console.log('Calling Gemini API with model: gemini-1.5-flash');
+
+    const response = await fetch(apiUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -118,7 +123,7 @@ Respond with care and understanding while maintaining appropriate boundaries.`;
     }
 
     const data = await response.json();
-    console.log('Gemini response received');
+    console.log('Gemini response received successfully');
 
     if (data.candidates && data.candidates[0] && data.candidates[0].content) {
       const aiResponse = data.candidates[0].content.parts[0].text;

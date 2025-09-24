@@ -1,9 +1,9 @@
-
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
-import { LogOut } from "lucide-react";
+import { LogOut, Loader2 } from "lucide-react";
+import { Navigate } from "react-router-dom";
 
 const adminNavItems = [
     { name: "Analytics", href: "/admin/analytics" },
@@ -15,12 +15,29 @@ const adminNavItems = [
 const AdminLayout = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { logout } = useAuth();
+  const { logout, user, loading } = useAuth();
 
-  const handleLogout = () => {
-    logout();
+  const handleLogout = async () => {
+    await logout();
     navigate('/login');
   };
+
+  // Show loading while checking auth
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <div className="text-center">
+          <Loader2 className="h-8 w-8 animate-spin mx-auto mb-4" />
+          <p className="text-muted-foreground">Loading admin panel...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Check if user is admin
+  if (!user || user.role !== 'admin') {
+    return <Navigate to="/ai-chat" replace />;
+  }
 
   const activeTabValue = adminNavItems.find(item => location.pathname.startsWith(item.href))?.href;
 
@@ -33,6 +50,9 @@ const AdminLayout = () => {
           </h1>
           <p className="mt-2 text-lg text-gray-500">
             Central hub for managing users, content, and system analytics.
+          </p>
+          <p className="text-sm text-muted-foreground mt-1">
+            Welcome, {user.email}
           </p>
         </div>
         <Button variant="destructive" onClick={handleLogout} className="w-full sm:w-auto">

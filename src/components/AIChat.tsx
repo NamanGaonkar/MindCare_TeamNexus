@@ -1,9 +1,10 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { Bot, User, Send, Loader2, Sparkles, RefreshCw } from 'lucide-react';
+import { Bot, User, Send, Loader2, Sparkles, RefreshCw, AlertCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
@@ -25,6 +26,7 @@ const AIChat: React.FC = () => {
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [chatError, setChatError] = useState<string | null>(null);
+  const [retryCount, setRetryCount] = useState(0);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { user, loading } = useAuth();
   const { toast } = useToast();
@@ -35,17 +37,19 @@ const AIChat: React.FC = () => {
 
   useEffect(scrollToBottom, [messages]);
 
-  const getBotResponse = useCallback(async (userMessage: string): Promise<string> => {
+  const getBotResponse = useCallback(async (userMessage: string, attempt: number = 1): Promise<string> => {
     try {
       setChatError(null);
+      
+      console.log(`Attempting to call Gemini function (attempt ${attempt})`);
       
       const { data, error } = await supabase.functions.invoke('gemini-chat', {
         body: { message: userMessage }
       });
 
       if (error) {
-        console.error('Error calling Gemini function:', error);
-        throw new Error('Failed to connect to AI service');
+        console.error('Supabase function error:', error);
+        throw new Error(`Failed to connect to AI service: ${error.message}`);
       }
 
       if (data?.error) {
@@ -53,9 +57,22 @@ const AIChat: React.FC = () => {
         throw new Error(data.error);
       }
 
-      return data?.response || "I'm here to support you. How can I help you today?";
+      if (data?.response) {
+        setRetryCount(0); // Reset retry count on success
+        return data.response;
+      }
+
+      throw new Error('No response received from AI service');
     } catch (error) {
       console.error('Error in getBotResponse:', error);
+      
+      // Retry logic for network errors
+      if (attempt < 3 && (error as Error).message.includes('Failed to connect')) {
+        console.log(`Retrying... (attempt ${attempt + 1})`);
+        await new Promise(resolve => setTimeout(resolve, 1000 * attempt)); // Exponential backoff
+        return getBotResponse(userMessage, attempt + 1);
+      }
+      
       throw error;
     }
   }, []);
@@ -84,6 +101,8 @@ const AIChat: React.FC = () => {
       setMessages((prev) => [...prev, botMessage]);
     } catch (error) {
       console.error('Error getting bot response:', error);
+      setChatError((error as Error).message);
+      
       const errorMessage: Message = {
         sender: 'bot',
         text: "I apologize, but I'm experiencing technical difficulties right now. Your mental health is important - please consider booking a session with one of our professional counselors if you need immediate support.",
@@ -93,7 +112,7 @@ const AIChat: React.FC = () => {
       
       toast({
         title: "Connection Issue",
-        description: "Having trouble connecting to AI support. The chat will continue to work for basic support.",
+        description: "Having trouble connecting to AI support. Please try again.",
         variant: "destructive"
       });
     } finally {
@@ -110,6 +129,7 @@ const AIChat: React.FC = () => {
 
   const retryConnection = () => {
     setChatError(null);
+    setRetryCount(prev => prev + 1);
     toast({
       title: "Reconnecting...",
       description: "Attempting to restore AI chat functionality."
@@ -120,7 +140,10 @@ const AIChat: React.FC = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-[600px]">
-        <Loader2 className="h-8 w-8 animate-spin" />
+        <div className="text-center">
+          <Loader2 className="h-8 w-8 animate-spin mx-auto mb-4" />
+          <p className="text-muted-foreground">Loading AI Chat...</p>
+        </div>
       </div>
     );
   }
@@ -131,8 +154,9 @@ const AIChat: React.FC = () => {
       <div className="flex items-center justify-center min-h-[600px]">
         <Card className="w-full max-w-md text-center">
           <CardContent className="p-6">
-            <p className="text-muted-foreground">Please log in to access AI support.</p>
-            <Button onClick={() => window.location.href = '/login'} className="mt-4">
+            <AlertCircle className="h-12 w-12 text-destructive mx-auto mb-4" />
+            <p className="text-muted-foreground mb-4">Please log in to access AI support.</p>
+            <Button onClick={() => window.location.href = '/login'}>
               Go to Login
             </Button>
           </CardContent>
@@ -153,13 +177,16 @@ const AIChat: React.FC = () => {
             Your safe, confidential space for mental health support and guidance
           </CardDescription>
           {chatError && (
-            <div className="flex items-center justify-center gap-2 mt-2">
-              <span className="text-sm text-destructive">Connection issues detected</span>
-              <Button size="sm" variant="outline" onClick={retryConnection}>
-                <RefreshCw className="h-3 w-3 mr-1" />
-                Retry
-              </Button>
-            </div>
+            <Alert variant="destructive" className="mt-4">
+              <AlertCircle className="h-4 w-4" />
+              <AlertDescription className="flex items-center justify-between">
+                <span>Connection issues detected: {chatError}</span>
+                <Button size="sm" variant="outline" onClick={retryConnection}>
+                  <RefreshCw className="h-3 w-3 mr-1" />
+                  Retry
+                </Button>
+              </AlertDescription>
+            </Alert>
           )}
         </CardHeader>
         

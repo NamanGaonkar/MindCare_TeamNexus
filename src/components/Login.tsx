@@ -18,34 +18,43 @@ const Login = () => {
     e.preventDefault();
     setIsLoading(true);
     
-    const { error } = await login(email, password);
-    
-    if (!error) {
-      // Wait a moment for auth state to update
-      setTimeout(() => {
-        if (email === 'namanrgaonkar@gmail.com') {
-          navigate('/admin');
-        } else {
-          navigate('/ai-chat');
-        }
-      }, 1000);
+    try {
+      const { error } = await login(email, password);
+      
+      if (!error) {
+        // Small delay to ensure auth state is updated
+        setTimeout(() => {
+          // Check if user is admin and redirect accordingly
+          if (email === 'namanrgaonkar@gmail.com') {
+            navigate('/admin/analytics');
+          } else {
+            navigate('/ai-chat');
+          }
+        }, 500);
+      }
+    } catch (error) {
+      console.error('Login error:', error);
+    } finally {
+      setIsLoading(false);
     }
-    
-    setIsLoading(false);
   };
 
   // Show loading while auth is initializing
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-background to-primary/5 p-4">
-        <Loader2 className="h-8 w-8 animate-spin" />
+        <div className="text-center">
+          <Loader2 className="h-8 w-8 animate-spin mx-auto mb-4" />
+          <p className="text-muted-foreground">Loading...</p>
+        </div>
       </div>
     );
   }
 
   // Redirect if already logged in
   if (user) {
-    return <Navigate to={user.role === 'admin' ? '/admin' : '/ai-chat'} replace />;
+    const redirectPath = user.role === 'admin' ? '/admin/analytics' : '/ai-chat';
+    return <Navigate to={redirectPath} replace />;
   }
 
   return (
@@ -106,6 +115,11 @@ const Login = () => {
               Sign up here
             </Link>
           </p>
+          <div className="text-xs text-center text-muted-foreground bg-muted/50 p-3 rounded-lg">
+            <p className="font-medium mb-1">Demo Accounts:</p>
+            <p>Admin: namanrgaonkar@gmail.com</p>
+            <p>Student: Any other email</p>
+          </div>
         </CardFooter>
       </Card>
     </div>

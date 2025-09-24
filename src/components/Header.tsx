@@ -2,14 +2,15 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
+import { Loader2 } from "lucide-react";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { isAuthenticated, user, logout } = useAuth();
+  const { isAuthenticated, user, logout, loading } = useAuth();
   const navigate = useNavigate(); 
 
-  const handleLogout = () => {
-    logout();
+  const handleLogout = async () => {
+    await logout();
     navigate('/login');
   };
 
@@ -20,10 +21,27 @@ const Header = () => {
     { name: "Community", href: "/community" },
   ];
 
-  const adminNavItem = { name: "Admin Panel", href: "/admin" };
+  const adminNavItem = { name: "Admin Panel", href: "/admin/analytics" };
 
   // Add admin navigation for admin users
   const navItems = user?.role === 'admin' ? [...commonNavItems, adminNavItem] : commonNavItems;
+
+  if (loading) {
+    return (
+      <header className="fixed top-0 w-full bg-background/95 backdrop-blur-sm border-b border-border z-50">
+        <div className="container mx-auto px-4 py-4">
+          <div className="flex items-center justify-between">
+            <Link to="/" className="flex items-center space-x-2">
+              <span className="text-xl font-bold">MindCare</span>
+            </Link>
+            <div className="flex items-center">
+              <Loader2 className="h-4 w-4 animate-spin" />
+            </div>
+          </div>
+        </div>
+      </header>
+    );
+  }
 
   return ( 
     <header className="fixed top-0 w-full bg-background/95 backdrop-blur-sm border-b border-border z-50">
@@ -47,7 +65,12 @@ const Header = () => {
                   </Link>
                 ))}
               </nav>
-              <div className="hidden md:flex items-center">
+              <div className="hidden md:flex items-center space-x-4">
+                {user?.email && (
+                  <span className="text-sm text-muted-foreground">
+                    {user.role === 'admin' ? '👑 Admin' : '👤'} {user.email}
+                  </span>
+                )}
                 <Button variant="outline" onClick={handleLogout}>Logout</Button>
               </div>
             </>
@@ -79,6 +102,11 @@ const Header = () => {
             <div className="flex flex-col space-y-4 pt-4">
               {isAuthenticated ? (
                 <>
+                  {user?.email && (
+                    <div className="text-sm text-muted-foreground py-2">
+                      {user.role === 'admin' ? '👑 Admin' : '👤'} {user.email}
+                    </div>
+                  )}
                   {navItems.map((item) => (
                     <Link
                       key={item.name}

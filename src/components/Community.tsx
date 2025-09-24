@@ -7,7 +7,8 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { MessageSquare, Users, Clock, Pin, ThumbsUp, Reply, MoreHorizontal, HelpingHand, Send, Loader2 } from "lucide-react";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { MessageSquare, Users, Clock, Pin, ThumbsUp, Reply, MoreHorizontal, HelpingHand, Send, Loader2, AlertCircle, RefreshCw } from "lucide-react";
 import { Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
@@ -26,9 +27,8 @@ interface ForumPost {
 }
 
 const Community = () => {
-  const { user, profile } = useAuth();
+  const { user, profile, loading: authLoading } = useAuth();
   const [showNewPost, setShowNewPost] = useState(false);
-  const [loadingMore, setLoadingMore] = useState(false);
   const [loadingPosts, setLoadingPosts] = useState(true);
   const [posts, setPosts] = useState<ForumPost[]>([]);
   const [postsError, setPostsError] = useState<string | null>(null);
@@ -41,6 +41,7 @@ const Community = () => {
     tags: ""
   });
   const [submittingPost, setSubmittingPost] = useState(false);
+  const [retryCount, setRetryCount] = useState(0);
 
   const forumStats = [
     { label: "Active Members", value: "2,847", icon: Users },
@@ -65,13 +66,12 @@ const Community = () => {
     "Mental Health Support": "bg-purple-100 text-purple-800 border-purple-200",
   };
 
-  useEffect(() => {
-    fetchPosts();
-  }, []);
-
-  const fetchPosts = useCallback(async () => {
+  const fetchPosts = useCallback(async (attempt: number = 1) => {
     try {
       setPostsError(null);
+      setLoadingPosts(true);
+      
+      console.log(`Fetching posts (attempt ${attempt})`);
       
       const { data, error } = await supabase
         .from('posts')
@@ -81,9 +81,7 @@ const Community = () => {
 
       if (error) {
         console.error('Error fetching posts:', error);
-        setPostsError('Failed to load posts. Please try again.');
-        toast.error("Failed to load posts");
-        return;
+        throw new Error(`Failed to load posts: ${error.message}`);
       }
 
       const formattedPosts = data?.map(post => ({
@@ -92,14 +90,29 @@ const Community = () => {
       })) || [];
 
       setPosts(formattedPosts);
+      setRetryCount(0); // Reset retry count on success
     } catch (error) {
       console.error('Error fetching posts:', error);
-      setPostsError('Failed to load posts. Please try again.');
+      
+      // Retry logic
+      if (attempt < 3) {
+        console.log(`Retrying... (attempt ${attempt + 1})`);
+        setTimeout(() => fetchPosts(attempt + 1), 1000 * attempt);
+        return;
+      }
+      
+      setPostsError((error as Error).message);
       toast.error("Failed to load posts");
     } finally {
       setLoadingPosts(false);
     }
   }, []);
+
+  useEffect(() => {
+    if (!authLoading) {
+      fetchPosts();
+    }
+  }, [fetchPosts, authLoading]);
 
   const handleCreatePost = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -201,10 +214,29 @@ const Community = () => {
     return date.toLocaleDateString();
   };
 
+  const retryFetchPosts = () => {
+    setRetryCount(prev => prev + 1);
+    fetchPosts();
+  };
+
+  if (authLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <div className="text-center">
+          <Loader2 className="h-8 w-8 animate-spin mx-auto mb-4" />
+          <p className="text-muted-foreground">Loading community...</p>
+        </div>
+      </div>
+    );
+  }
+
   if (loadingPosts) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
-        <Loader2 className="h-8 w-8 animate-spin" />
+        <div className="text-center">
+          <Loader2 className="h-8 w-8 animate-spin mx-auto mb-4" />
+          <p className="text-muted-foreground">Loading posts...</p>
+        </div>
       </div>
     );
   }
@@ -215,8 +247,12 @@ const Community = () => {
       <div className="flex items-center justify-center min-h-[400px]">
         <Card className="w-full max-w-md text-center">
           <CardContent className="p-6">
-            <p className="text-destructive">{postsError}</p>
-            <Button onClick={() => fetchPosts()} className="mt-4">Try Again</Button>
+            <AlertCircle className="h-12 w-12 text-destructive mx-auto mb-4" />
+            <p className="text-destructive mb-4">{postsError}</p>
+            <Button onClick={retryFetchPosts}>
+              <RefreshCw className="h-4 w-4 mr-2" />
+              Try Again
+            </Button>
           </CardContent>
         </Card>
       </div>
@@ -268,6 +304,20 @@ const Community = () => {
                   </Button>
                 )}
               </div>
+
+              {/* Connection Status Alert */}
+              {postsError && (
+                <Alert variant="destructive" className="mb-6">
+                  <AlertCircle className="h-4 w-4" />
+                  <AlertDescription className="flex items-center justify-between">
+                    <span>Connection issues: {postsError}</span>
+                    <Button size="sm" variant="outline" onClick={retryFetchPosts}>
+                      <RefreshCw className="h-3 w-3 mr-1" />
+                      Retry
+                    </Button>
+                  </AlertDescription>
+                </Alert>
+              )}
 
               {/* New Post Form */}
               {showNewPost && user && (
@@ -420,7 +470,7 @@ const Community = () => {
                 ))}
               </div>
 
-              {posts.length === 0 && (
+              {posts.length === 0 && !loadingPosts && (
                 <div className="text-center py-8">
                   <p className="text-muted-foreground">No posts yet. Be the first to start a discussion!</p>
                 </div>

@@ -53,6 +53,40 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  const createOrUpdateProfile = async (currentUser: User) => {
+    try {
+      const isAdmin = currentUser.email === 'namanrgaonkar@gmail.com';
+      
+      const profileData = {
+        user_id: currentUser.id,
+        email: currentUser.email,
+        full_name: currentUser.user_metadata?.full_name || currentUser.user_metadata?.name || 'User',
+        role: isAdmin ? 'admin' : 'student',
+        institute: currentUser.user_metadata?.institute || null,
+        roll_number: currentUser.user_metadata?.roll_number || null
+      };
+
+      const { data, error } = await supabase
+        .from('profiles')
+        .upsert(profileData, { 
+          onConflict: 'user_id',
+          ignoreDuplicates: false 
+        })
+        .select()
+        .single();
+
+      if (error) {
+        console.error('Error creating/updating profile:', error);
+        return null;
+      }
+
+      return data as Profile;
+    } catch (error) {
+      console.error('Error in createOrUpdateProfile:', error);
+      return null;
+    }
+  };
+
   const updateUserWithProfile = async (currentUser: User | null) => {
     if (!currentUser) {
       setUser(null);
@@ -60,51 +94,41 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       return;
     }
 
-    // Check if this is the admin email
-    const isAdmin = currentUser.email === 'namanrgaonkar@gmail.com';
-    
-    let userProfile = await fetchProfile(currentUser.id);
-    
-    // If profile doesn't exist or needs admin role update
-    if (!userProfile || (isAdmin && userProfile.role !== 'admin')) {
-      try {
-        const { data, error } = await supabase
-          .from('profiles')
-          .upsert({
-            user_id: currentUser.id,
-            email: currentUser.email,
-            full_name: currentUser.user_metadata?.full_name || 'User',
-            role: isAdmin ? 'admin' : 'student',
-            institute: currentUser.user_metadata?.institute || null,
-            roll_number: currentUser.user_metadata?.roll_number || null
-          })
-          .select()
-          .single();
-
-        if (!error && data) {
-          userProfile = data as Profile;
+    try {
+      let userProfile = await fetchProfile(currentUser.id);
+      
+      // If profile doesn't exist or needs updating, create/update it
+      if (!userProfile) {
+        userProfile = await createOrUpdateProfile(currentUser);
+      } else {
+        // Check if admin user needs role update
+        const isAdmin = currentUser.email === 'namanrgaonkar@gmail.com';
+        if (isAdmin && userProfile.role !== 'admin') {
+          userProfile = await createOrUpdateProfile(currentUser);
         }
-      } catch (error) {
-        console.error('Error creating/updating profile:', error);
       }
-    }
 
-    setProfile(userProfile);
-    
-    // Add role to user object
-    const userWithRole = {
-      ...currentUser,
-      role: userProfile?.role || 'student'
-    };
-    setUser(userWithRole);
+      setProfile(userProfile);
+      
+      // Add role to user object
+      const userWithRole = {
+        ...currentUser,
+        role: userProfile?.role || 'student'
+      };
+      setUser(userWithRole);
+    } catch (error) {
+      console.error('Error updating user with profile:', error);
+      setUser(currentUser);
+      setProfile(null);
+    }
   };
 
   useEffect(() => {
     let mounted = true;
 
-    // Get initial session
     const getInitialSession = async () => {
       try {
+        setLoading(true);
         const { data: { session }, error } = await supabase.auth.getSession();
         
         if (error) {
@@ -116,10 +140,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           if (session?.user) {
             await updateUserWithProfile(session.user);
           }
-          setLoading(false);
         }
       } catch (error) {
         console.error('Error in getInitialSession:', error);
+      } finally {
         if (mounted) {
           setLoading(false);
         }
@@ -128,7 +152,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     getInitialSession();
 
-    // Set up auth state listener
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
         console.log('Auth state changed:', event);
@@ -155,8 +178,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const login = async (email: string, password: string) => {
-    setLoading(true);
     try {
+      setLoading(true);
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password
@@ -168,30 +191,34 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           description: error.message,
           variant: "destructive"
         });
-        setLoading(false);
         return { error };
       }
 
-      toast({
-        title: "Welcome back!",
-        description: "You have been logged in successfully."
-      });
+      if (data.user) {
+        await updateUserWithProfile(data.user);
+        toast({
+          title: "Welcome back!",
+          description: "You have been logged in successfully."
+        });
+      }
 
       return { error: null };
     } catch (error: any) {
-      setLoading(false);
+      console.error('Login error:', error);
       toast({
         title: "Login Error",
         description: "An unexpected error occurred",
         variant: "destructive"
       });
       return { error };
+    } finally {
+      setLoading(false);
     }
   };
 
   const signup = async (email: string, password: string, userData: any) => {
-    setLoading(true);
     try {
+      setLoading(true);
       const { data, error } = await supabase.auth.signUp({
         email,
         password,
@@ -210,7 +237,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           description: error.message,
           variant: "destructive"
         });
-        setLoading(false);
         return { error };
       }
 
@@ -219,25 +245,32 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         description: "Please check your email to verify your account.",
       });
 
-      setLoading(false);
       return { error: null };
     } catch (error: any) {
-      setLoading(false);
+      console.error('Signup error:', error);
       toast({
         title: "Signup Error",
         description: "An unexpected error occurred",
         variant: "destructive"
       });
       return { error };
+    } finally {
+      setLoading(false);
     }
   };
 
   const logout = async () => {
-    setLoading(true);
     try {
+      setLoading(true);
       const { error } = await supabase.auth.signOut();
+      
       if (error) {
         console.error('Logout error:', error);
+        toast({
+          title: "Logout Error",
+          description: error.message,
+          variant: "destructive"
+        });
       } else {
         setUser(null);
         setProfile(null);
@@ -249,12 +282,17 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       }
     } catch (error) {
       console.error('Logout error:', error);
+      toast({
+        title: "Logout Error",
+        description: "An unexpected error occurred",
+        variant: "destructive"
+      });
     } finally {
       setLoading(false);
     }
   };
 
-  const isAuthenticated = !!session;
+  const isAuthenticated = !!session && !!user;
 
   return (
     <AuthContext.Provider value={{
