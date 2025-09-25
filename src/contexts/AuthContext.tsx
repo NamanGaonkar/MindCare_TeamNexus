@@ -55,7 +55,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const createOrUpdateProfile = async (currentUser: User) => {
     try {
-      const isAdmin = currentUser.email === 'namanrgaonkar@gmail.com';
+      // Check if user is admin based on metadata or hardcoded email
+      const isAdmin = currentUser.email === 'namanrgaonkar@gmail.com' || 
+                     currentUser.user_metadata?.isAdmin === true;
       
       const profileData = {
         user_id: currentUser.id,
@@ -102,7 +104,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         userProfile = await createOrUpdateProfile(currentUser);
       } else {
         // Check if admin user needs role update
-        const isAdmin = currentUser.email === 'namanrgaonkar@gmail.com';
+        const isAdmin = currentUser.email === 'namanrgaonkar@gmail.com' || 
+                       currentUser.user_metadata?.isAdmin === true;
         if (isAdmin && userProfile.role !== 'admin') {
           userProfile = await createOrUpdateProfile(currentUser);
         }
@@ -118,7 +121,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setUser(userWithRole);
     } catch (error) {
       console.error('Error updating user with profile:', error);
-      setUser(currentUser);
+      setUser({
+        ...currentUser,
+        role: 'student'
+      });
       setProfile(null);
     }
   };

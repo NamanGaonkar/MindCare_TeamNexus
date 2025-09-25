@@ -58,14 +58,15 @@ const Login = () => {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-background to-primary/5 p-4">
-      <Card className="w-full max-w-md shadow-2xl border-border/50">
-        <CardHeader className="text-center">
-          <CardTitle className="text-2xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-            Welcome Back
-          </CardTitle>
-          <p className="text-muted-foreground">Sign in to your MindCare account</p>
-        </CardHeader>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-background to-muted/20 p-4">
+      <div className="w-full max-w-md">
+        <Card className="shadow-elegant border-border/50 bg-background/80 backdrop-blur-sm">
+          <CardHeader className="text-center pb-2">
+            <CardTitle className="text-2xl font-bold bg-gradient-primary bg-clip-text text-transparent">
+              Welcome Back
+            </CardTitle>
+            <p className="text-muted-foreground">Sign in to your MindCare account</p>
+          </CardHeader>
         
         <form onSubmit={handleSubmit}>
           <CardContent className="space-y-4">
@@ -121,7 +122,8 @@ const Login = () => {
             <p>Student: Any other email</p>
           </div>
         </CardFooter>
-      </Card>
+        </Card>
+      </div>
     </div>
   );
 };

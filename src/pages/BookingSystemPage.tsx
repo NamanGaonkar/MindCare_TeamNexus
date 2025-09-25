@@ -1,12 +1,13 @@
-import BookingSystem from "@/components/BookingSystem";
+import BookingSystemConnected from "@/components/BookingSystemConnected";
 import Header from "@/components/Header";
+import ProtectedRoute from "@/components/ProtectedRoute";
 
 const BookingSystemPage = () => {
   return (
     <div className="min-h-screen bg-background">
       <Header />
       <main>
-        <BookingSystem />
+        <BookingSystemConnected />
       </main>
     </div>
   );

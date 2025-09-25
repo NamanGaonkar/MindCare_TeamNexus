@@ -1,12 +1,13 @@
+import PeerHelperApplicationConnected from "@/components/PeerHelperApplicationConnected";
 import Header from "@/components/Header";
-import PeerHelperApplication from "@/components/PeerHelperApplication";
+import ProtectedRoute from "@/components/ProtectedRoute";
 
 const PeerHelperApplicationPage = () => {
   return (
     <div className="min-h-screen bg-background">
       <Header />
       <main>
-        <PeerHelperApplication />
+        <PeerHelperApplicationConnected />
       </main>
     </div>
   );
