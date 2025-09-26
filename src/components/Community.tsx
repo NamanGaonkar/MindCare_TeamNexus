@@ -200,44 +200,6 @@ const Community = () => {
       console.error('Error posting reply:', error);
       toast.error("Failed to post reply");
     }
-  const handleLikePost = async (postId: string) => {
-    if (!user) {
-      toast.error("Please log in to like posts");
-      return;
-    }
-
-    try {
-      const currentPost = posts.find(p => p.id === postId);
-      if (!currentPost) return;
-
-      // Optimistically update the UI
-      setPosts(prev => prev.map(post => 
-        post.id === postId 
-          ? { ...post, likes_count: post.likes_count + 1 }
-          : post
-      ));
-
-      const { error } = await supabase
-        .from('posts')
-        .update({ likes_count: currentPost.likes_count + 1 })
-        .eq('id', postId);
-
-      if (error) {
-        console.error('Error liking post:', error);
-        // Revert optimistic update
-        setPosts(prev => prev.map(post => 
-          post.id === postId 
-            ? { ...post, likes_count: post.likes_count - 1 }
-            : post
-        ));
-        toast.error("Failed to like post");
-      } else {
-        toast.success("Post liked!");
-      }
-    } catch (error) {
-      console.error('Error liking post:', error);
-      toast.error("Failed to like post");
-    }
   };
 
   const handleLikePost = async (postId: string) => {
