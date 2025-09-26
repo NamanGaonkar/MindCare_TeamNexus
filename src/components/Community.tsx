@@ -24,6 +24,16 @@ interface ForumPost {
   likes_count: number;
   replies_count: number;
   created_at: string;
+  user_id: string;
+}
+
+interface PostReply {
+  id: string;
+  post_id: string;
+  user_id: string;
+  content: string;
+  created_at: string;
+  author_name: string;
 }
 
 const Community = () => {
@@ -34,6 +44,8 @@ const Community = () => {
   const [postsError, setPostsError] = useState<string | null>(null);
   const [activeReply, setActiveReply] = useState<string | null>(null);
   const [replyContent, setReplyContent] = useState("");
+  const [replies, setReplies] = useState<{ [postId: string]: PostReply[] }>({});
+  const [loadingReplies, setLoadingReplies] = useState<{ [postId: string]: boolean }>({});
   const [newPost, setNewPost] = useState({
     title: "",
     content: "",
@@ -66,6 +78,55 @@ const Community = () => {
     "Mental Health Support": "bg-purple-100 text-purple-800 border-purple-200",
   };
 
+  const fetchReplies = async (postId: string) => {
+    setLoadingReplies(prev => ({ ...prev, [postId]: true }));
+    try {
+      // First get replies
+      const { data: repliesData, error: repliesError } = await supabase
+        .from('post_replies')
+        .select('*')
+        .eq('post_id', postId)
+        .order('created_at', { ascending: true });
+
+      if (repliesError) {
+        console.error('Error fetching replies:', repliesError);
+        return;
+      }
+
+      // Then get author names for replies
+      if (repliesData && repliesData.length > 0) {
+        const userIds = [...new Set(repliesData.map(reply => reply.user_id))];
+        const { data: profilesData } = await supabase
+          .from('profiles')
+          .select('user_id, full_name')
+          .in('user_id', userIds);
+
+        const profileMap = profilesData?.reduce((acc, profile) => {
+          acc[profile.user_id] = profile.full_name;
+          return acc;
+        }, {} as Record<string, string>) || {};
+
+        const formattedReplies = repliesData.map(reply => ({
+          ...reply,
+          author_name: profileMap[reply.user_id] || `User ${reply.user_id.slice(0, 8)}`
+        }));
+        
+        setReplies(prev => ({ ...prev, [postId]: formattedReplies }));
+      }
+    } catch (error) {
+      console.error('Error fetching replies:', error);
+    } finally {
+      setLoadingReplies(prev => ({ ...prev, [postId]: false }));
+    }
+  };
+
+  const toggleReplies = (postId: string) => {
+    if (!replies[postId]) {
+      fetchReplies(postId);
+    }
+    setActiveReply(activeReply === postId ? null : postId);
+  };
+
   const fetchPosts = useCallback(async (attempt: number = 1) => {
     try {
       setPostsError(null);
@@ -73,62 +134,82 @@ const Community = () => {
       
       console.log(`Fetching posts (attempt ${attempt})`);
       
-      const { data, error } = await supabase
+      // First get posts
+      const { data: postsData, error: postsError } = await supabase
         .from('posts')
         .select('*')
         .order('is_pinned', { ascending: false })
         .order('created_at', { ascending: false });
 
-      if (error) {
-        console.error('Error fetching posts:', error);
-        throw new Error(`Failed to load posts: ${error.message}`);
+      if (postsError) {
+        console.error('Error fetching posts:', postsError);
+        throw new Error(`Failed to load posts: ${postsError.message}`);
       }
 
-      const formattedPosts = data?.map(post => ({
-        ...post,
-        author_name: 'Anonymous User'
-      })) || [];
+      // Then get author names
+      if (postsData && postsData.length > 0) {
+        const userIds = [...new Set(postsData.map(post => post.user_id))];
+        const { data: profilesData } = await supabase
+          .from('profiles')
+          .select('user_id, full_name')
+          .in('user_id', userIds);
 
-      setPosts(formattedPosts);
-      setRetryCount(0); // Reset retry count on success
-    } catch (error) {
-      console.error('Error fetching posts:', error);
-      
-      // Retry logic
-      if (attempt < 3) {
-        console.log(`Retrying... (attempt ${attempt + 1})`);
-        setTimeout(() => fetchPosts(attempt + 1), 1000 * attempt);
-        return;
+        const profileMap = profilesData?.reduce((acc, profile) => {
+          acc[profile.user_id] = profile.full_name;
+          return acc;
+        }, {} as Record<string, string>) || {};
+
+        const formattedPosts = postsData.map(post => ({
+          ...post,
+          author_name: profileMap[post.user_id] || `User ${post.user_id.slice(0, 8)}`
+        }));
+
+        setPosts(formattedPosts);
+      } else {
+        setPosts([]);
       }
+
+      setRetryCount(0);
+    } catch (error: any) {
+      console.error('Error in fetchPosts:', error);
+      setPostsError(error.message || 'Failed to load posts');
       
-      setPostsError((error as Error).message);
-      toast.error("Failed to load posts");
+      const maxRetries = 3;
+      if (attempt < maxRetries) {
+        console.log(`Retrying... (${attempt + 1}/${maxRetries})`);
+        setTimeout(() => fetchPosts(attempt + 1), 2000);
+      }
     } finally {
       setLoadingPosts(false);
     }
   }, []);
 
+  const retryFetchPosts = () => {
+    setRetryCount(prev => prev + 1);
+    fetchPosts(1);
+  };
+
   useEffect(() => {
-    if (!authLoading) {
-      fetchPosts();
-    }
-  }, [fetchPosts, authLoading]);
+    fetchPosts();
+  }, [fetchPosts]);
 
   const handleCreatePost = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!user || !newPost.title.trim() || !newPost.content.trim() || !newPost.category) {
+    if (!user) {
+      toast.error("Please log in to create a post");
+      return;
+    }
+
+    if (!newPost.title.trim() || !newPost.content.trim() || !newPost.category) {
       toast.error("Please fill in all required fields");
       return;
     }
 
     setSubmittingPost(true);
-    
+
     try {
-      const tags = newPost.tags
-        .split(',')
-        .map(tag => tag.trim())
-        .filter(tag => tag.length > 0);
+      const tags = newPost.tags.split(',').map(tag => tag.trim()).filter(Boolean);
 
       const { error } = await supabase
         .from('posts')
@@ -193,8 +274,8 @@ const Community = () => {
       }
 
       toast.success("Reply posted successfully!");
-      setActiveReply(null);
       setReplyContent("");
+      fetchReplies(postId); // Refresh replies for this post
       fetchPosts(); // Refresh posts to get updated counts
     } catch (error) {
       console.error('Error posting reply:', error);
@@ -242,24 +323,8 @@ const Community = () => {
     }
   };
 
-  const formatTimeAgo = (dateString: string) => {
-    const date = new Date(dateString);
-    const now = new Date();
-    const diffInHours = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60));
-    
-    if (diffInHours < 1) return "Just now";
-    if (diffInHours < 24) return `${diffInHours}h ago`;
-    const diffInDays = Math.floor(diffInHours / 24);
-    if (diffInDays < 7) return `${diffInDays}d ago`;
-    return date.toLocaleDateString();
-  };
-
-  const retryFetchPosts = () => {
-    setRetryCount(prev => prev + 1);
-    fetchPosts();
-  };
-
-  if (authLoading) {
+  // Loading state for initial load
+  if (authLoading || loadingPosts) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
         <div className="text-center">
@@ -270,26 +335,15 @@ const Community = () => {
     );
   }
 
-  if (loadingPosts) {
-    return (
-      <div className="flex items-center justify-center min-h-[400px]">
-        <div className="text-center">
-          <Loader2 className="h-8 w-8 animate-spin mx-auto mb-4" />
-          <p className="text-muted-foreground">Loading posts...</p>
-        </div>
-      </div>
-    );
-  }
-
   // Show error state for posts
   if (postsError) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
-        <Card className="w-full max-w-md text-center">
+        <Card className="w-full max-w-md text-center bg-background/80 backdrop-blur-sm">
           <CardContent className="p-6">
             <AlertCircle className="h-12 w-12 text-destructive mx-auto mb-4" />
             <p className="text-destructive mb-4">{postsError}</p>
-            <Button onClick={retryFetchPosts}>
+            <Button onClick={retryFetchPosts} className="bg-gradient-primary hover:opacity-90">
               <RefreshCw className="h-4 w-4 mr-2" />
               Try Again
             </Button>
@@ -300,7 +354,7 @@ const Community = () => {
   }
 
   return (
-    <section id="community" className="py-20">
+    <section id="community" className="py-20 bg-gradient-to-br from-background via-background to-muted/20">
       <div className="container mx-auto px-4">
         <div className="max-w-6xl mx-auto">
           {/* Header */}
@@ -320,7 +374,7 @@ const Community = () => {
           {/* Community Stats */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
             {forumStats.map((stat, index) => (
-              <Card key={index} className="text-center border-border/50">
+              <Card key={index} className="text-center border-border/50 bg-background/80 backdrop-blur-sm">
                 <CardContent className="p-6">
                   <stat.icon className={`h-8 w-8 text-primary mx-auto mb-2`} />
                   <div className="text-2xl font-bold mb-1">{stat.value}</div>
@@ -361,7 +415,7 @@ const Community = () => {
 
               {/* New Post Form */}
               {showNewPost && user && (
-                <Card className="mb-6 shadow-soft border-border/50">
+                <Card className="mb-6 shadow-soft border-border/50 bg-background/80 backdrop-blur-sm">
                   <CardHeader>
                     <CardTitle>Create a New Post</CardTitle>
                   </CardHeader>
@@ -379,135 +433,163 @@ const Community = () => {
                         onValueChange={(value) => setNewPost(prev => ({ ...prev, category: value }))}
                       >
                         <SelectTrigger>
-                          <SelectValue placeholder="Select Category" />
+                          <SelectValue placeholder="Select a category" />
                         </SelectTrigger>
                         <SelectContent>
                           {categories.map(category => (
-                            <SelectItem key={category} value={category}>
-                              {category}
-                            </SelectItem>
+                            <SelectItem key={category} value={category}>{category}</SelectItem>
                           ))}
                         </SelectContent>
                       </Select>
-
-                      <Input 
-                        placeholder="Tags (comma separated)" 
-                        value={newPost.tags}
-                        onChange={(e) => setNewPost(prev => ({ ...prev, tags: e.target.value }))}
-                      />
-
+                      
                       <Textarea 
-                        placeholder="Share your thoughts... (Remember to be respectful and avoid sharing personal information)" 
-                        rows={4}
+                        placeholder="Share your thoughts, ask questions, or offer support..." 
                         value={newPost.content}
                         onChange={(e) => setNewPost(prev => ({ ...prev, content: e.target.value }))}
+                        rows={4}
                         required
                       />
                       
-                      <div className="flex justify-end space-x-2">
-                        <Button type="button" variant="outline" onClick={() => setShowNewPost(false)}>
-                          Cancel
-                        </Button>
-                        <Button type="submit" disabled={submittingPost}>
-                          {submittingPost ? <Loader2 className="h-4 w-4 animate-spin" /> : "Post"}
-                        </Button>
-                      </div>
+                      <Input 
+                        placeholder="Tags (comma-separated)" 
+                        value={newPost.tags}
+                        onChange={(e) => setNewPost(prev => ({ ...prev, tags: e.target.value }))}
+                      />
+                      
+                      <Button 
+                        type="submit" 
+                        disabled={submittingPost}
+                        className="w-full bg-gradient-primary hover:opacity-90"
+                      >
+                        {submittingPost ? (
+                          <>
+                            <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                            Posting...
+                          </>
+                        ) : (
+                          'Post Discussion'
+                        )}
+                      </Button>
                     </CardContent>
                   </form>
                 </Card>
               )}
 
-              <div className="space-y-4">
+              {/* Posts */}
+              <div className="space-y-6">
                 {posts.map((post) => (
-                  <Card key={post.id} className="shadow-soft border-border/50 hover:shadow-medium transition-all duration-300">
+                  <Card key={post.id} className="shadow-soft border-border/50 bg-background/80 backdrop-blur-sm">
                     <CardContent className="p-6">
-                      <div className="flex items-start justify-between mb-3">
+                      <div className="flex items-start justify-between mb-4">
                         <div className="flex items-center space-x-3">
-                          {post.is_pinned && (
-                            <Pin className="h-4 w-4 text-primary" />
-                          )}
-                          <Badge 
-                            variant="outline" 
-                            className={`text-xs ${categoryColors[post.category as keyof typeof categoryColors]}`}
-                          >
+                          {post.is_pinned && <Pin className="h-4 w-4 text-primary" />}
+                          <Badge className={categoryColors[post.category] || "bg-gray-100 text-gray-800 border-gray-200"}>
                             {post.category}
                           </Badge>
+                          <Avatar className="h-8 w-8">
+                            <AvatarFallback>{post.author_name.charAt(0)}</AvatarFallback>
+                          </Avatar>
+                          <div>
+                            <p className="font-medium text-sm">{post.author_name}</p>
+                            <p className="text-xs text-muted-foreground">
+                              {new Date(post.created_at).toLocaleDateString()}
+                            </p>
+                          </div>
                         </div>
-                        <Button variant="ghost" size="icon" className="h-8 w-8">
+                        <Button variant="ghost" size="sm">
                           <MoreHorizontal className="h-4 w-4" />
                         </Button>
                       </div>
-
-                      <Link to={`/community/post/${post.id}`}>
-                        <h4 className="font-semibold text-lg mb-2 hover:text-primary cursor-pointer transition-colors">
-                          {post.title}
-                        </h4>
-                      </Link>
-
-                      <p className="text-muted-foreground text-sm mb-4 line-clamp-2">
-                        {post.content}
-                      </p>
-
-                      <div className="flex flex-wrap gap-2 mb-4">
-                        {post.tags?.map((tag, index) => (
-                          <Badge key={index} variant="secondary" className="text-xs">
-                            #{tag}
-                          </Badge>
-                        ))}
-                      </div>
-
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center space-x-4 text-sm text-muted-foreground">
-                          <div className="flex items-center space-x-1">
-                            <Avatar className="h-6 w-6">
-                              <AvatarFallback className="text-xs bg-primary/10">
-                                {post.author_name?.charAt(0) || 'A'}
-                              </AvatarFallback>
-                            </Avatar>
-                            <span>{post.author_name || 'Anonymous'}</span>
-                          </div>
-                          <span>•</span>
-                          <span>{formatTimeAgo(post.created_at)}</span>
+                      
+                      <h3 className="text-lg font-semibold mb-2">{post.title}</h3>
+                      <p className="text-muted-foreground mb-4 leading-relaxed">{post.content}</p>
+                      
+                      {post.tags && post.tags.length > 0 && (
+                        <div className="flex flex-wrap gap-2 mb-4">
+                          {post.tags.map((tag, index) => (
+                            <Badge key={index} variant="secondary" className="text-xs">
+                              #{tag}
+                            </Badge>
+                          ))}
                         </div>
-
+                      )}
+                      
+                      <div className="flex items-center justify-between">
                         <div className="flex items-center space-x-4">
                           <Button 
                             variant="ghost" 
-                            size="sm" 
-                            className="text-muted-foreground hover:text-primary"
+                            size="sm"
                             onClick={() => handleLikePost(post.id)}
                           >
-                            <ThumbsUp className="h-4 w-4 mr-1" />
-                            {post.likes_count}
+                            <ThumbsUp className="h-4 w-4 mr-1"/>
+                            {post.likes_count} Likes
                           </Button>
-                          {user && (
-                            <Button 
-                              variant="ghost" 
-                              size="sm" 
-                              className="text-muted-foreground hover:text-primary"
-                              onClick={() => setActiveReply(activeReply === post.id ? null : post.id)}
-                            >
-                              <Reply className="h-4 w-4 mr-1" />
-                              {post.replies_count}
-                            </Button>
-                          )}
+                          <Button 
+                            variant="ghost" 
+                            size="sm"
+                            onClick={() => toggleReplies(post.id)}
+                          >
+                            <Reply className="h-4 w-4 mr-1"/>
+                            {post.replies_count} Replies
+                          </Button>
                         </div>
                       </div>
-                      
-                      {/* Reply input section */}
-                      {activeReply === post.id && user && (
-                        <div className="mt-4 pt-4 border-t border-border/50">
-                          <div className="flex items-center space-x-3">
-                            <Input 
-                              type="text"
-                              placeholder="Write a reply..."
-                              value={replyContent}
-                              onChange={(e) => setReplyContent(e.target.value)}
-                            />
-                            <Button size="icon" onClick={() => handleReplySubmit(post.id)}>
-                              <Send className="h-4 w-4"/>
-                            </Button>
-                          </div>
+
+                      {/* Replies Section */}
+                      {activeReply === post.id && (
+                        <div className="mt-6 pt-6 border-t border-border/50">
+                          {/* Existing Replies */}
+                          {replies[post.id] && replies[post.id].length > 0 && (
+                            <div className="space-y-4 mb-4">
+                              {replies[post.id].map((reply) => (
+                                <div key={reply.id} className="bg-muted/30 rounded-lg p-4">
+                                  <div className="flex items-center space-x-2 mb-2">
+                                    <Avatar className="h-6 w-6">
+                                      <AvatarFallback className="text-xs">{reply.author_name.charAt(0)}</AvatarFallback>
+                                    </Avatar>
+                                    <span className="text-sm font-medium">{reply.author_name}</span>
+                                    <span className="text-xs text-muted-foreground">
+                                      {new Date(reply.created_at).toLocaleDateString()}
+                                    </span>
+                                  </div>
+                                  <p className="text-sm">{reply.content}</p>
+                                </div>
+                              ))}
+                            </div>
+                          )}
+                          
+                          {loadingReplies[post.id] && (
+                            <div className="text-center py-4">
+                              <Loader2 className="h-4 w-4 animate-spin mx-auto" />
+                              <p className="text-sm text-muted-foreground mt-2">Loading replies...</p>
+                            </div>
+                          )}
+
+                          {/* Reply Form */}
+                          {user && (
+                            <div className="flex items-center space-x-3">
+                              <Input 
+                                type="text"
+                                placeholder="Write a reply..."
+                                value={replyContent}
+                                onChange={(e) => setReplyContent(e.target.value)}
+                                onKeyPress={(e) => {
+                                  if (e.key === 'Enter' && !e.shiftKey) {
+                                    e.preventDefault();
+                                    handleReplySubmit(post.id);
+                                  }
+                                }}
+                              />
+                              <Button 
+                                size="icon" 
+                                onClick={() => handleReplySubmit(post.id)}
+                                disabled={!replyContent.trim()}
+                                className="bg-gradient-primary hover:opacity-90"
+                              >
+                                <Send className="h-4 w-4"/>
+                              </Button>
+                            </div>
+                          )}
                         </div>
                       )}
                     </CardContent>
@@ -525,7 +607,7 @@ const Community = () => {
             {/* Sidebar */}
             <div className="space-y-6">
               {/* Guidelines */}
-              <Card className="shadow-soft border-border/50">
+              <Card className="shadow-soft border-border/50 bg-background/80 backdrop-blur-sm">
                 <CardHeader>
                   <CardTitle className="text-lg">Community Guidelines</CardTitle>
                 </CardHeader>
@@ -550,7 +632,7 @@ const Community = () => {
               </Card>
 
               {/* Peer Helpers */}
-              <Card className="shadow-soft border-border/50">
+              <Card className="shadow-soft border-border/50 bg-background/80 backdrop-blur-sm">
                 <CardHeader>
                   <CardTitle className="text-lg">Trained Peer Helpers</CardTitle>
                 </CardHeader>
